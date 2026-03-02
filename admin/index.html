@@ -898,7 +898,7 @@
       <div class="login-logo">
         <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
       </div>
-      <div class="login-title">WARGO Admin</div>
+      <div class="login-title">WAR<span style="color:#ff7620">GO</span> Admin</div>
       <div class="login-subtitle">לוח ניהול תוכן — גרסה 1.0</div>
       <div class="login-field">
         <label>אימייל</label>
@@ -1778,7 +1778,7 @@
         }
 
         // Validate via server-side RPC — no direct table access
-        const { data, error } = await sb.rpc('verify_admin_session', { admin_id: session.id });
+        const { data, error } = await sb.rpc('verify_web_admin_session', { admin_id: session.id });
 
         if (error || !data || !data.valid) {
           localStorage.removeItem(SESSION_KEY);
@@ -1813,7 +1813,7 @@
         // The actual password_hash in DB never reaches the client
         const inputHash = await sha256(pass.trim());
 
-        const { data, error } = await sb.rpc('verify_admin_login', {
+        const { data, error } = await sb.rpc('verify_web_admin_login', {
           input_email: email,
           input_password_hash: inputHash
         });
