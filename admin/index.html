@@ -910,6 +910,7 @@
       </div>
       <div class="login-error" id="loginError"></div>
       <button class="login-btn" onclick="handleLogin()" id="loginBtn">כניסה למערכת</button>
+      <div id="debugLog" style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);font-family:monospace;text-align:left;direction:ltr;max-height:100px;overflow:auto;display:none;"></div>
       <div style="text-align:center;margin-top:16px;">
         <span style="font-size:12px;color:rgba(255,255,255,0.25);">🔒 גישה למנהלים מורשים בלבד</span>
       </div>
@@ -1669,14 +1670,33 @@
     <span id="toastText">השינויים נשמרו בהצלחה!</span>
   </div>
 
-  <!-- SUPABASE CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- SUPABASE CDN (with fallback) -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    if (typeof supabase === 'undefined') {
+      document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"><\/scr'+'ipt>');
+    }
+  </script>
 
   <script>
+    // ===== DEBUG HELPER =====
+    function dbg(msg) {
+      console.log('[CMS] ' + msg);
+      var el = document.getElementById('debugLog');
+      if (el) { el.style.display = 'block'; el.textContent += msg + '\n'; }
+    }
+    window.onerror = function(m,s,l) { dbg('ERROR: ' + m + ' (line ' + l + ')'); };
+
     // ===== SUPABASE AUTH — NO HARDCODED CREDENTIALS =====
-    const SB_URL = 'https://yrtrwhiootynxkebkpme.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80';
-    const sb = supabase.createClient(SB_URL, SB_KEY);
+    let sb = null;
+    try {
+      const SB_URL = 'https://yrtrwhiootynxkebkpme.supabase.co';
+      const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80';
+      sb = supabase.createClient(SB_URL, SB_KEY);
+      dbg('Supabase connected ✅');
+    } catch(e) {
+      dbg('Supabase init FAILED: ' + e.message);
+    }
 
     const SESSION_KEY = 'wargo_cms_session';
     const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 hours
@@ -1769,6 +1789,7 @@
       try {
         const raw = localStorage.getItem(SESSION_KEY);
         if (!raw) return;
+        if (!sb) { localStorage.removeItem(SESSION_KEY); return; }
         const session = JSON.parse(raw);
 
         // Check expiry
@@ -1794,6 +1815,7 @@
 
     // ===== LOGIN VIA SUPABASE RPC =====
     async function handleLogin() {
+      dbg('handleLogin called');
       const email = document.getElementById('loginUser').value.trim().toLowerCase();
       const pass = document.getElementById('loginPass').value;
       const errEl = document.getElementById('loginError');
@@ -1804,29 +1826,38 @@
         return;
       }
 
+      if (!sb) {
+        errEl.textContent = '❌ שגיאת חיבור לשרת. רענן את הדף ונסה שוב.';
+        dbg('sb is null!');
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = '⏳ מתחבר...';
       errEl.textContent = '';
 
       try {
-        // Hash password client-side, send hash to server for comparison
-        // The actual password_hash in DB never reaches the client
         const inputHash = await sha256(pass.trim());
+        dbg('Hash ready, calling RPC...');
 
         const { data, error } = await sb.rpc('verify_web_admin_login', {
           input_email: email,
           input_password_hash: inputHash
         });
 
-        if (error) throw new Error('שגיאה בהתחברות');
+        dbg('RPC response: ' + JSON.stringify({ data, error }));
+
+        if (error) throw new Error('שגיאה: ' + error.message);
         if (!data || !data.success) throw new Error(data?.error === 'invalid' ? 'אימייל או סיסמה שגויים' : 'שגיאה');
 
         // Save session
         currentAdmin = data.admin;
         localStorage.setItem(SESSION_KEY, JSON.stringify({ ...currentAdmin, ts: Date.now() }));
+        dbg('Login success! Showing app...');
         showApp();
 
       } catch (e) {
+        dbg('Login error: ' + e.message);
         errEl.textContent = '❌ ' + (e.message || 'שגיאה בהתחברות');
       } finally {
         btn.disabled = false;
@@ -1850,12 +1881,14 @@
     }
 
     // Allow enter key on login
-    document.getElementById('loginPass').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleLogin();
-    });
-    document.getElementById('loginUser').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('loginPass').focus();
-    });
+    try {
+      document.getElementById('loginPass').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleLogin();
+      });
+      document.getElementById('loginUser').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') document.getElementById('loginPass').focus();
+      });
+    } catch(e) { console.error('[WARGO CMS] Event listener setup error:', e); }
 
     // ===== PANEL NAVIGATION =====
     function switchPanel(el) {
@@ -2194,6 +2227,7 @@
     }
 
     // ===== RUN =====
+    dbg('Starting init...');
     init();
   </script>
 </body>
