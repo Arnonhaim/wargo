@@ -901,18 +901,17 @@
       <div class="login-title">WARGO Admin</div>
       <div class="login-subtitle">לוח ניהול תוכן — גרסה 1.0</div>
       <div class="login-field">
-        <label>שם משתמש</label>
-        <input type="text" id="loginUser" placeholder="הזן שם משתמש" autocomplete="username">
+        <label>אימייל</label>
+        <input type="email" id="loginUser" placeholder="הזן כתובת אימייל" autocomplete="email" dir="ltr">
       </div>
       <div class="login-field">
         <label>סיסמה</label>
         <input type="password" id="loginPass" placeholder="הזן סיסמה" autocomplete="current-password">
       </div>
       <div class="login-error" id="loginError"></div>
-      <button class="login-btn" onclick="handleLogin()">כניסה למערכת</button>
-      <div class="login-creds">
-        <div class="login-creds-title">פרטי התחברות</div>
-        <code>admin / Wargo2026!</code>
+      <button class="login-btn" onclick="handleLogin()" id="loginBtn">כניסה למערכת</button>
+      <div style="text-align:center;margin-top:16px;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.25);">🔒 גישה למנהלים מורשים בלבד</span>
       </div>
     </div>
   </div>
@@ -1069,7 +1068,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>טקסט תגית</label></div>
-              <input type="text" data-key="hero.tag" >
+              <input type="text" data-key="hero.tag" value="פלטפורמה פעילה בכל הארץ">
             </div>
           </div>
 
@@ -1081,11 +1080,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>שורה 1</label></div>
-              <input type="text" data-key="hero.title1" >
+              <input type="text" data-key="hero.title1" value="הובלות חזור">
             </div>
             <div class="field">
               <div class="field-label"><label>שורה 2 (צבעונית)</label></div>
-              <input type="text" data-key="hero.title2" >
+              <input type="text" data-key="hero.title2" value="בלחיצת כפתור">
             </div>
           </div>
 
@@ -1110,11 +1109,11 @@
             <div class="field-row">
               <div class="field">
                 <div class="field-label"><label>כפתור ראשי — טקסט</label></div>
-                <input type="text" data-key="hero.cta1" >
+                <input type="text" data-key="hero.cta1" value="הורד עכשיו — בחינם">
               </div>
               <div class="field">
                 <div class="field-label"><label>כפתור משני — טקסט</label></div>
-                <input type="text" data-key="hero.cta2" >
+                <input type="text" data-key="hero.cta2" value="איך זה עובד?">
               </div>
             </div>
           </div>
@@ -1128,31 +1127,31 @@
             <div class="field-row">
               <div class="field">
                 <div class="field-label"><label>ערך 1</label></div>
-                <input type="text" data-key="hero.stat1_value" >
+                <input type="text" data-key="hero.stat1_value" value="40%">
               </div>
               <div class="field">
                 <div class="field-label"><label>תיאור 1</label></div>
-                <input type="text" data-key="hero.stat1_label" >
+                <input type="text" data-key="hero.stat1_label" value="חיסכון ממוצע בהובלה">
               </div>
             </div>
             <div class="field-row">
               <div class="field">
                 <div class="field-label"><label>ערך 2</label></div>
-                <input type="text" data-key="hero.stat2_value" >
+                <input type="text" data-key="hero.stat2_value" value="24/7">
               </div>
               <div class="field">
                 <div class="field-label"><label>תיאור 2</label></div>
-                <input type="text" data-key="hero.stat2_label" >
+                <input type="text" data-key="hero.stat2_label" value="זמינות מלאה">
               </div>
             </div>
             <div class="field-row">
               <div class="field">
                 <div class="field-label"><label>ערך 3</label></div>
-                <input type="text" data-key="hero.stat3_value" >
+                <input type="text" data-key="hero.stat3_value" value="🇮🇱">
               </div>
               <div class="field">
                 <div class="field-label"><label>תיאור 3</label></div>
-                <input type="text" data-key="hero.stat3_label" >
+                <input type="text" data-key="hero.stat3_label" value="כל רחבי ישראל">
               </div>
             </div>
           </div>
@@ -1178,11 +1177,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="features.tag" >
+              <input type="text" data-key="features.tag" value="למה WARGO?">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="features.title" >
+              <input type="text" data-key="features.title" value="הכל באפליקציה אחת">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור</label></div>
@@ -1212,15 +1211,15 @@
             </div>
             <div class="field">
               <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="steps.tag" >
+              <input type="text" data-key="steps.tag" value="תהליך פשוט">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="steps.title" >
+              <input type="text" data-key="steps.title" value="איך זה עובד?">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור</label></div>
-              <input type="text" data-key="steps.subtitle" >
+              <input type="text" data-key="steps.subtitle" value="שלושה שלבים פשוטים להובלה הבאה שלך">
             </div>
           </div>
 
@@ -1245,15 +1244,15 @@
             </div>
             <div class="field">
               <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="audience.tag" >
+              <input type="text" data-key="audience.tag" value="למי זה?">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="audience.title" >
+              <input type="text" data-key="audience.title" value="בין אם אתה שולח או מוביל">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור</label></div>
-              <input type="text" data-key="audience.subtitle" >
+              <input type="text" data-key="audience.subtitle" value="WARGO נבנתה בשביל שני הצדדים של שרשרת ההובלה">
             </div>
           </div>
 
@@ -1265,11 +1264,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>אייקון (אמוג׳י)</label></div>
-              <input type="text" data-key="shipper.emoji" >
+              <input type="text" data-key="shipper.emoji" value="📦">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="shipper.title" >
+              <input type="text" data-key="shipper.title" value="אני שולח מטענים">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור</label></div>
@@ -1285,7 +1284,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>טקסט כפתור</label></div>
-              <input type="text" data-key="shipper.cta" >
+              <input type="text" data-key="shipper.cta" value="התחל לשלוח →">
             </div>
           </div>
 
@@ -1297,11 +1296,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>אייקון (אמוג׳י)</label></div>
-              <input type="text" data-key="carrier.emoji" >
+              <input type="text" data-key="carrier.emoji" value="🚛">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="carrier.title" >
+              <input type="text" data-key="carrier.title" value="אני מוביל / חברת הובלות">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור</label></div>
@@ -1317,7 +1316,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>טקסט כפתור</label></div>
-              <input type="text" data-key="carrier.cta" >
+              <input type="text" data-key="carrier.cta" value="התחל להוביל →">
             </div>
           </div>
         </div>
@@ -1346,7 +1345,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>קישור App Store</label><span class="field-hint">iOS</span></div>
-              <input type="url" data-key="links.appStore" placeholder="https://apps.apple.com/app/..." >
+              <input type="url" data-key="links.appStore" placeholder="https://apps.apple.com/app/..." value="#">
             </div>
           </div>
 
@@ -1358,7 +1357,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>קישור Google Play</label><span class="field-hint">Android</span></div>
-              <input type="url" data-key="links.googlePlay" placeholder="https://play.google.com/store/apps/details?id=..." >
+              <input type="url" data-key="links.googlePlay" placeholder="https://play.google.com/store/apps/details?id=..." value="#">
             </div>
           </div>
 
@@ -1370,7 +1369,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כתובת מייל</label></div>
-              <input type="email" data-key="links.supportEmail" >
+              <input type="email" data-key="links.supportEmail" value="support@wargo.app">
             </div>
           </div>
 
@@ -1382,15 +1381,15 @@
             </div>
             <div class="field">
               <div class="field-label"><label>תנאי שימוש</label></div>
-              <input type="url" data-key="links.terms" placeholder="https://..." >
+              <input type="url" data-key="links.terms" placeholder="https://..." value="#">
             </div>
             <div class="field">
               <div class="field-label"><label>מדיניות פרטיות</label></div>
-              <input type="url" data-key="links.privacy" placeholder="https://..." >
+              <input type="url" data-key="links.privacy" placeholder="https://..." value="#">
             </div>
             <div class="field">
               <div class="field-label"><label>ביטול עסקה</label></div>
-              <input type="url" data-key="links.refund" placeholder="https://..." >
+              <input type="url" data-key="links.refund" placeholder="https://..." value="#">
             </div>
           </div>
         </div>
@@ -1406,15 +1405,15 @@
             <div class="field">
               <div class="field-label"><label>צבע ראשי (Cyan)</label></div>
               <div class="color-field">
-                <input type="color"  data-key="brand.primary" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
-                <input type="text"  data-key="brand.primary_text" onchange="this.previousElementSibling.value=this.value">
+                <input type="color" value="#00B4D8" data-key="brand.primary" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
+                <input type="text" value="#00B4D8" data-key="brand.primary_text" onchange="this.previousElementSibling.value=this.value">
               </div>
             </div>
             <div class="field">
               <div class="field-label"><label>צבע רקע כהה (Navy)</label></div>
               <div class="color-field">
-                <input type="color"  data-key="brand.bgDark" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
-                <input type="text"  data-key="brand.bgDark_text" onchange="this.previousElementSibling.value=this.value">
+                <input type="color" value="#0B1426" data-key="brand.bgDark" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
+                <input type="text" value="#0B1426" data-key="brand.bgDark_text" onchange="this.previousElementSibling.value=this.value">
               </div>
             </div>
           </div>
@@ -1427,15 +1426,15 @@
             </div>
             <div class="field">
               <div class="field-label"><label>URL לוגו (SVG / PNG)</label></div>
-              <input type="url" data-key="brand.logoUrl" placeholder="https://your-logo.svg" >
+              <input type="url" data-key="brand.logoUrl" placeholder="https://your-logo.svg" value="">
             </div>
             <div class="field">
               <div class="field-label"><label>URL Favicon</label></div>
-              <input type="url" data-key="brand.faviconUrl" placeholder="https://your-favicon.svg" >
+              <input type="url" data-key="brand.faviconUrl" placeholder="https://your-favicon.svg" value="">
             </div>
             <div class="field">
               <div class="field-label"><label>OG Image (תמונה לשיתוף)</label></div>
-              <input type="url" data-key="brand.ogImage" placeholder="https://your-og-image.png" >
+              <input type="url" data-key="brand.ogImage" placeholder="https://your-og-image.png" value="">
             </div>
           </div>
 
@@ -1447,7 +1446,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>שם מותג (מוצג בכותרת ולוגו)</label></div>
-              <input type="text" data-key="brand.appName" >
+              <input type="text" data-key="brand.appName" value="WARGO">
             </div>
           </div>
         </div>
@@ -1466,7 +1465,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>טקסט זכויות יוצרים</label></div>
-              <input type="text" data-key="footer.copyright" >
+              <input type="text" data-key="footer.copyright" value="© 2026 WARGO. כל הזכויות שמורות.">
             </div>
           </div>
         </div>
@@ -1481,7 +1480,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת הדף (title)</label></div>
-              <input type="text" data-key="seo.title" >
+              <input type="text" data-key="seo.title" value="WARGO — פלטפורמת הובלות חכמה | Smart Logistics Platform">
             </div>
             <div class="field">
               <div class="field-label"><label>תיאור (meta description)</label></div>
@@ -1489,11 +1488,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>מילות מפתח</label></div>
-              <input type="text" data-key="seo.keywords" >
+              <input type="text" data-key="seo.keywords" value="הובלות, לוגיסטיקה, backhaul, משאיות, ישראל, מטענים, מובילים">
             </div>
             <div class="field">
               <div class="field-label"><label>OG Title</label></div>
-              <input type="text" data-key="seo.ogTitle" >
+              <input type="text" data-key="seo.ogTitle" value="WARGO — פלטפורמת הובלות חכמה">
             </div>
             <div class="field">
               <div class="field-label"><label>OG Description</label></div>
@@ -1514,11 +1513,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="terms.title" >
+              <input type="text" data-key="terms.title" value="תנאי שימוש">
             </div>
             <div class="field">
               <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="terms.subtitle" >
+              <input type="text" data-key="terms.subtitle" value="עדכון אחרון: מרץ 2026">
             </div>
           </div>
           <div class="card">
@@ -1549,11 +1548,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="privacy.title" >
+              <input type="text" data-key="privacy.title" value="מדיניות פרטיות">
             </div>
             <div class="field">
               <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="privacy.subtitle" >
+              <input type="text" data-key="privacy.subtitle" value="עדכון אחרון: מרץ 2026">
             </div>
           </div>
           <div class="card">
@@ -1584,11 +1583,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="refund.title" >
+              <input type="text" data-key="refund.title" value="מדיניות ביטול עסקה">
             </div>
             <div class="field">
               <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="refund.subtitle" >
+              <input type="text" data-key="refund.subtitle" value="עדכון אחרון: מרץ 2026">
             </div>
           </div>
           <div class="card">
@@ -1670,10 +1669,24 @@
     <span id="toastText">השינויים נשמרו בהצלחה!</span>
   </div>
 
+  <!-- SUPABASE CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
   <script>
-    // ===== CREDENTIALS =====
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'Wargo2026!';
+    // ===== SUPABASE AUTH — NO HARDCODED CREDENTIALS =====
+    const SB_URL = 'https://yrtrwhiootynxkebkpme.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80';
+    const sb = supabase.createClient(SB_URL, SB_KEY);
+
+    const SESSION_KEY = 'wargo_cms_session';
+    const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 hours
+    let currentAdmin = null;
+
+    // SHA-256 hash — same algorithm as admin dashboard app
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
     // ===== DEFAULT DATA =====
     const DEFAULT_DATA = {
@@ -1729,13 +1742,11 @@
 
     // ===== INIT =====
     function init() {
-      const saved = null; // No localStorage in artifacts, using in-memory
       try {
         const raw = window.localStorage.getItem('wargo_admin_data');
         if (raw) siteData = JSON.parse(raw);
       } catch(e) {}
 
-      // Load repeater defaults if not in saved data
       if (!siteData.features) siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
       if (!siteData.steps) siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
       if (!siteData.vehicles) siteData.vehicles = JSON.parse(JSON.stringify(DEFAULT_DATA.vehicles));
@@ -1749,46 +1760,88 @@
       renderAllFaq();
       loadFieldValues();
 
-      // Check session (sessionStorage -> localStorage fallback)
+      // Restore saved session
+      restoreSession();
+    }
+
+    // ===== SECURE SESSION =====
+    async function restoreSession() {
       try {
-        const auth = (window.sessionStorage && window.sessionStorage.getItem('wargo_admin_auth')) ||
-                     (window.localStorage && window.localStorage.getItem('wargo_admin_auth'));
-        if (auth === 'true') showApp();
-      } catch(e) {}}
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return;
+        const session = JSON.parse(raw);
 
-    // ===== LOGIN =====
-    function handleLogin() {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value;
+        // Check expiry
+        if (!session.ts || Date.now() - session.ts > SESSION_TTL) {
+          localStorage.removeItem(SESSION_KEY);
+          return;
+        }
 
-      // User-friendly: allow username case-insensitive
-      const okUser = (user.toLowerCase() === ADMIN_USER.toLowerCase());
-      const okPass = (pass === ADMIN_PASS);
+        // Validate via server-side RPC — no direct table access
+        const { data, error } = await sb.rpc('verify_admin_session', { admin_id: session.id });
 
-      if (okUser && okPass) {
-        // Persist auth when possible (sessionStorage preferred, localStorage fallback)
-        try { window.sessionStorage && window.sessionStorage.setItem('wargo_admin_auth', 'true'); } catch(e) {}
-        try {
-          if (!(window.sessionStorage && window.sessionStorage.getItem('wargo_admin_auth') === 'true')) {
-            window.localStorage && window.localStorage.setItem('wargo_admin_auth', 'true');
-          }
-        } catch(e) {}
+        if (error || !data || !data.valid) {
+          localStorage.removeItem(SESSION_KEY);
+          return;
+        }
 
-        document.getElementById('loginError').textContent = '';
+        currentAdmin = data.admin;
         showApp();
-      } else {
-        document.getElementById('loginError').textContent = '❌ שם משתמש או סיסמה שגויים';
+      } catch(e) {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    // ===== LOGIN VIA SUPABASE RPC =====
+    async function handleLogin() {
+      const email = document.getElementById('loginUser').value.trim().toLowerCase();
+      const pass = document.getElementById('loginPass').value;
+      const errEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      if (!email || !pass) {
+        errEl.textContent = '❌ נא למלא אימייל וסיסמה';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '⏳ מתחבר...';
+      errEl.textContent = '';
+
+      try {
+        // Hash password client-side, send hash to server for comparison
+        // The actual password_hash in DB never reaches the client
+        const inputHash = await sha256(pass.trim());
+
+        const { data, error } = await sb.rpc('verify_admin_login', {
+          input_email: email,
+          input_password_hash: inputHash
+        });
+
+        if (error) throw new Error('שגיאה בהתחברות');
+        if (!data || !data.success) throw new Error(data?.error === 'invalid' ? 'אימייל או סיסמה שגויים' : 'שגיאה');
+
+        // Save session
+        currentAdmin = data.admin;
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ ...currentAdmin, ts: Date.now() }));
+        showApp();
+
+      } catch (e) {
+        errEl.textContent = '❌ ' + (e.message || 'שגיאה בהתחברות');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'כניסה למערכת';
       }
     }
 
     function handleLogout() {
-      try { window.sessionStorage && window.sessionStorage.removeItem('wargo_admin_auth'); } catch(e) {}
-      try { window.localStorage && window.localStorage.removeItem('wargo_admin_auth'); } catch(e) {}
+      currentAdmin = null;
+      try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
       document.getElementById('loginOverlay').classList.remove('hidden');
       document.getElementById('app').classList.remove('active');
       document.getElementById('loginUser').value = '';
       document.getElementById('loginPass').value = '';
-document.getElementById('loginError').textContent = '';
+      document.getElementById('loginError').textContent = '';
     }
 
     function showApp() {
@@ -1905,11 +1958,11 @@ document.getElementById('loginError').textContent = '';
           <div class="field-row">
             <div class="field">
               <div class="field-label"><label>אייקון</label></div>
-              <input type="text"  onchange="siteData.features[${i}].icon=this.value">
+              <input type="text" value="${f.icon}" onchange="siteData.features[${i}].icon=this.value">
             </div>
             <div class="field">
               <div class="field-label"><label>כותרת</label></div>
-              <input type="text"  onchange="siteData.features[${i}].title=this.value">
+              <input type="text" value="${f.title}" onchange="siteData.features[${i}].title=this.value">
             </div>
           </div>
           <div class="field">
@@ -1953,7 +2006,7 @@ document.getElementById('loginError').textContent = '';
           </div>
           <div class="field">
             <div class="field-label"><label>כותרת</label></div>
-            <input type="text"  onchange="siteData.steps[${i}].title=this.value">
+            <input type="text" value="${s.title}" onchange="siteData.steps[${i}].title=this.value">
           </div>
           <div class="field">
             <div class="field-label"><label>תיאור</label></div>
@@ -1995,11 +2048,11 @@ document.getElementById('loginError').textContent = '';
           <div class="field-row">
             <div class="field">
               <div class="field-label"><label>אייקון</label></div>
-              <input type="text"  onchange="siteData.vehicles[${i}].icon=this.value">
+              <input type="text" value="${v.icon}" onchange="siteData.vehicles[${i}].icon=this.value">
             </div>
             <div class="field">
               <div class="field-label"><label>שם</label></div>
-              <input type="text"  onchange="siteData.vehicles[${i}].name=this.value">
+              <input type="text" value="${v.name}" onchange="siteData.vehicles[${i}].name=this.value">
             </div>
           </div>
         </div>
@@ -2030,26 +2083,26 @@ document.getElementById('loginError').textContent = '';
           <div class="field-row">
             <div class="field">
               <div class="field-label"><label>מסלול</label></div>
-              <input type="text"  onchange="siteData.phoneCards[${i}].route=this.value">
+              <input type="text" value="${c.route}" onchange="siteData.phoneCards[${i}].route=this.value">
             </div>
             <div class="field">
               <div class="field-label"><label>מחיר</label></div>
-              <input type="text"  onchange="siteData.phoneCards[${i}].price=this.value">
+              <input type="text" value="${c.price}" onchange="siteData.phoneCards[${i}].price=this.value">
             </div>
           </div>
           <div class="field-row">
             <div class="field">
               <div class="field-label"><label>פרט 1</label></div>
-              <input type="text"  onchange="siteData.phoneCards[${i}].detail1=this.value">
+              <input type="text" value="${c.detail1}" onchange="siteData.phoneCards[${i}].detail1=this.value">
             </div>
             <div class="field">
               <div class="field-label"><label>פרט 2</label></div>
-              <input type="text"  onchange="siteData.phoneCards[${i}].detail2=this.value">
+              <input type="text" value="${c.detail2}" onchange="siteData.phoneCards[${i}].detail2=this.value">
             </div>
           </div>
           <div class="field">
             <div class="field-label"><label>תגית</label></div>
-            <input type="text"  onchange="siteData.phoneCards[${i}].tag=this.value">
+            <input type="text" value="${c.tag}" onchange="siteData.phoneCards[${i}].tag=this.value">
           </div>
         </div>
       `).join('');
@@ -2089,7 +2142,7 @@ document.getElementById('loginError').textContent = '';
           </div>
           <div class="field">
             <div class="field-label"><label>שאלה</label></div>
-            <input type="text" /g,'&quot;')}" onchange="siteData.faqItems[${globalIdx}].question=this.value">
+            <input type="text" value="${item.question.replace(/"/g,'&quot;')}" onchange="siteData.faqItems[${globalIdx}].question=this.value">
           </div>
           <div class="field">
             <div class="field-label"><label>תשובה</label></div>
