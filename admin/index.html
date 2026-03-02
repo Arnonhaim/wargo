@@ -1778,7 +1778,7 @@
         }
 
         // Validate via server-side RPC — no direct table access
-        const { data, error } = await sb.rpc('verify_admin_session', { admin_id: session.id });
+        const { data, error } = await sb.rpc('verify_web_admin_session', { admin_id: session.id });
 
         if (error || !data || !data.valid) {
           localStorage.removeItem(SESSION_KEY);
@@ -1813,7 +1813,7 @@
         // The actual password_hash in DB never reaches the client
         const inputHash = await sha256(pass.trim());
 
-        const { data, error } = await sb.rpc('verify_admin_login', {
+        const { data, error } = await sb.rpc('verify_web_admin_login', {
           input_email: email,
           input_password_hash: inputHash
         });
