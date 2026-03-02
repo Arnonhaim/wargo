@@ -184,6 +184,50 @@
       transition: 0.3s;
     }
 
+    .nav-lang-mobile {
+      display: none;
+    }
+
+    .nav-lang-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      padding: 8px 0;
+    }
+
+    .nav-lang-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 6px 14px;
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Heebo', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .nav-lang-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .nav-lang-btn.active {
+      background: var(--cyan-500);
+      border-color: var(--cyan-500);
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .nav-lang-mobile {
+        display: block;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        margin-top: 8px;
+        padding-top: 12px;
+      }
+    }
+
     /* ============ HERO ============ */
     .hero {
       min-height: 100vh;
@@ -1176,12 +1220,49 @@
     @media (max-width: 768px) {
       nav {
         padding: 12px 20px;
+        flex-wrap: wrap;
       }
       .nav-links {
         display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        order: 3;
+        padding: 12px 0 4px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        margin-top: 12px;
+      }
+      .nav-links.show {
+        display: flex;
+      }
+      .nav-links li {
+        width: 100%;
+      }
+      .nav-links a {
+        display: block;
+        padding: 12px 8px;
+        border-radius: 10px;
+        font-size: 15px;
+        text-align: center;
+      }
+      .nav-links a:hover {
+        background: rgba(255,255,255,0.05);
+      }
+      .nav-links .nav-cta {
+        margin-top: 8px;
+        text-align: center;
       }
       .nav-mobile-toggle {
         display: block;
+      }
+      .nav-mobile-toggle.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+      .nav-mobile-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .nav-mobile-toggle.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
       }
       .hero {
         padding: 100px 20px 60px;
@@ -1249,13 +1330,21 @@
       </div>
       <span class="nav-logo-text">WARGO</span>
     </a>
-    <ul class="nav-links">
-      <li><a href="#features">יתרונות</a></li>
-      <li><a href="#how-it-works">איך זה עובד</a></li>
-      <li><a href="#for-you">למי מתאים</a></li>
-      <li><a href="#download" class="nav-cta">הורד את האפליקציה</a></li>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features" data-he="יתרונות" data-en="Benefits" data-ru="Преимущества" data-ar="المزايا">יתרונות</a></li>
+      <li><a href="#how-it-works" data-he="איך זה עובד" data-en="How It Works" data-ru="Как это работает" data-ar="كيف يعمل">איך זה עובד</a></li>
+      <li><a href="#for-you" data-he="למי מתאים" data-en="Who It's For" data-ru="Для кого" data-ar="لمن هذا">למי מתאים</a></li>
+      <li><a href="#download" class="nav-cta" data-he="הורד את האפליקציה" data-en="Download the App" data-ru="Скачать" data-ar="حمّل التطبيق">הורד את האפליקציה</a></li>
+      <li class="nav-lang-mobile">
+        <div class="nav-lang-row">
+          <button class="nav-lang-btn active" data-lang="he">עברית</button>
+          <button class="nav-lang-btn" data-lang="en">English</button>
+          <button class="nav-lang-btn" data-lang="ru">Русский</button>
+          <button class="nav-lang-btn" data-lang="ar">العربية</button>
+        </div>
+      </li>
     </ul>
-    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -1603,10 +1692,10 @@
       <div class="footer-bottom">
         <span>© 2026 WARGO. כל הזכויות שמורות.</span>
         <div class="footer-langs">
-          <a href="#">עברית</a>
-          <a href="#">English</a>
-          <a href="#">Русский</a>
-          <a href="#">العربية</a>
+          <a href="#" onclick="switchLang('he');return false;" class="lang-switch active" data-lang="he">עברית</a>
+          <a href="#" onclick="switchLang('en');return false;" class="lang-switch" data-lang="en">English</a>
+          <a href="#" onclick="switchLang('ru');return false;" class="lang-switch" data-lang="ru">Русский</a>
+          <a href="#" onclick="switchLang('ar');return false;" class="lang-switch" data-lang="ar">العربية</a>
         </div>
       </div>
     </div>
@@ -1614,6 +1703,344 @@
 
   <!-- ======== SCRIPTS ======== -->
   <script>
+    // ===== TRANSLATIONS =====
+    const TRANSLATIONS = {
+      he: {
+        dir: 'rtl',
+        heroTag: 'פלטפורמה פעילה בכל הארץ',
+        heroTitle1: 'הובלות חזור',
+        heroTitle2: 'בלחיצת כפתור',
+        heroDesc: 'WARGO מחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. חסוך עד 40% מעלויות ההובלה באמצעות ניצול מטענים חוזרים — מהר, פשוט ובטוח.',
+        heroCta1: 'הורד עכשיו — בחינם',
+        heroCta2: 'איך זה עובד?',
+        stat1: 'חיסכון ממוצע בהובלה', stat2: 'זמינות מלאה', stat3: 'כל רחבי ישראל',
+        servicesLabel: 'סוגי שירותים נתמכים',
+        services: ['🚛 הובלת חזור', '🏗️ שירות מנוף', '⬇️ לובי נמוך', '🛢️ הובלת מכליות', '📦 רמפה אחורית', '📅 הובלה מתוזמנת'],
+        featTag: 'למה WARGO?', featTitle: 'הכל באפליקציה אחת',
+        featSubtitle: 'מהרגע שמפרסמים בקשת הובלה ועד לתשלום — הכל קורה בתוך WARGO, בצורה חכמה ומאובטחת.',
+        features: [
+          { icon: '🔍', title: 'מציאת הובלות בקלות', desc: 'פרסם בקשת הובלה וקבל הצעות מחיר ממובילים מאומתים תוך דקות. סינון לפי אזור, סוג רכב וסוג שירות.' },
+          { icon: '✅', title: 'מובילים מאומתים', desc: 'כל המובילים עוברים תהליך אימות מלא — תעודת התאגדות, רישיונות, ביטוח ועוד. בטיחות מעל הכל.' },
+          { icon: '💰', title: 'ארנק דיגיטלי', desc: 'ניהול תשלומים מלא באפליקציה — מעקב הכנסות, הוצאות ותשלומים מאובטחים בכל עסקה.' },
+          { icon: '💬', title: 'צ׳אט בזמן אמת', desc: 'תקשורת ישירה בין שולח למוביל — תיאום פרטים, עדכוני סטטוס ושליחת מסמכים ישירות באפליקציה.' },
+          { icon: '🗺️', title: 'מפת מסלולים', desc: 'צפייה במסלול ההובלה על המפה עם חישוב מרחק אוטומטי. ניווט ישיר לנקודת האיסוף והפריקה.' },
+          { icon: '🌐', title: 'רב-שפתי', desc: 'ממשק בעברית, אנגלית, רוסית וערבית — כדי שכל מוביל ושולח בישראל ירגיש בבית.' },
+        ],
+        stepsTag: 'תהליך פשוט', stepsTitle: 'איך זה עובד?', stepsSubtitle: 'שלושה שלבים פשוטים להובלה הבאה שלך',
+        steps: [
+          { title: 'פרסם בקשת הובלה', desc: 'הזן את פרטי המטען — נקודת מוצא, יעד, סוג רכב נדרש, תאריך ותיאור. תוך שניות הבקשה שלך חיה במערכת.' },
+          { title: 'קבל הצעות ובחר מוביל', desc: 'מובילים מאומתים רואים את הבקשה ושולחים הצעות מחיר. השווה דירוגים, מחירים וביקורות — ובחר את ההצעה הטובה ביותר.' },
+          { title: 'ההובלה בדרך!', desc: 'עקוב אחרי סטטוס ההובלה, תקשר עם המוביל בצ׳אט, ושלם בצורה מאובטחת דרך הארנק הדיגיטלי כשההובלה הושלמה.' },
+        ],
+        audTag: 'למי זה?', audTitle: 'בין אם אתה שולח או מוביל', audSubtitle: 'WARGO נבנתה בשביל שני הצדדים של שרשרת ההובלה',
+        shipEmoji: '📦', shipTitle: 'אני שולח מטענים', shipDesc: 'צריך לשלוח סחורה? פרסם בקשה ותן למובילים להתחרות על המחיר הטוב ביותר עבורך.',
+        shipFeatures: ['הצעות מחיר תחרותיות תוך דקות','מובילים מאומתים עם דירוגים','מעקב הזמנות בזמן אמת','תשלום מאובטח באפליקציה','תמיכה בלקוח פרטי וחברה'],
+        shipCta: 'התחל לשלוח →',
+        carEmoji: '🚛', carTitle: 'אני מוביל / חברת הובלות', carDesc: 'יש לך משאית חוזרת ריקה? מלא אותה במטענים והגדל את ההכנסות שלך.',
+        carFeatures: ['מטענים חוזרים למילוי נסיעות חזור','ניהול ציי רכבים ונהגים','ארנק דיגיטלי עם מעקב הכנסות','פרופיל עסקי מקצועי ומדורג','תמיכה בכל סוגי הרכבים'],
+        carCta: 'התחל להוביל →',
+        vehTag: 'כלי רכב', vehTitle: 'תמיכה בכל סוגי ההובלה',
+        vehicles: [{ icon:'🚛', name:'משאית סטנדרטית' },{ icon:'🏗️', name:'מנוף' },{ icon:'⬇️', name:'לובי נמוך' },{ icon:'🛢️', name:'מכלית' },{ icon:'📦', name:'רמפה אחורית' }],
+        dlTag: 'הורד עכשיו', dlTitle: 'מוכן להתחיל?', dlDesc: 'הורד את WARGO בחינם והתחל לחסוך בהובלות כבר היום. זמין ב-iOS ו-Android.',
+        dlIosLabel: 'הורד מ-', dlIosName: 'App Store', dlAndLabel: 'הורד מ-', dlAndName: 'Google Play',
+        footerDesc: 'פלטפורמת ההובלות החכמה של ישראל. מחברים בין שולחי מטענים למובילים מאומתים — בכל מקום בארץ.',
+        footProduct: 'מוצר', footLegal: 'משפטי', footSupport: 'תמיכה',
+        footTerms: 'תנאי שימוש', footPrivacy: 'מדיניות פרטיות', footRefund: 'ביטול עסקה',
+        footHelp: 'מרכז עזרה', footFaq: 'שאלות נפוצות',
+        copyright: '© 2026 WARGO. כל הזכויות שמורות.',
+        phoneSub: 'הובלות זמינות עכשיו',
+        phoneNav: ['ראשי','הזמנות','הודעות','ארנק','פרופיל'],
+      },
+      en: {
+        dir: 'ltr',
+        heroTag: 'Active platform across Israel',
+        heroTitle1: 'Backhaul Delivery',
+        heroTitle2: 'At a Click',
+        heroDesc: 'WARGO connects shippers with verified carriers across Israel. Save up to 40% on transport costs with backhaul loads — fast, simple & secure.',
+        heroCta1: 'Download Now — Free',
+        heroCta2: 'How It Works?',
+        stat1: 'Average transport savings', stat2: 'Full availability', stat3: 'All across Israel',
+        servicesLabel: 'Supported service types',
+        services: ['🚛 Backhaul', '🏗️ Crane Service', '⬇️ Low-bed', '🛢️ Tanker Transport', '📦 Rear Ramp', '📅 Scheduled'],
+        featTag: 'Why WARGO?', featTitle: 'All in One App',
+        featSubtitle: 'From posting a transport request to payment — everything happens inside WARGO, smart and secure.',
+        features: [
+          { icon: '🔍', title: 'Find Transport Easily', desc: 'Post a request and get quotes from verified carriers within minutes. Filter by region, vehicle type and service.' },
+          { icon: '✅', title: 'Verified Carriers', desc: 'All carriers undergo full verification — business registration, licenses, insurance and more. Safety first.' },
+          { icon: '💰', title: 'Digital Wallet', desc: 'Full payment management in the app — track income, expenses and secure payments for every transaction.' },
+          { icon: '💬', title: 'Real-time Chat', desc: 'Direct communication between shipper and carrier — coordinate details, status updates and share documents.' },
+          { icon: '🗺️', title: 'Route Map', desc: 'View the transport route on a map with automatic distance calculation. Navigate directly to pickup and delivery.' },
+          { icon: '🌐', title: 'Multilingual', desc: 'Interface in Hebrew, English, Russian and Arabic — so every carrier and shipper in Israel feels at home.' },
+        ],
+        stepsTag: 'Simple Process', stepsTitle: 'How It Works?', stepsSubtitle: 'Three simple steps to your next delivery',
+        steps: [
+          { title: 'Post a Transport Request', desc: 'Enter your cargo details — origin, destination, vehicle type, date and description. Your request goes live in seconds.' },
+          { title: 'Get Offers & Choose a Carrier', desc: 'Verified carriers see your request and submit quotes. Compare ratings, prices and reviews — choose the best offer.' },
+          { title: 'Delivery on the Way!', desc: 'Track delivery status, chat with the carrier, and pay securely through the digital wallet when completed.' },
+        ],
+        audTag: 'Who Is It For?', audTitle: 'Whether You Ship or Carry', audSubtitle: 'WARGO is built for both sides of the transport chain',
+        shipEmoji: '📦', shipTitle: 'I Ship Cargo', shipDesc: 'Need to send goods? Post a request and let carriers compete for the best price.',
+        shipFeatures: ['Competitive quotes within minutes','Verified carriers with ratings','Real-time order tracking','Secure in-app payment','Support for private & business'],
+        shipCta: 'Start Shipping →',
+        carEmoji: '🚛', carTitle: 'I\'m a Carrier', carDesc: 'Got an empty truck going back? Fill it with cargo and boost your revenue.',
+        carFeatures: ['Backhaul loads to fill return trips','Fleet & driver management','Digital wallet with income tracking','Professional rated business profile','Support for all vehicle types'],
+        carCta: 'Start Carrying →',
+        vehTag: 'Vehicles', vehTitle: 'Support for All Transport Types',
+        vehicles: [{ icon:'🚛', name:'Standard Truck' },{ icon:'🏗️', name:'Crane' },{ icon:'⬇️', name:'Low-bed' },{ icon:'🛢️', name:'Tanker' },{ icon:'📦', name:'Rear Ramp' }],
+        dlTag: 'Download Now', dlTitle: 'Ready to Start?', dlDesc: 'Download WARGO for free and start saving on transport today. Available on iOS & Android.',
+        dlIosLabel: 'Download on', dlIosName: 'App Store', dlAndLabel: 'Get it on', dlAndName: 'Google Play',
+        footerDesc: 'Israel\'s smart logistics platform. Connecting shippers with verified carriers — everywhere in the country.',
+        footProduct: 'Product', footLegal: 'Legal', footSupport: 'Support',
+        footTerms: 'Terms of Service', footPrivacy: 'Privacy Policy', footRefund: 'Cancellation Policy',
+        footHelp: 'Help Center', footFaq: 'FAQ',
+        copyright: '© 2026 WARGO. All rights reserved.',
+        phoneSub: 'Available transports now',
+        phoneNav: ['Home','Orders','Messages','Wallet','Profile'],
+      },
+      ru: {
+        dir: 'ltr',
+        heroTag: 'Платформа работает по всему Израилю',
+        heroTitle1: 'Обратные грузы',
+        heroTitle2: 'В одно касание',
+        heroDesc: 'WARGO связывает грузоотправителей с проверенными перевозчиками по всему Израилю. Экономьте до 40% на доставке с обратными грузами — быстро, просто и безопасно.',
+        heroCta1: 'Скачать бесплатно',
+        heroCta2: 'Как это работает?',
+        stat1: 'Средняя экономия', stat2: 'Полная доступность', stat3: 'По всему Израилю',
+        servicesLabel: 'Поддерживаемые типы услуг',
+        services: ['🚛 Обратный груз', '🏗️ Кран', '⬇️ Низкорамник', '🛢️ Цистерна', '📦 Задняя рампа', '📅 По расписанию'],
+        featTag: 'Почему WARGO?', featTitle: 'Всё в одном приложении',
+        featSubtitle: 'От размещения заявки до оплаты — всё происходит внутри WARGO, умно и безопасно.',
+        features: [
+          { icon: '🔍', title: 'Легко найти перевозку', desc: 'Разместите заявку и получите предложения от проверенных перевозчиков за минуты.' },
+          { icon: '✅', title: 'Проверенные перевозчики', desc: 'Все перевозчики проходят полную верификацию — регистрация, лицензии, страховка.' },
+          { icon: '💰', title: 'Цифровой кошелёк', desc: 'Полное управление платежами в приложении — отслеживание доходов и расходов.' },
+          { icon: '💬', title: 'Чат в реальном времени', desc: 'Прямое общение между отправителем и перевозчиком — координация, статусы, документы.' },
+          { icon: '🗺️', title: 'Карта маршрутов', desc: 'Просмотр маршрута на карте с автоматическим расчётом расстояния.' },
+          { icon: '🌐', title: 'Многоязычность', desc: 'Интерфейс на иврите, английском, русском и арабском.' },
+        ],
+        stepsTag: 'Простой процесс', stepsTitle: 'Как это работает?', stepsSubtitle: 'Три простых шага до вашей следующей доставки',
+        steps: [
+          { title: 'Разместите заявку', desc: 'Введите данные груза — откуда, куда, тип транспорта, дата и описание. Заявка публикуется за секунды.' },
+          { title: 'Получите предложения', desc: 'Проверенные перевозчики видят вашу заявку и отправляют предложения. Сравните рейтинги и цены.' },
+          { title: 'Груз в пути!', desc: 'Отслеживайте статус, общайтесь с перевозчиком в чате и оплатите безопасно через кошелёк.' },
+        ],
+        audTag: 'Для кого?', audTitle: 'Отправляете или перевозите', audSubtitle: 'WARGO создана для обеих сторон логистической цепочки',
+        shipEmoji: '📦', shipTitle: 'Я отправляю грузы', shipDesc: 'Нужно отправить товар? Разместите заявку и получите лучшую цену.',
+        shipFeatures: ['Конкурентные цены за минуты','Проверенные перевозчики с рейтингами','Отслеживание в реальном времени','Безопасная оплата','Для частных лиц и бизнеса'],
+        shipCta: 'Начать отправку →',
+        carEmoji: '🚛', carTitle: 'Я перевозчик', carDesc: 'Есть пустой обратный рейс? Загрузите его и увеличьте доход.',
+        carFeatures: ['Обратные грузы для заполнения рейсов','Управление автопарком','Цифровой кошелёк','Профессиональный профиль','Все типы транспорта'],
+        carCta: 'Начать перевозки →',
+        vehTag: 'Транспорт', vehTitle: 'Все типы перевозок',
+        vehicles: [{ icon:'🚛', name:'Стандартный грузовик' },{ icon:'🏗️', name:'Кран' },{ icon:'⬇️', name:'Низкорамник' },{ icon:'🛢️', name:'Цистерна' },{ icon:'📦', name:'Задняя рампа' }],
+        dlTag: 'Скачать', dlTitle: 'Готовы начать?', dlDesc: 'Скачайте WARGO бесплатно и начните экономить на доставке сегодня.',
+        dlIosLabel: 'Скачать в', dlIosName: 'App Store', dlAndLabel: 'Скачать в', dlAndName: 'Google Play',
+        footerDesc: 'Умная логистическая платформа Израиля. Связываем отправителей с проверенными перевозчиками.',
+        footProduct: 'Продукт', footLegal: 'Правовая информация', footSupport: 'Поддержка',
+        footTerms: 'Условия использования', footPrivacy: 'Политика конфиденциальности', footRefund: 'Политика отмены',
+        footHelp: 'Центр помощи', footFaq: 'Частые вопросы',
+        copyright: '© 2026 WARGO. Все права защищены.',
+        phoneSub: 'Доступные перевозки',
+        phoneNav: ['Главная','Заказы','Сообщения','Кошелёк','Профиль'],
+      },
+      ar: {
+        dir: 'rtl',
+        heroTag: 'منصة نشطة في جميع أنحاء البلاد',
+        heroTitle1: 'شحنات العودة',
+        heroTitle2: 'بنقرة زر',
+        heroDesc: 'WARGO تربط بين مرسلي الشحنات والناقلين المعتمدين في جميع أنحاء إسرائيل. وفّر حتى 40% من تكاليف النقل باستخدام شحنات العودة — سريع وبسيط وآمن.',
+        heroCta1: 'حمّل الآن — مجاناً',
+        heroCta2: 'كيف يعمل؟',
+        stat1: 'متوسط التوفير في النقل', stat2: 'توفر كامل', stat3: 'في جميع أنحاء إسرائيل',
+        servicesLabel: 'أنواع الخدمات المدعومة',
+        services: ['🚛 شحنة عودة', '🏗️ خدمة رافعة', '⬇️ منخفض', '🛢️ نقل صهاريج', '📦 رامبة خلفية', '📅 نقل مجدول'],
+        featTag: 'لماذا WARGO؟', featTitle: 'كل شيء في تطبيق واحد',
+        featSubtitle: 'من نشر طلب النقل حتى الدفع — كل شيء يحدث داخل WARGO بطريقة ذكية وآمنة.',
+        features: [
+          { icon: '🔍', title: 'إيجاد شحنات بسهولة', desc: 'انشر طلب نقل واحصل على عروض أسعار من ناقلين معتمدين خلال دقائق.' },
+          { icon: '✅', title: 'ناقلون معتمدون', desc: 'جميع الناقلين يمرون بعملية تحقق كاملة — تسجيل، رخص، تأمين.' },
+          { icon: '💰', title: 'محفظة رقمية', desc: 'إدارة كاملة للمدفوعات في التطبيق — تتبع الدخل والمصروفات.' },
+          { icon: '💬', title: 'محادثة فورية', desc: 'تواصل مباشر بين المرسل والناقل — تنسيق التفاصيل وتحديثات الحالة.' },
+          { icon: '🗺️', title: 'خريطة المسارات', desc: 'عرض مسار النقل على الخريطة مع حساب المسافة تلقائياً.' },
+          { icon: '🌐', title: 'متعدد اللغات', desc: 'واجهة بالعبرية والإنجليزية والروسية والعربية.' },
+        ],
+        stepsTag: 'عملية بسيطة', stepsTitle: 'كيف يعمل؟', stepsSubtitle: 'ثلاث خطوات بسيطة لشحنتك القادمة',
+        steps: [
+          { title: 'انشر طلب نقل', desc: 'أدخل تفاصيل الشحنة — نقطة الانطلاق، الوجهة، نوع المركبة، التاريخ والوصف.' },
+          { title: 'احصل على عروض واختر ناقل', desc: 'الناقلون المعتمدون يرون طلبك ويرسلون عروض أسعار. قارن التقييمات والأسعار.' },
+          { title: 'الشحنة في الطريق!', desc: 'تابع حالة الشحنة، تواصل مع الناقل في المحادثة، وادفع بأمان عبر المحفظة الرقمية.' },
+        ],
+        audTag: 'لمن هذا؟', audTitle: 'سواء كنت مرسلاً أو ناقلاً', audSubtitle: 'WARGO مصممة لطرفي سلسلة النقل',
+        shipEmoji: '📦', shipTitle: 'أنا أشحن بضائع', shipDesc: 'تحتاج إرسال بضاعة؟ انشر طلباً ودع الناقلين يتنافسون على أفضل سعر.',
+        shipFeatures: ['عروض أسعار تنافسية خلال دقائق','ناقلون معتمدون مع تقييمات','تتبع الطلبات بالوقت الفعلي','دفع آمن في التطبيق','دعم للأفراد والشركات'],
+        shipCta: 'ابدأ الشحن ←',
+        carEmoji: '🚛', carTitle: 'أنا ناقل / شركة نقل', carDesc: 'لديك شاحنة فارغة في طريق العودة؟ املأها بالشحنات وزد دخلك.',
+        carFeatures: ['شحنات عودة لملء الرحلات','إدارة الأسطول والسائقين','محفظة رقمية مع تتبع الدخل','ملف تجاري مهني','دعم لجميع أنواع المركبات'],
+        carCta: 'ابدأ النقل ←',
+        vehTag: 'مركبات', vehTitle: 'دعم لجميع أنواع النقل',
+        vehicles: [{ icon:'🚛', name:'شاحنة عادية' },{ icon:'🏗️', name:'رافعة' },{ icon:'⬇️', name:'منخفض' },{ icon:'🛢️', name:'صهريج' },{ icon:'📦', name:'رامبة خلفية' }],
+        dlTag: 'حمّل الآن', dlTitle: 'مستعد للبدء؟', dlDesc: 'حمّل WARGO مجاناً وابدأ بتوفير تكاليف النقل اليوم. متوفر على iOS و Android.',
+        dlIosLabel: 'حمّل من', dlIosName: 'App Store', dlAndLabel: 'حمّل من', dlAndName: 'Google Play',
+        footerDesc: 'منصة النقل الذكية في إسرائيل. نربط بين المرسلين والناقلين المعتمدين — في كل مكان.',
+        footProduct: 'المنتج', footLegal: 'قانوني', footSupport: 'الدعم',
+        footTerms: 'شروط الاستخدام', footPrivacy: 'سياسة الخصوصية', footRefund: 'سياسة الإلغاء',
+        footHelp: 'مركز المساعدة', footFaq: 'أسئلة شائعة',
+        copyright: '© 2026 WARGO. جميع الحقوق محفوظة.',
+        phoneSub: 'شحنات متاحة الآن',
+        phoneNav: ['الرئيسية','الطلبات','الرسائل','المحفظة','الملف'],
+      }
+    };
+
+    let currentLang = 'he';
+
+    // ===== SWITCH LANGUAGE =====
+    function switchLang(lang) {
+      currentLang = lang;
+      const t = TRANSLATIONS[lang];
+      if (!t) return;
+
+      // Direction
+      document.documentElement.dir = t.dir;
+      document.documentElement.lang = lang;
+
+      // Nav links
+      document.querySelectorAll('#navLinks a[data-' + lang + ']').forEach(a => {
+        a.textContent = a.getAttribute('data-' + lang);
+      });
+
+      // Active lang buttons
+      document.querySelectorAll('.nav-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.querySelectorAll('.lang-switch').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+
+      // Hero
+      const heroTag = document.querySelector('.hero-tag');
+      if (heroTag) heroTag.innerHTML = '<div class="hero-tag-dot"></div>' + t.heroTag;
+      const h1 = document.querySelector('.hero h1');
+      if (h1) h1.innerHTML = t.heroTitle1 + '<br><span class="gradient-text">' + t.heroTitle2 + '</span>';
+      const heroDesc = document.querySelector('.hero-desc');
+      if (heroDesc) heroDesc.textContent = t.heroDesc;
+
+      // Hero buttons
+      const heroBtns = document.querySelectorAll('.hero-buttons a');
+      if (heroBtns[0]) { const svg = heroBtns[0].querySelector('svg'); heroBtns[0].textContent = ''; if(svg) heroBtns[0].prepend(svg); heroBtns[0].append(' ' + t.heroCta1); }
+      if (heroBtns[1]) { const svg = heroBtns[1].querySelector('svg'); heroBtns[1].textContent = ''; if(svg) heroBtns[1].prepend(svg); heroBtns[1].append(' ' + t.heroCta2); }
+
+      // Stats
+      const stats = document.querySelectorAll('.hero-stats > div');
+      if (stats[0]) stats[0].querySelector('.hero-stat-label').textContent = t.stat1;
+      if (stats[1]) stats[1].querySelector('.hero-stat-label').textContent = t.stat2;
+      if (stats[2]) stats[2].querySelector('.hero-stat-label').textContent = t.stat3;
+
+      // Services bar
+      const servLabel = document.querySelector('.logos-bar-label');
+      if (servLabel) servLabel.textContent = t.servicesLabel;
+      const servRow = document.querySelector('.logos-row');
+      if (servRow) servRow.innerHTML = t.services.map(s => '<div class="logo-item">' + s + '</div>').join('');
+
+      // Features
+      document.querySelector('.features .section-tag').textContent = t.featTag;
+      document.querySelector('.features .section-title').textContent = t.featTitle;
+      document.querySelector('.features .section-subtitle').textContent = t.featSubtitle;
+      const colorClasses = ['cyan','green','orange','purple','yellow','pink'];
+      document.querySelector('.features-grid').innerHTML = t.features.map((f,i) =>
+        '<div class="feature-card reveal visible"><div class="feature-icon '+colorClasses[i%6]+'">'+f.icon+'</div><h3 class="feature-title">'+f.title+'</h3><p class="feature-desc">'+f.desc+'</p></div>'
+      ).join('');
+
+      // Steps
+      document.querySelector('.how-it-works .section-tag').textContent = t.stepsTag;
+      document.querySelector('.how-it-works .section-title').textContent = t.stepsTitle;
+      document.querySelector('.how-it-works .section-subtitle').textContent = t.stepsSubtitle;
+      document.querySelector('.steps-container').innerHTML = '<div class="steps-line"></div>' + t.steps.map((s,i) =>
+        '<div class="step reveal visible"><div class="step-number">'+String(i+1).padStart(2,'0')+'</div><div class="step-content"><h3 class="step-title">'+s.title+'</h3><p class="step-desc">'+s.desc+'</p></div></div>'
+      ).join('');
+
+      // Audience
+      document.querySelector('.dual-cta .section-tag').textContent = t.audTag;
+      document.querySelector('.dual-cta .section-title').textContent = t.audTitle;
+      document.querySelector('.dual-cta .section-subtitle').textContent = t.audSubtitle;
+      document.querySelector('.cta-card.shipper .cta-card-emoji').textContent = t.shipEmoji;
+      document.querySelector('.cta-card.shipper .cta-card-title').textContent = t.shipTitle;
+      document.querySelector('.cta-card.shipper .cta-card-desc').textContent = t.shipDesc;
+      document.querySelector('.cta-card.shipper .cta-card-features').innerHTML = t.shipFeatures.map(f=>'<li>'+f+'</li>').join('');
+      document.querySelector('.cta-card.shipper .btn-primary').textContent = t.shipCta;
+      document.querySelector('.cta-card.carrier .cta-card-emoji').textContent = t.carEmoji;
+      document.querySelector('.cta-card.carrier .cta-card-title').textContent = t.carTitle;
+      document.querySelector('.cta-card.carrier .cta-card-desc').textContent = t.carDesc;
+      document.querySelector('.cta-card.carrier .cta-card-features').innerHTML = t.carFeatures.map(f=>'<li>'+f+'</li>').join('');
+      document.querySelector('.cta-card.carrier .btn-primary').textContent = t.carCta;
+
+      // Vehicles
+      document.querySelector('.vehicles .section-tag').textContent = t.vehTag;
+      document.querySelector('.vehicles .section-title').textContent = t.vehTitle;
+      document.querySelector('.vehicles-grid').innerHTML = t.vehicles.map(v =>
+        '<div class="vehicle-chip"><div class="vehicle-chip-icon">'+v.icon+'</div><div class="vehicle-chip-name">'+v.name+'</div></div>'
+      ).join('');
+
+      // Download
+      document.querySelector('.download-section .section-tag').textContent = t.dlTag;
+      document.querySelector('.download-section .section-title').textContent = t.dlTitle;
+      document.querySelector('.download-desc').textContent = t.dlDesc;
+      const iosBtn = document.getElementById('ios-download');
+      if (iosBtn) { iosBtn.querySelector('.store-btn-label').textContent = t.dlIosLabel; iosBtn.querySelector('.store-btn-name').textContent = t.dlIosName; }
+      const andBtn = document.getElementById('android-download');
+      if (andBtn) { andBtn.querySelector('.store-btn-label').textContent = t.dlAndLabel; andBtn.querySelector('.store-btn-name').textContent = t.dlAndName; }
+
+      // Phone mockup
+      document.querySelector('.phone-subtitle').textContent = t.phoneSub;
+      document.querySelectorAll('.phone-nav-item').forEach((el,i) => {
+        const spans = el.childNodes;
+        if (t.phoneNav[i]) { el.lastChild.textContent = t.phoneNav[i]; }
+      });
+
+      // Footer
+      document.querySelector('.footer-brand-desc').textContent = t.footerDesc;
+      const footCols = document.querySelectorAll('.footer-col');
+      if (footCols[0]) { footCols[0].querySelector('h4').textContent = t.footProduct; }
+      if (footCols[1]) {
+        footCols[1].querySelector('h4').textContent = t.footLegal;
+        const links = footCols[1].querySelectorAll('a');
+        if(links[0]) links[0].textContent = t.footTerms;
+        if(links[1]) links[1].textContent = t.footPrivacy;
+        if(links[2]) links[2].textContent = t.footRefund;
+      }
+      if (footCols[2]) {
+        footCols[2].querySelector('h4').textContent = t.footSupport;
+        const links = footCols[2].querySelectorAll('a');
+        if(links[1]) links[1].textContent = t.footHelp;
+        if(links[2]) links[2].textContent = t.footFaq;
+      }
+      document.querySelector('.footer-bottom > span').textContent = t.copyright;
+
+      // Float badges
+      const fb = document.querySelectorAll('.float-badge-text');
+      if (lang === 'he') { if(fb[0]) fb[0].textContent = 'תשלומים מאובטחים'; if(fb[1]) fb[1].textContent = 'מובילים מאומתים'; }
+      else if (lang === 'en') { if(fb[0]) fb[0].textContent = 'Secure Payments'; if(fb[1]) fb[1].textContent = 'Verified Carriers'; }
+      else if (lang === 'ru') { if(fb[0]) fb[0].textContent = 'Безопасные платежи'; if(fb[1]) fb[1].textContent = 'Проверенные перевозчики'; }
+      else if (lang === 'ar') { if(fb[0]) fb[0].textContent = 'مدفوعات آمنة'; if(fb[1]) fb[1].textContent = 'ناقلون معتمدون'; }
+    }
+
+    // ===== NAV LANG BUTTONS =====
+    document.querySelectorAll('.nav-lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchLang(btn.dataset.lang));
+    });
+
+    // ===== HAMBURGER MENU =====
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+      mobileToggle.classList.toggle('open');
+    });
+
+    // Close mobile menu on link click
+    navLinks.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('show');
+        mobileToggle.classList.remove('open');
+      });
+    });
+
     // ===== DYNAMIC CONTENT FROM ADMIN =====
     (function loadAdminData() {
       let data = {};
@@ -1624,180 +2051,57 @@
 
       if (!data || Object.keys(data).length === 0) return;
 
-      // Helper: set text
       const setText = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.textContent = val; };
-      const setHtml = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.innerHTML = val; };
       const setHref = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.href = val; };
 
-      // Hero
-      if (data['hero.tag']) setText('.hero-tag', ''); // clear then rebuild
-      if (data['hero.tag']) { const tag = document.querySelector('.hero-tag'); if(tag) { tag.innerHTML = '<div class="hero-tag-dot"></div>' + data['hero.tag']; } }
+      if (data['hero.tag']) { const tag = document.querySelector('.hero-tag'); if(tag) tag.innerHTML = '<div class="hero-tag-dot"></div>' + data['hero.tag']; }
       if (data['hero.title1'] || data['hero.title2']) {
         const h1 = document.querySelector('.hero h1');
         if (h1) h1.innerHTML = (data['hero.title1'] || 'הובלות חזור') + '<br><span class="gradient-text">' + (data['hero.title2'] || 'בלחיצת כפתור') + '</span>';
       }
       if (data['hero.description']) setText('.hero-desc', data['hero.description']);
-      if (data['hero.cta1']) setText('.btn-primary', data['hero.cta1']);
-      if (data['hero.cta2']) { const b = document.querySelectorAll('.hero-buttons .btn-secondary'); if(b[0]) b[0].lastChild.textContent = ' ' + data['hero.cta2']; }
-
-      // Stats
-      const stats = document.querySelectorAll('.hero-stats > div');
-      if (stats[0] && data['hero.stat1_value']) { stats[0].querySelector('.hero-stat-value').textContent = data['hero.stat1_value']; }
-      if (stats[0] && data['hero.stat1_label']) { stats[0].querySelector('.hero-stat-label').textContent = data['hero.stat1_label']; }
-      if (stats[1] && data['hero.stat2_value']) { stats[1].querySelector('.hero-stat-value').textContent = data['hero.stat2_value']; }
-      if (stats[1] && data['hero.stat2_label']) { stats[1].querySelector('.hero-stat-label').textContent = data['hero.stat2_label']; }
-      if (stats[2] && data['hero.stat3_value']) { stats[2].querySelector('.hero-stat-value').textContent = data['hero.stat3_value']; }
-      if (stats[2] && data['hero.stat3_label']) { stats[2].querySelector('.hero-stat-label').textContent = data['hero.stat3_label']; }
-
-      // Phone cards
-      if (data.phoneCards && data.phoneCards.length) {
-        const container = document.querySelector('.phone-cards');
-        if (container) {
-          container.innerHTML = data.phoneCards.map(c => `
-            <div class="phone-card">
-              <div class="phone-card-row">
-                <span class="phone-card-route">${c.route}</span>
-                <span class="phone-card-price">${c.price}</span>
-              </div>
-              <div class="phone-card-details">
-                <span>${c.detail1}</span>
-                <span>${c.detail2}</span>
-              </div>
-              <span class="phone-card-tag">${c.tag}</span>
-            </div>
-          `).join('');
-        }
-      }
-
-      // Features section
-      if (data['features.tag']) setText('.features .section-tag', data['features.tag']);
-      if (data['features.title']) setText('.features .section-title', data['features.title']);
-      if (data['features.subtitle']) setText('.features .section-subtitle', data['features.subtitle']);
-
-      const colorClasses = ['cyan', 'green', 'orange', 'purple', 'yellow', 'pink'];
-      if (data.features && data.features.length) {
-        const grid = document.querySelector('.features-grid');
-        if (grid) {
-          grid.innerHTML = data.features.map((f, i) => `
-            <div class="feature-card reveal visible">
-              <div class="feature-icon ${colorClasses[i % colorClasses.length]}">${f.icon}</div>
-              <h3 class="feature-title">${f.title}</h3>
-              <p class="feature-desc">${f.desc}</p>
-            </div>
-          `).join('');
-        }
-      }
-
-      // Steps section
-      if (data['steps.tag']) setText('.how-it-works .section-tag', data['steps.tag']);
-      if (data['steps.title']) setText('.how-it-works .section-title', data['steps.title']);
-      if (data['steps.subtitle']) setText('.how-it-works .section-subtitle', data['steps.subtitle']);
-
-      if (data.steps && data.steps.length) {
-        const stepsContainer = document.querySelector('.steps-container');
-        if (stepsContainer) {
-          stepsContainer.innerHTML = '<div class="steps-line"></div>' + data.steps.map((s, i) => `
-            <div class="step reveal visible">
-              <div class="step-number">${String(i + 1).padStart(2, '0')}</div>
-              <div class="step-content">
-                <h3 class="step-title">${s.title}</h3>
-                <p class="step-desc">${s.desc}</p>
-              </div>
-            </div>
-          `).join('');
-        }
-      }
-
-      // Audience
-      if (data['audience.tag']) setText('.dual-cta .section-tag', data['audience.tag']);
-      if (data['audience.title']) setText('.dual-cta .section-title', data['audience.title']);
-      if (data['audience.subtitle']) setText('.dual-cta .section-subtitle', data['audience.subtitle']);
-
-      // Shipper card
-      if (data['shipper.emoji']) setText('.cta-card.shipper .cta-card-emoji', data['shipper.emoji']);
-      if (data['shipper.title']) setText('.cta-card.shipper .cta-card-title', data['shipper.title']);
-      if (data['shipper.desc']) setText('.cta-card.shipper .cta-card-desc', data['shipper.desc']);
-      if (data['shipper.cta']) setText('.cta-card.shipper .btn-primary', data['shipper.cta']);
-      if (data['shipper.features']) {
-        const ul = document.querySelector('.cta-card.shipper .cta-card-features');
-        if (ul) ul.innerHTML = data['shipper.features'].split('\n').filter(l=>l.trim()).map(l => `<li>${l.trim()}</li>`).join('');
-      }
-
-      // Carrier card
-      if (data['carrier.emoji']) setText('.cta-card.carrier .cta-card-emoji', data['carrier.emoji']);
-      if (data['carrier.title']) setText('.cta-card.carrier .cta-card-title', data['carrier.title']);
-      if (data['carrier.desc']) setText('.cta-card.carrier .cta-card-desc', data['carrier.desc']);
-      if (data['carrier.cta']) setText('.cta-card.carrier .btn-primary', data['carrier.cta']);
-      if (data['carrier.features']) {
-        const ul = document.querySelector('.cta-card.carrier .cta-card-features');
-        if (ul) ul.innerHTML = data['carrier.features'].split('\n').filter(l=>l.trim()).map(l => `<li>${l.trim()}</li>`).join('');
-      }
-
-      // Vehicles
-      if (data.vehicles && data.vehicles.length) {
-        const vGrid = document.querySelector('.vehicles-grid');
-        if (vGrid) {
-          vGrid.innerHTML = data.vehicles.map(v => `
-            <div class="vehicle-chip">
-              <div class="vehicle-chip-icon">${v.icon}</div>
-              <div class="vehicle-chip-name">${v.name}</div>
-            </div>
-          `).join('');
-        }
-      }
-
-      // Links
       if (data['links.appStore']) setHref('#ios-download', data['links.appStore']);
       if (data['links.googlePlay']) setHref('#android-download', data['links.googlePlay']);
       if (data['links.supportEmail']) {
         const mailLink = document.querySelector('a[href^="mailto:"]');
         if (mailLink) { mailLink.href = 'mailto:' + data['links.supportEmail']; mailLink.textContent = data['links.supportEmail']; }
       }
-
-      // Footer
       if (data['footer.desc']) setText('.footer-brand-desc', data['footer.desc']);
       if (data['footer.copyright']) { const el = document.querySelector('.footer-bottom span'); if(el) el.textContent = data['footer.copyright']; }
-
-      // Branding
       if (data['brand.appName']) {
-        document.querySelectorAll('.nav-logo-text, .phone-title, .sidebar-brand').forEach(el => el.textContent = data['brand.appName']);
+        document.querySelectorAll('.nav-logo-text, .phone-title').forEach(el => el.textContent = data['brand.appName']);
         const footerName = document.querySelector('.footer-brand-logo span');
         if (footerName) footerName.textContent = data['brand.appName'];
       }
-
-      // SEO
       if (data['seo.title']) document.title = data['seo.title'];
       if (data['seo.description']) { const m = document.querySelector('meta[name="description"]'); if(m) m.content = data['seo.description']; }
       if (data['seo.keywords']) { const m = document.querySelector('meta[name="keywords"]'); if(m) m.content = data['seo.keywords']; }
-      if (data['seo.ogTitle']) { const m = document.querySelector('meta[property="og:title"]'); if(m) m.content = data['seo.ogTitle']; }
-      if (data['seo.ogDesc']) { const m = document.querySelector('meta[property="og:description"]'); if(m) m.content = data['seo.ogDesc']; }
     })();
 
-    // Navbar scroll effect
+    // ===== NAVBAR SCROLL =====
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 40);
     });
 
-    // Reveal on scroll
+    // ===== REVEAL ON SCROLL =====
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, i * 80);
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
           revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // Smooth scroll for anchor links
+    // ===== SMOOTH SCROLL =====
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
