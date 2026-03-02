@@ -2076,7 +2076,38 @@
       if (data['seo.title']) document.title = data['seo.title'];
       if (data['seo.description']) { const m = document.querySelector('meta[name="description"]'); if(m) m.content = data['seo.description']; }
       if (data['seo.keywords']) { const m = document.querySelector('meta[name="keywords"]'); if(m) m.content = data['seo.keywords']; }
+
+      // ===== APPLY BRANDING COLORS =====
+      const root = document.documentElement.style;
+
+      // Accent color (brand.primary → cyan variants)
+      const accent = data['brand.primary'] || data['brand.primary_text'];
+      if (accent && accent !== '#00B4D8') {
+        root.setProperty('--cyan-500', accent);
+        // Generate lighter/darker variants
+        root.setProperty('--cyan-400', adjustBrightness(accent, 30));
+        root.setProperty('--cyan-300', adjustBrightness(accent, 60));
+        root.setProperty('--cyan-600', adjustBrightness(accent, -20));
+      }
+
+      // Background color (brand.bgDark → navy variants)
+      const bg = data['brand.bgDark'] || data['brand.bgDark_text'];
+      if (bg && bg !== '#0B1426') {
+        root.setProperty('--navy-800', bg);
+        root.setProperty('--navy-900', adjustBrightness(bg, -10));
+        root.setProperty('--navy-700', adjustBrightness(bg, 15));
+        root.setProperty('--navy-600', adjustBrightness(bg, 30));
+      }
     })();
+
+    // Helper: adjust hex color brightness by amount (-100 to +100)
+    function adjustBrightness(hex, amount) {
+      hex = hex.replace('#', '');
+      const r = Math.max(0, Math.min(255, parseInt(hex.substring(0, 2), 16) + amount));
+      const g = Math.max(0, Math.min(255, parseInt(hex.substring(2, 4), 16) + amount));
+      const b = Math.max(0, Math.min(255, parseInt(hex.substring(4, 6), 16) + amount));
+      return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+    }
 
     // ===== NAVBAR SCROLL =====
     const navbar = document.getElementById('navbar');
