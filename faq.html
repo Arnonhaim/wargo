@@ -3,2132 +3,397 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WARGO Admin — ניהול תוכן</title>
+  <title>שאלות נפוצות — WARGO</title>
+  <meta name="description" content="שאלות ותשובות נפוצות על פלטפורמת WARGO להובלות חזור בישראל.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300B4D8'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>W</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0C0F1A;
-      --bg-secondary: #141829;
-      --bg-card: #1A1F36;
-      --bg-input: #0F1224;
-      --border: #252B48;
-      --border-focus: #00B4D8;
-      --cyan: #00B4D8;
-      --cyan-dim: rgba(0,180,216,0.15);
-      --cyan-glow: rgba(0,180,216,0.25);
-      --green: #22C55E;
-      --green-dim: rgba(34,197,94,0.12);
-      --orange: #F97316;
-      --orange-dim: rgba(249,115,22,0.12);
-      --red: #EF4444;
-      --red-dim: rgba(239,68,68,0.12);
-      --purple: #A855F7;
-      --text-primary: #E8ECF4;
-      --text-secondary: #7B83A6;
-      --text-muted: #4A5177;
-      --sidebar-width: 260px;
+      --navy-900: #060D1B;
+      --navy-800: #0B1426;
+      --navy-700: #12203D;
+      --cyan-500: #00B4D8;
+      --cyan-400: #22D3EE;
+      --cyan-600: #0891B2;
+      --white: #FFFFFF;
+      --gray-400: #9CA3AF;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Heebo', sans-serif; background: var(--navy-900); color: var(--white); line-height: 1.7; }
 
-    body {
-      font-family: 'Heebo', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,13,27,0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-
-    .mono { font-family: 'JetBrains Mono', monospace; }
-
-    /* ======== LOGIN SCREEN ======== */
-    .login-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-primary);
-      transition: opacity 0.5s, visibility 0.5s;
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,180,216,0.3);
     }
-
-    .login-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+    .nav-logo-icon svg { width: 24px; height: 24px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo-text { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: 2px; }
+    .nav-back {
+      color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.3s;
     }
+    .nav-back:hover { color: var(--cyan-400); }
 
-    .login-bg-pattern {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 50% 40% at 50% 45%, rgba(0,180,216,0.06) 0%, transparent 70%),
-        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0,180,216,0.03) 59px, rgba(0,180,216,0.03) 60px),
-        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0,180,216,0.03) 59px, rgba(0,180,216,0.03) 60px);
+    .faq-page { max-width: 800px; margin: 0 auto; padding: 120px 32px 80px; }
+
+    .faq-header { text-align: center; margin-bottom: 56px; }
+    .faq-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: rgba(0,180,216,0.1);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 36px; margin-bottom: 20px;
     }
+    .faq-title { font-size: clamp(28px,4vw,42px); font-weight: 800; margin-bottom: 12px; }
+    .faq-subtitle { font-size: 16px; color: var(--gray-400); max-width: 500px; margin: 0 auto; }
 
-    .login-card {
+    /* Search */
+    .faq-search {
+      margin-bottom: 40px;
       position: relative;
-      width: 400px;
-      max-width: 92vw;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 48px 36px;
-      text-align: center;
-      box-shadow: 0 25px 80px rgba(0,0,0,0.4);
     }
-
-    .login-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 30px var(--cyan-glow);
-    }
-
-    .login-logo svg {
-      width: 30px; height: 30px;
-      fill: none; stroke: white; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    .login-title {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 4px;
-      letter-spacing: 1px;
-    }
-
-    .login-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-    }
-
-    .login-field {
-      margin-bottom: 16px;
-      text-align: right;
-    }
-
-    .login-field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-
-    .login-field input {
+    .faq-search input {
       width: 100%;
-      padding: 12px 16px;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text-primary);
+      padding: 16px 20px 16px 48px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      color: white;
       font-size: 15px;
       font-family: 'Heebo', sans-serif;
       outline: none;
       transition: border-color 0.3s, box-shadow 0.3s;
     }
-
-    .login-field input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px var(--cyan-dim);
+    .faq-search input:focus {
+      border-color: var(--cyan-500);
+      box-shadow: 0 0 0 3px rgba(0,180,216,0.15);
+    }
+    .faq-search input::placeholder { color: rgba(255,255,255,0.25); }
+    .faq-search-icon {
+      position: absolute;
+      left: 18px; top: 50%; transform: translateY(-50%);
+      font-size: 18px; color: rgba(255,255,255,0.25); pointer-events: none;
     }
 
-    .login-error {
-      color: var(--red);
-      font-size: 13px;
-      margin-bottom: 16px;
-      min-height: 20px;
+    /* Category tabs */
+    .faq-categories {
+      display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap;
+      justify-content: center;
     }
-
-    .login-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
+    .faq-cat-btn {
+      padding: 8px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.5);
+      font-size: 13px; font-weight: 600;
       font-family: 'Heebo', sans-serif;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 4px 20px var(--cyan-glow);
+      transition: all 0.3s;
+    }
+    .faq-cat-btn:hover { background: rgba(255,255,255,0.06); color: white; }
+    .faq-cat-btn.active {
+      background: rgba(0,180,216,0.15);
+      border-color: rgba(0,180,216,0.2);
+      color: var(--cyan-400);
     }
 
-    .login-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--cyan-glow);
-    }
-
-    .login-btn:active {
-      transform: translateY(0);
-    }
-
-    .login-creds {
-      margin-top: 24px;
-      padding: 14px;
-      background: var(--bg-input);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-
-    .login-creds-title {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-
-    .login-creds code {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--cyan);
-      line-height: 1.8;
-    }
-
-    /* ======== MAIN LAYOUT ======== */
-    .app { display: none; min-height: 100vh; }
-    .app.active { display: flex; }
-
-    /* ======== SIDEBAR ======== */
-    .sidebar {
-      width: var(--sidebar-width);
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      right: 0;
-      background: var(--bg-secondary);
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      z-index: 100;
-      overflow-y: auto;
-    }
-
-    .sidebar-header {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .sidebar-logo {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .sidebar-logo svg {
-      width: 18px; height: 18px;
-      fill: none; stroke: white; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
-    }
-
-    .sidebar-brand {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-    }
-
-    .sidebar-badge {
-      font-size: 10px;
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      margin-right: auto;
-    }
-
-    .sidebar-nav {
-      padding: 12px 10px;
-      flex: 1;
-    }
-
-    .sidebar-section-label {
-      font-size: 10px;
+    /* FAQ Items */
+    .faq-category-label {
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: var(--text-muted);
-      padding: 12px 12px 6px;
+      color: var(--cyan-400);
       font-weight: 700;
+      margin: 32px 0 16px;
+      font-family: 'Space Mono', monospace;
     }
 
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 14px;
-      border-radius: 10px;
+    .faq-item {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .faq-item:hover { border-color: rgba(255,255,255,0.1); }
+    .faq-item.open { border-color: rgba(0,180,216,0.15); }
+
+    .faq-question {
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
       cursor: pointer;
-      transition: all 0.2s;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      border: 1px solid transparent;
-      margin-bottom: 2px;
+      font-size: 15px; font-weight: 600;
+      transition: color 0.3s;
+      user-select: none;
     }
+    .faq-question:hover { color: var(--cyan-400); }
+    .faq-item.open .faq-question { color: var(--cyan-400); }
 
-    .sidebar-item:hover {
-      background: rgba(255,255,255,0.03);
-      color: var(--text-primary);
-    }
-
-    .sidebar-item.active {
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      border-color: rgba(0,180,216,0.08);
-      font-weight: 600;
-    }
-
-    .sidebar-item-icon {
-      width: 20px;
-      text-align: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .sidebar-footer {
-      padding: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .sidebar-user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .sidebar-avatar {
-      width: 34px; height: 34px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #1B3A5C, #2A5580);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .sidebar-username {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .sidebar-role {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .sidebar-logout {
-      width: 100%;
-      padding: 10px;
-      background: var(--red-dim);
-      border: 1px solid rgba(239,68,68,0.15);
+    .faq-toggle {
+      width: 28px; height: 28px; flex-shrink: 0;
       border-radius: 8px;
-      color: var(--red);
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Heebo', sans-serif;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    .faq-item.open .faq-toggle {
+      background: rgba(0,180,216,0.15);
+      color: var(--cyan-400);
+      transform: rotate(45deg);
     }
 
-    .sidebar-logout:hover {
-      background: rgba(239,68,68,0.2);
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
     }
-
-    /* ======== MAIN CONTENT ======== */
-    .main {
-      flex: 1;
-      margin-right: var(--sidebar-width);
-      min-height: 100vh;
+    .faq-item.open .faq-answer {
+      max-height: 500px;
     }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 32px;
-      background: rgba(12, 15, 26, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+    .faq-answer-inner {
+      padding: 0 24px 20px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
     }
+    .faq-answer-inner a { color: var(--cyan-400); text-decoration: none; }
+    .faq-answer-inner a:hover { text-decoration: underline; }
 
-    .topbar-title {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .topbar-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Heebo', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 1px solid transparent;
-    }
-
-    .btn-save {
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
-      color: white;
-      border: none;
-      box-shadow: 0 2px 15px var(--cyan-glow);
-    }
-
-    .btn-save:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px var(--cyan-glow);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--text-muted);
-      color: var(--text-primary);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn-preview {
-      background: var(--green-dim);
-      color: var(--green);
-      border: 1px solid rgba(34,197,94,0.15);
-    }
-
-    .btn-preview:hover {
-      background: rgba(34,197,94,0.2);
-    }
-
-    .btn-danger {
-      background: var(--red-dim);
-      color: var(--red);
-      border: 1px solid rgba(239,68,68,0.15);
-    }
-
-    .btn-danger:hover {
-      background: rgba(239,68,68,0.2);
-    }
-
-    /* ======== CONTENT AREA ======== */
-    .content {
-      padding: 32px;
-      max-width: 960px;
-    }
-
-    .panel {
+    .faq-empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: rgba(255,255,255,0.3);
+      font-size: 15px;
       display: none;
     }
 
-    .panel.active {
-      display: block;
-      animation: panelIn 0.35s ease;
-    }
-
-    @keyframes panelIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ======== FORM COMPONENTS ======== */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 20px;
-      transition: border-color 0.3s;
-    }
-
-    .card:hover {
-      border-color: #303660;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .card-title-icon {
-      font-size: 18px;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .field-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .field-label label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .field-label .field-hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .field input[type="text"],
-    .field input[type="url"],
-    .field input[type="email"],
-    .field input[type="number"],
-    .field textarea,
-    .field select {
-      width: 100%;
-      padding: 11px 14px;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text-primary);
-      font-size: 14px;
-      font-family: 'Heebo', sans-serif;
-      outline: none;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px var(--cyan-dim);
-    }
-
-    .field textarea {
-      min-height: 90px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .field-url-preview {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 6px;
-      padding: 8px 12px;
-      background: var(--bg-input);
-      border-radius: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-      word-break: break-all;
-    }
-
-    .field-url-preview a {
-      color: var(--cyan);
-      text-decoration: none;
-    }
-
-    .image-upload-area {
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 24px;
+    /* CTA */
+    .faq-cta {
       text-align: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      background: var(--bg-input);
+      margin-top: 56px;
+      padding: 40px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px;
     }
-
-    .image-upload-area:hover {
-      border-color: var(--cyan);
-      background: var(--cyan-dim);
+    .faq-cta-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .faq-cta-desc { font-size: 14px; color: var(--gray-400); margin-bottom: 20px; }
+    .faq-cta a {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+      color: white; padding: 12px 28px; border-radius: 12px;
+      font-size: 15px; font-weight: 600; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(0,180,216,0.25);
     }
+    .faq-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,180,216,0.35); }
 
-    .image-upload-icon {
-      font-size: 32px;
-      margin-bottom: 8px;
+    footer {
+      padding: 40px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;
     }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 13px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--cyan-400); }
+    .footer-links a.active { color: var(--cyan-400); }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.15); }
 
-    .image-upload-text {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .image-upload-hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .image-preview {
-      margin-top: 12px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .image-preview img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* ======== REPEATER (Feature cards, steps, etc.) ======== */
-    .repeater-item {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 12px;
-      position: relative;
-      transition: border-color 0.3s;
-    }
-
-    .repeater-item:hover {
-      border-color: #303660;
-    }
-
-    .repeater-item-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .repeater-item-num {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--cyan);
-      background: var(--cyan-dim);
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .repeater-item-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .repeater-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text-muted);
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .repeater-btn:hover {
-      border-color: var(--text-muted);
-      color: var(--text-primary);
-    }
-
-    .repeater-btn.delete:hover {
-      border-color: var(--red);
-      color: var(--red);
-      background: var(--red-dim);
-    }
-
-    .add-item-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--bg-input);
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'Heebo', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .add-item-btn:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: var(--cyan-dim);
-    }
-
-    /* ======== COLOR PICKER ======== */
-    .color-field {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .color-field input[type="color"] {
-      width: 42px;
-      height: 42px;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      cursor: pointer;
-      background: none;
-      padding: 2px;
-    }
-
-    .color-field input[type="text"] {
-      flex: 1;
-    }
-
-    /* ======== STATUS / TOAST ======== */
-    .toast {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 24px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .toast.success {
-      border-color: rgba(34,197,94,0.3);
-    }
-
-    .toast.success .toast-icon {
-      color: var(--green);
-    }
-
-    /* ======== STATS DASHBOARD ======== */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-    }
-
-    .stat-card-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-
-    .stat-card-value {
-      font-size: 28px;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .stat-card-value.cyan { color: var(--cyan); }
-    .stat-card-value.green { color: var(--green); }
-    .stat-card-value.orange { color: var(--orange); }
-    .stat-card-value.purple { color: var(--purple); }
-
-    /* ======== TOGGLE SWITCH ======== */
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-    }
-
-    .toggle-row:last-child {
-      border-bottom: none;
-    }
-
-    .toggle-label {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .toggle-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .toggle-switch {
-      width: 44px;
-      height: 24px;
-      background: var(--border);
-      border-radius: 12px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.3s;
-      flex-shrink: 0;
-    }
-
-    .toggle-switch.on {
-      background: var(--cyan);
-    }
-
-    .toggle-switch::after {
-      content: '';
-      width: 18px;
-      height: 18px;
-      background: white;
-      border-radius: 50%;
-      position: absolute;
-      top: 3px;
-      right: 3px;
-      transition: transform 0.3s;
-    }
-
-    .toggle-switch.on::after {
-      transform: translateX(-20px);
-    }
-
-    /* ======== RESPONSIVE ======== */
     @media (max-width: 768px) {
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-      }
-      .main {
-        margin-right: 0;
-      }
-      .content {
-        padding: 20px 16px;
-      }
-      .field-row {
-        grid-template-columns: 1fr;
-      }
-      .topbar {
-        padding: 12px 16px;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
+      nav { padding: 12px 20px; }
+      .faq-page { padding: 100px 16px 60px; }
+      .faq-question { padding: 16px 18px; font-size: 14px; }
+      .faq-answer-inner { padding: 0 18px 16px; }
     }
   </style>
 </head>
 <body>
-
-  <!-- ======== LOGIN ======== -->
-  <div class="login-overlay" id="loginOverlay">
-    <div class="login-bg-pattern"></div>
-    <div class="login-card">
-      <div class="login-logo">
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">
         <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
       </div>
-      <div class="login-title">WARGO Admin</div>
-      <div class="login-subtitle">לוח ניהול תוכן — גרסה 1.0</div>
-      <div class="login-field">
-        <label>שם משתמש</label>
-        <input type="text" id="loginUser" placeholder="הזן שם משתמש" autocomplete="username">
-      </div>
-      <div class="login-field">
-        <label>סיסמה</label>
-        <input type="password" id="loginPass" placeholder="הזן סיסמה" autocomplete="current-password">
-      </div>
-      <div class="login-error" id="loginError"></div>
-      <button class="login-btn" onclick="handleLogin()">כניסה למערכת</button>
-      <div class="login-creds">
-        <div class="login-creds-title">פרטי התחברות</div>
-        <code>admin / Wargo2026!</code>
-      </div>
+      <span class="nav-logo-text">WARGO</span>
+    </a>
+    <a href="index.html" class="nav-back">→ חזרה לאתר</a>
+  </nav>
+
+  <div class="faq-page">
+    <div class="faq-header">
+      <div class="faq-icon">❓</div>
+      <h1 class="faq-title">שאלות נפוצות</h1>
+      <p class="faq-subtitle">מצאו תשובות לשאלות הנפוצות ביותר על פלטפורמת WARGO</p>
+    </div>
+
+    <div class="faq-search">
+      <span class="faq-search-icon">🔍</span>
+      <input type="text" id="faqSearch" placeholder="חפש שאלה..." oninput="filterFaq()">
+    </div>
+
+    <div class="faq-categories" id="faqCategories">
+      <button class="faq-cat-btn active" data-cat="all" onclick="filterCategory('all',this)">הכל</button>
+      <button class="faq-cat-btn" data-cat="general" onclick="filterCategory('general',this)">כללי</button>
+      <button class="faq-cat-btn" data-cat="shippers" onclick="filterCategory('shippers',this)">שולחים</button>
+      <button class="faq-cat-btn" data-cat="carriers" onclick="filterCategory('carriers',this)">מובילים</button>
+      <button class="faq-cat-btn" data-cat="payments" onclick="filterCategory('payments',this)">תשלומים</button>
+      <button class="faq-cat-btn" data-cat="safety" onclick="filterCategory('safety',this)">בטיחות</button>
+    </div>
+
+    <div id="faqContainer"></div>
+
+    <div class="faq-empty" id="faqEmpty">🔍 לא נמצאו תוצאות. נסה מילות חיפוש אחרות.</div>
+
+    <div class="faq-cta">
+      <div class="faq-cta-title">לא מצאת תשובה?</div>
+      <div class="faq-cta-desc">צוות התמיכה שלנו כאן בשבילך — נשמח לעזור!</div>
+      <a href="mailto:support@wargo.co.il">📧 שלח לנו מייל</a>
     </div>
   </div>
 
-  <!-- ======== APP ======== -->
-  <div class="app" id="app">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        </div>
-        <span class="sidebar-brand">WARGO</span>
-        <span class="sidebar-badge">Admin</span>
-      </div>
-
-      <nav class="sidebar-nav">
-        <div class="sidebar-section-label">ראשי</div>
-        <div class="sidebar-item active" data-panel="dashboard" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">📊</span> לוח בקרה
-        </div>
-
-        <div class="sidebar-section-label">תוכן האתר</div>
-        <div class="sidebar-item" data-panel="hero" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🏠</span> Hero — ראשי
-        </div>
-        <div class="sidebar-item" data-panel="features" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">⭐</span> יתרונות
-        </div>
-        <div class="sidebar-item" data-panel="steps" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">📋</span> איך זה עובד
-        </div>
-        <div class="sidebar-item" data-panel="audience" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">👥</span> קהלי יעד
-        </div>
-        <div class="sidebar-item" data-panel="vehicles" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🚛</span> סוגי רכבים
-        </div>
-
-        <div class="sidebar-section-label">הגדרות</div>
-        <div class="sidebar-item" data-panel="links" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🔗</span> קישורים וחנויות
-        </div>
-        <div class="sidebar-item" data-panel="branding" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🎨</span> מיתוג וצבעים
-        </div>
-        <div class="sidebar-item" data-panel="footer" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">📄</span> Footer
-        </div>
-        <div class="sidebar-item" data-panel="seo" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🔍</span> SEO ומטא
-        </div>
-
-        <div class="sidebar-section-label">דפים משפטיים</div>
-        <div class="sidebar-item" data-panel="pg-terms" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">📋</span> תנאי שימוש
-        </div>
-        <div class="sidebar-item" data-panel="pg-privacy" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">🔒</span> מדיניות פרטיות
-        </div>
-        <div class="sidebar-item" data-panel="pg-refund" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">↩️</span> ביטול עסקה
-        </div>
-        <div class="sidebar-item" data-panel="pg-faq" onclick="switchPanel(this)">
-          <span class="sidebar-item-icon">❓</span> שאלות נפוצות
-        </div>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="sidebar-user">
-          <div class="sidebar-avatar">A</div>
-          <div>
-            <div class="sidebar-username">Admin</div>
-            <div class="sidebar-role">מנהל ראשי</div>
-          </div>
-        </div>
-        <button class="sidebar-logout" onclick="handleLogout()">🚪 יציאה מהמערכת</button>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main">
-      <div class="topbar">
-        <div class="topbar-title" id="topbarTitle">לוח בקרה</div>
-        <div class="topbar-actions">
-          <button class="btn btn-outline" onclick="resetData()">↩️ אפס לברירת מחדל</button>
-          <button class="btn btn-preview" onclick="openPreview()">👁️ תצוגה מקדימה</button>
-          <button class="btn btn-save" onclick="saveAll()">💾 שמור שינויים</button>
-        </div>
-      </div>
-
-      <div class="content">
-
-        <!-- DASHBOARD -->
-        <div class="panel active" id="panel-dashboard">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-card-label">סקשנים פעילים</div>
-              <div class="stat-card-value cyan">8</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-card-label">כרטיסי יתרונות</div>
-              <div class="stat-card-value green" id="statFeatures">6</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-card-label">שלבים</div>
-              <div class="stat-card-value orange" id="statSteps">3</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-card-label">שפות</div>
-              <div class="stat-card-value purple">4</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">⚡</span> פעולות מהירות</div>
-                <div class="card-desc">קיצורי דרך לעריכות נפוצות</div>
-              </div>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-              <button class="btn btn-outline" onclick="switchPanel(document.querySelector('[data-panel=hero]'))" style="width:100%; justify-content:center;">✏️ עריכת Hero</button>
-              <button class="btn btn-outline" onclick="switchPanel(document.querySelector('[data-panel=links]'))" style="width:100%; justify-content:center;">🔗 קישורי חנויות</button>
-              <button class="btn btn-outline" onclick="switchPanel(document.querySelector('[data-panel=features]'))" style="width:100%; justify-content:center;">⭐ יתרונות</button>
-              <button class="btn btn-outline" onclick="switchPanel(document.querySelector('[data-panel=seo]'))" style="width:100%; justify-content:center;">🔍 SEO</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">💡</span> הוראות שימוש</div>
-              </div>
-            </div>
-            <div style="color:var(--text-secondary); font-size:14px; line-height:1.8;">
-              <p>ברוכים הבאים ללוח הניהול של WARGO! כאן תוכלו לערוך את כל תוכן דף הנחיתה:</p>
-              <p style="margin-top:12px;">1. <b>בחרו סקשן</b> מהתפריט בצד ימין</p>
-              <p>2. <b>ערכו את התוכן</b> — טקסטים, תמונות, קישורים</p>
-              <p>3. <b>לחצו ״שמור שינויים״</b> למעלה</p>
-              <p>4. <b>צפו בתצוגה מקדימה</b> לבדיקה</p>
-              <p style="margin-top:12px; color:var(--cyan);">💡 כל השינויים נשמרים ב-localStorage ומשפיעים על דף הנחיתה בזמן אמת.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- HERO -->
-        <div class="panel" id="panel-hero">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🏷️</span> תגית עליונה</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>טקסט תגית</label></div>
-              <input type="text" data-key="hero.tag" value="פלטפורמה פעילה בכל הארץ">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📝</span> כותרת ראשית</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>שורה 1</label></div>
-              <input type="text" data-key="hero.title1" value="הובלות חזור">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>שורה 2 (צבעונית)</label></div>
-              <input type="text" data-key="hero.title2" value="בלחיצת כפתור">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">💬</span> תיאור</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>טקסט תיאור</label></div>
-              <textarea data-key="hero.description">WARGO מחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. חסוך עד 40% מעלויות ההובלה באמצעות ניצול מטענים חוזרים — מהר, פשוט ובטוח.</textarea>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🔘</span> כפתורים</div>
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <div class="field-label"><label>כפתור ראשי — טקסט</label></div>
-                <input type="text" data-key="hero.cta1" value="הורד עכשיו — בחינם">
-              </div>
-              <div class="field">
-                <div class="field-label"><label>כפתור משני — טקסט</label></div>
-                <input type="text" data-key="hero.cta2" value="איך זה עובד?">
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📈</span> סטטיסטיקות</div>
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <div class="field-label"><label>ערך 1</label></div>
-                <input type="text" data-key="hero.stat1_value" value="40%">
-              </div>
-              <div class="field">
-                <div class="field-label"><label>תיאור 1</label></div>
-                <input type="text" data-key="hero.stat1_label" value="חיסכון ממוצע בהובלה">
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <div class="field-label"><label>ערך 2</label></div>
-                <input type="text" data-key="hero.stat2_value" value="24/7">
-              </div>
-              <div class="field">
-                <div class="field-label"><label>תיאור 2</label></div>
-                <input type="text" data-key="hero.stat2_label" value="זמינות מלאה">
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <div class="field-label"><label>ערך 3</label></div>
-                <input type="text" data-key="hero.stat3_value" value="🇮🇱">
-              </div>
-              <div class="field">
-                <div class="field-label"><label>תיאור 3</label></div>
-                <input type="text" data-key="hero.stat3_label" value="כל רחבי ישראל">
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📱</span> מוקאפ טלפון — הזמנות</div>
-                <div class="card-desc">שלוש הכרטיסיות שמוצגות במוקאפ הטלפון</div>
-              </div>
-            </div>
-            <div id="phoneCardsRepeater"></div>
-          </div>
-        </div>
-
-        <!-- FEATURES -->
-        <div class="panel" id="panel-features">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📝</span> כותרת סקשן</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="features.tag" value="למה WARGO?">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="features.title" value="הכל באפליקציה אחת">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור</label></div>
-              <textarea data-key="features.subtitle">מהרגע שמפרסמים בקשת הובלה ועד לתשלום — הכל קורה בתוך WARGO, בצורה חכמה ומאובטחת.</textarea>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">⭐</span> כרטיסי יתרונות</div>
-                <div class="card-desc">ערוך, הוסף או מחק כרטיסי יתרונות</div>
-              </div>
-            </div>
-            <div id="featuresRepeater"></div>
-            <button class="add-item-btn" onclick="addFeature()">➕ הוסף כרטיס יתרון</button>
-          </div>
-        </div>
-
-        <!-- STEPS -->
-        <div class="panel" id="panel-steps">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📝</span> כותרת סקשן</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="steps.tag" value="תהליך פשוט">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="steps.title" value="איך זה עובד?">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור</label></div>
-              <input type="text" data-key="steps.subtitle" value="שלושה שלבים פשוטים להובלה הבאה שלך">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📋</span> שלבים</div>
-              </div>
-            </div>
-            <div id="stepsRepeater"></div>
-            <button class="add-item-btn" onclick="addStep()">➕ הוסף שלב</button>
-          </div>
-        </div>
-
-        <!-- AUDIENCE -->
-        <div class="panel" id="panel-audience">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📝</span> כותרת סקשן</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תגית</label></div>
-              <input type="text" data-key="audience.tag" value="למי זה?">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="audience.title" value="בין אם אתה שולח או מוביל">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור</label></div>
-              <input type="text" data-key="audience.subtitle" value="WARGO נבנתה בשביל שני הצדדים של שרשרת ההובלה">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📦</span> כרטיס שולחים</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>אייקון (אמוג׳י)</label></div>
-              <input type="text" data-key="shipper.emoji" value="📦">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="shipper.title" value="אני שולח מטענים">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור</label></div>
-              <textarea data-key="shipper.desc">צריך לשלוח סחורה? פרסם בקשה ותן למובילים להתחרות על המחיר הטוב ביותר עבורך.</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>יתרונות (שורה בכל שורה)</label></div>
-              <textarea data-key="shipper.features" style="min-height:130px;">הצעות מחיר תחרותיות תוך דקות
-מובילים מאומתים עם דירוגים
-מעקב הזמנות בזמן אמת
-תשלום מאובטח באפליקציה
-תמיכה בלקוח פרטי וחברה</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>טקסט כפתור</label></div>
-              <input type="text" data-key="shipper.cta" value="התחל לשלוח →">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🚛</span> כרטיס מובילים</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>אייקון (אמוג׳י)</label></div>
-              <input type="text" data-key="carrier.emoji" value="🚛">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" data-key="carrier.title" value="אני מוביל / חברת הובלות">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור</label></div>
-              <textarea data-key="carrier.desc">יש לך משאית חוזרת ריקה? מלא אותה במטענים והגדל את ההכנסות שלך.</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>יתרונות (שורה בכל שורה)</label></div>
-              <textarea data-key="carrier.features" style="min-height:130px;">מטענים חוזרים למילוי נסיעות חזור
-ניהול ציי רכבים ונהגים
-ארנק דיגיטלי עם מעקב הכנסות
-פרופיל עסקי מקצועי ומדורג
-תמיכה בכל סוגי הרכבים</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>טקסט כפתור</label></div>
-              <input type="text" data-key="carrier.cta" value="התחל להוביל →">
-            </div>
-          </div>
-        </div>
-
-        <!-- VEHICLES -->
-        <div class="panel" id="panel-vehicles">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🚛</span> סוגי רכבים</div>
-                <div class="card-desc">ערוך את רשימת סוגי הרכבים המוצגים באתר</div>
-              </div>
-            </div>
-            <div id="vehiclesRepeater"></div>
-            <button class="add-item-btn" onclick="addVehicle()">➕ הוסף סוג רכב</button>
-          </div>
-        </div>
-
-        <!-- LINKS -->
-        <div class="panel" id="panel-links">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🍎</span> App Store</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>קישור App Store</label><span class="field-hint">iOS</span></div>
-              <input type="url" data-key="links.appStore" placeholder="https://apps.apple.com/app/..." value="#">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🤖</span> Google Play</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>קישור Google Play</label><span class="field-hint">Android</span></div>
-              <input type="url" data-key="links.googlePlay" placeholder="https://play.google.com/store/apps/details?id=..." value="#">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📧</span> מייל תמיכה</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כתובת מייל</label></div>
-              <input type="email" data-key="links.supportEmail" value="support@wargo.co.il">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📄</span> קישורים משפטיים</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תנאי שימוש</label></div>
-              <input type="url" data-key="links.terms" placeholder="https://..." value="#">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>מדיניות פרטיות</label></div>
-              <input type="url" data-key="links.privacy" placeholder="https://..." value="#">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>ביטול עסקה</label></div>
-              <input type="url" data-key="links.refund" placeholder="https://..." value="#">
-            </div>
-          </div>
-        </div>
-
-        <!-- BRANDING -->
-        <div class="panel" id="panel-branding">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🎨</span> צבעים ראשיים</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>צבע ראשי (Cyan)</label></div>
-              <div class="color-field">
-                <input type="color" value="#00B4D8" data-key="brand.primary" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
-                <input type="text" value="#00B4D8" data-key="brand.primary_text" onchange="this.previousElementSibling.value=this.value">
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>צבע רקע כהה (Navy)</label></div>
-              <div class="color-field">
-                <input type="color" value="#0B1426" data-key="brand.bgDark" onchange="this.nextElementSibling.value=this.value" oninput="this.nextElementSibling.value=this.value">
-                <input type="text" value="#0B1426" data-key="brand.bgDark_text" onchange="this.previousElementSibling.value=this.value">
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🖼️</span> תמונות ולוגו</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>URL לוגו (SVG / PNG)</label></div>
-              <input type="url" data-key="brand.logoUrl" placeholder="https://your-logo.svg" value="">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>URL Favicon</label></div>
-              <input type="url" data-key="brand.faviconUrl" placeholder="https://your-favicon.svg" value="">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>OG Image (תמונה לשיתוף)</label></div>
-              <input type="url" data-key="brand.ogImage" placeholder="https://your-og-image.png" value="">
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">✍️</span> שם האפליקציה</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>שם מותג (מוצג בכותרת ולוגו)</label></div>
-              <input type="text" data-key="brand.appName" value="WARGO">
-            </div>
-          </div>
-        </div>
-
-        <!-- FOOTER -->
-        <div class="panel" id="panel-footer">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📄</span> תוכן Footer</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור קצר</label></div>
-              <textarea data-key="footer.desc">פלטפורמת ההובלות החכמה של ישראל. מחברים בין שולחי מטענים למובילים מאומתים — בכל מקום בארץ.</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>טקסט זכויות יוצרים</label></div>
-              <input type="text" data-key="footer.copyright" value="© 2026 WARGO. כל הזכויות שמורות.">
-            </div>
-          </div>
-        </div>
-
-        <!-- SEO -->
-        <div class="panel" id="panel-seo">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🔍</span> SEO — מטא תגיות</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת הדף (title)</label></div>
-              <input type="text" data-key="seo.title" value="WARGO — פלטפורמת הובלות חכמה | Smart Logistics Platform">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תיאור (meta description)</label></div>
-              <textarea data-key="seo.description">WARGO - שוק לוגיסטי להובלות חזור בישראל. חבר בין שולחי מטענים למובילים מאומתים. Backhaul booking platform for Israel.</textarea>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>מילות מפתח</label></div>
-              <input type="text" data-key="seo.keywords" value="הובלות, לוגיסטיקה, backhaul, משאיות, ישראל, מטענים, מובילים">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>OG Title</label></div>
-              <input type="text" data-key="seo.ogTitle" value="WARGO — פלטפורמת הובלות חכמה">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>OG Description</label></div>
-              <textarea data-key="seo.ogDesc">שוק לוגיסטי להובלות חזור בישראל. חבר בין שולחי מטענים למובילים מאומתים.</textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- TERMS PAGE -->
-        <div class="panel" id="panel-pg-terms">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">📋</span> דף תנאי שימוש</div>
-                <div class="card-desc">ערוך את תוכן דף תנאי השימוש (HTML נתמך)</div>
-              </div>
-              <a href="../terms.html" target="_blank" class="btn btn-preview" style="text-decoration:none">👁️ צפה בדף</a>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="terms.title" value="תנאי שימוש">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="terms.subtitle" value="עדכון אחרון: מרץ 2026">
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">✏️</span> תוכן</div>
-                <div class="card-desc">ניתן להשתמש בתגיות HTML: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;a&gt;</div>
-              </div>
-            </div>
-            <div class="field">
-              <textarea data-key="terms.content" style="min-height:400px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;direction:ltr;text-align:left;" id="termsEditor"></textarea>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:8px;">
-              <button class="btn btn-outline" onclick="loadDefaultContent('terms')" style="font-size:12px;">🔄 טען תוכן ברירת מחדל</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- PRIVACY PAGE -->
-        <div class="panel" id="panel-pg-privacy">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">🔒</span> דף מדיניות פרטיות</div>
-                <div class="card-desc">ערוך את תוכן דף מדיניות הפרטיות (HTML נתמך)</div>
-              </div>
-              <a href="../privacy.html" target="_blank" class="btn btn-preview" style="text-decoration:none">👁️ צפה בדף</a>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="privacy.title" value="מדיניות פרטיות">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="privacy.subtitle" value="עדכון אחרון: מרץ 2026">
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">✏️</span> תוכן</div>
-                <div class="card-desc">ניתן להשתמש בתגיות HTML: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;a&gt;</div>
-              </div>
-            </div>
-            <div class="field">
-              <textarea data-key="privacy.content" style="min-height:400px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;direction:ltr;text-align:left;" id="privacyEditor"></textarea>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:8px;">
-              <button class="btn btn-outline" onclick="loadDefaultContent('privacy')" style="font-size:12px;">🔄 טען תוכן ברירת מחדל</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- REFUND PAGE -->
-        <div class="panel" id="panel-pg-refund">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">↩️</span> דף ביטול עסקה</div>
-                <div class="card-desc">ערוך את תוכן דף מדיניות הביטול וההחזרים (HTML נתמך)</div>
-              </div>
-              <a href="../refund.html" target="_blank" class="btn btn-preview" style="text-decoration:none">👁️ צפה בדף</a>
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת הדף</label></div>
-              <input type="text" data-key="refund.title" value="מדיניות ביטול עסקה">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>תת-כותרת</label></div>
-              <input type="text" data-key="refund.subtitle" value="עדכון אחרון: מרץ 2026">
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">✏️</span> תוכן</div>
-                <div class="card-desc">ניתן להשתמש בתגיות HTML: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;a&gt;, &lt;table&gt;</div>
-              </div>
-            </div>
-            <div class="field">
-              <textarea data-key="refund.content" style="min-height:400px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;direction:ltr;text-align:left;" id="refundEditor"></textarea>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:8px;">
-              <button class="btn btn-outline" onclick="loadDefaultContent('refund')" style="font-size:12px;">🔄 טען תוכן ברירת מחדל</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- FAQ PAGE -->
-        <div class="panel" id="panel-pg-faq">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title"><span class="card-title-icon">❓</span> דף שאלות נפוצות</div>
-                <div class="card-desc">ערוך, הוסף או מחק שאלות ותשובות</div>
-              </div>
-              <a href="../faq.html" target="_blank" class="btn btn-preview" style="text-decoration:none">👁️ צפה בדף</a>
-            </div>
-          </div>
-
-          <div class="card" id="faqCatGeneral">
-            <div class="card-header">
-              <div><div class="card-title"><span class="card-title-icon">🏠</span> כללי</div></div>
-            </div>
-            <div id="faqRepeater-general"></div>
-            <button class="add-item-btn" onclick="addFaqItem('general')">➕ הוסף שאלה — כללי</button>
-          </div>
-
-          <div class="card" id="faqCatShippers">
-            <div class="card-header">
-              <div><div class="card-title"><span class="card-title-icon">📦</span> לשולחי מטענים</div></div>
-            </div>
-            <div id="faqRepeater-shippers"></div>
-            <button class="add-item-btn" onclick="addFaqItem('shippers')">➕ הוסף שאלה — שולחים</button>
-          </div>
-
-          <div class="card" id="faqCatCarriers">
-            <div class="card-header">
-              <div><div class="card-title"><span class="card-title-icon">🚛</span> למובילים</div></div>
-            </div>
-            <div id="faqRepeater-carriers"></div>
-            <button class="add-item-btn" onclick="addFaqItem('carriers')">➕ הוסף שאלה — מובילים</button>
-          </div>
-
-          <div class="card" id="faqCatPayments">
-            <div class="card-header">
-              <div><div class="card-title"><span class="card-title-icon">💰</span> תשלומים</div></div>
-            </div>
-            <div id="faqRepeater-payments"></div>
-            <button class="add-item-btn" onclick="addFaqItem('payments')">➕ הוסף שאלה — תשלומים</button>
-          </div>
-
-          <div class="card" id="faqCatSafety">
-            <div class="card-header">
-              <div><div class="card-title"><span class="card-title-icon">🔒</span> בטיחות ואמינות</div></div>
-            </div>
-            <div id="faqRepeater-safety"></div>
-            <button class="add-item-btn" onclick="addFaqItem('safety')">➕ הוסף שאלה — בטיחות</button>
-          </div>
-        </div>
-
-      </div>
-    </main>
-  </div>
-
-  <!-- TOAST -->
-  <div class="toast success" id="toast">
-    <span class="toast-icon">✅</span>
-    <span id="toastText">השינויים נשמרו בהצלחה!</span>
-  </div>
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">🏠 עמוד ראשי</a>
+      <a href="terms.html">תנאי שימוש</a>
+      <a href="privacy.html">מדיניות פרטיות</a>
+      <a href="refund.html">ביטול עסקה</a>
+      <a href="faq.html" class="active">שאלות נפוצות</a>
+    </div>
+    <div class="footer-copy">© 2026 WARGO. כל הזכויות שמורות.</div>
+  </footer>
 
   <script>
-    // ===== CREDENTIALS =====
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'Wargo2026!';
+    // ===== DEFAULT FAQ DATA =====
+    const DEFAULT_FAQ = [
+      { cat: 'general', q: 'מה זה WARGO?', a: 'WARGO היא פלטפורמה דיגיטלית המחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. הפלטפורמה מתמחה בהובלות חזור (Backhaul) — ניצול משאיות שחוזרות ריקות למילוי מטענים, מה שמוזיל את עלויות ההובלה לכולם.' },
+      { cat: 'general', q: 'האם השירות זמין בכל הארץ?', a: 'כן! WARGO פועלת בכל רחבי ישראל — צפון, מרכז ודרום.' },
+      { cat: 'general', q: 'האם האפליקציה חינמית?', a: 'כן, ההורדה וההרשמה חינמיות. החברה גובה עמלת שירות קטנה רק כאשר עסקה מושלמת בהצלחה.' },
+      { cat: 'general', q: 'באילו שפות האפליקציה זמינה?', a: 'WARGO זמינה ב-4 שפות: עברית, אנגלית, רוסית וערבית.' },
+      { cat: 'shippers', q: 'איך מפרסמים בקשת הובלה?', a: 'נכנסים לאפליקציה, לוחצים על "הזמנה חדשה", ממלאים פרטי מטען ומפרסמים. תוך דקות תקבלו הצעות מחיר.' },
+      { cat: 'shippers', q: 'איך בוחרים מוביל?', a: 'לאחר קבלת הצעות, ניתן לראות דירוג, ביקורות ופרופיל של כל מוביל ולבחור את ההצעה המתאימה.' },
+      { cat: 'shippers', q: 'כמה עולה הובלה?', a: 'המחירים נקבעים על ידי המובילים. מובילים שחוזרים ריקים מציעים מחירים נמוכים בעד 40% לעומת הובלה רגילה.' },
+      { cat: 'shippers', q: 'האם אפשר לבטל הזמנה?', a: 'כן, ניתן לבטל בכל שלב. ביטול לפני אישור המוביל — ללא חיוב. לאחר אישור יחולו דמי ביטול. פרטים מלאים ב<a href="refund.html">מדיניות הביטול</a> שלנו.' },
+      { cat: 'carriers', q: 'איך נרשמים כמוביל?', a: 'הורידו את האפליקציה, בחרו "מספק שירותי הובלה", מלאו פרטי עסק והעלו מסמכים. לאחר אימות תוכלו לקבל הזמנות.' },
+      { cat: 'carriers', q: 'כמה זמן לוקח האימות?', a: 'תהליך האימות לוקח 1-3 ימי עסקים. תקבלו הודעה באפליקציה כשהחשבון מוכן.' },
+      { cat: 'carriers', q: 'אילו סוגי רכבים נתמכים?', a: 'משאיות סטנדרטיות, מנוף, לובי נמוך, מכליות, רמפה אחורית ועוד. ניתן לרשום מספר רכבים.' },
+      { cat: 'carriers', q: 'איך מקבלים תשלום?', a: 'התשלום מגיע לארנק הדיגיטלי באפליקציה לאחר השלמת הובלה ואישור השולח. ניתן למשוך לחשבון בנק.' },
+      { cat: 'carriers', q: 'האם אפשר לנהל נהגים?', a: 'כן! חשבון מוביל מאפשר להוסיף נהגים ורכבים ולנהל את כל הצי ממקום אחד.' },
+      { cat: 'payments', q: 'אילו אמצעי תשלום מקובלים?', a: 'תשלום דרך הארנק הדיגיטלי. ניתן לטעון באמצעות כרטיס אשראי או העברה בנקאית.' },
+      { cat: 'payments', q: 'מה העמלה?', a: 'עמלת שירות קטנה מכל עסקה מוצלחת, מפורטת בשקיפות לפני אישור כל הזמנה.' },
+      { cat: 'payments', q: 'האם התשלומים מאובטחים?', a: 'כן, כל התשלומים מוצפנים. הכסף מוחזק בנאמנות עד אישור השלמת ההובלה.' },
+      { cat: 'safety', q: 'איך WARGO מוודאת שהמובילים אמינים?', a: 'כל מוביל עובר אימות מקיף: מסמכי התאגדות, רישיונות, ביטוח ואימות זהות. בנוסף מערכת דירוגים וביקורות.' },
+      { cat: 'safety', q: 'מה קורה אם יש בעיה?', a: 'צוות התמיכה זמין דרך הצ׳אט באפליקציה או בדוא"ל. אנו מגשרים בין הצדדים לפתרון מהיר.' },
+    ];
 
-    // ===== DEFAULT DATA =====
-    const DEFAULT_DATA = {
-      features: [
-        { icon: '🔍', title: 'מציאת הובלות בקלות', desc: 'פרסם בקשת הובלה וקבל הצעות מחיר ממובילים מאומתים תוך דקות. סינון לפי אזור, סוג רכב וסוג שירות.' },
-        { icon: '✅', title: 'מובילים מאומתים', desc: 'כל המובילים עוברים תהליך אימות מלא — תעודת התאגדות, רישיונות, ביטוח ועוד. בטיחות מעל הכל.' },
-        { icon: '💰', title: 'ארנק דיגיטלי', desc: 'ניהול תשלומים מלא באפליקציה — מעקב הכנסות, הוצאות ותשלומים מאובטחים בכל עסקה.' },
-        { icon: '💬', title: 'צ׳אט בזמן אמת', desc: 'תקשורת ישירה בין שולח למוביל — תיאום פרטים, עדכוני סטטוס ושליחת מסמכים ישירות באפליקציה.' },
-        { icon: '🗺️', title: 'מפת מסלולים', desc: 'צפייה במסלול ההובלה על המפה עם חישוב מרחק אוטומטי. ניווט ישיר לנקודת האיסוף והפריקה.' },
-        { icon: '🌐', title: 'רב-שפתי', desc: 'ממשק בעברית, אנגלית, רוסית וערבית — כדי שכל מוביל ושולח בישראל ירגיש בבית.' },
-      ],
-      steps: [
-        { title: 'פרסם בקשת הובלה', desc: 'הזן את פרטי המטען — נקודת מוצא, יעד, סוג רכב נדרש, תאריך ותיאור. תוך שניות הבקשה שלך חיה במערכת.' },
-        { title: 'קבל הצעות ובחר מוביל', desc: 'מובילים מאומתים רואים את הבקשה ושולחים הצעות מחיר. השווה דירוגים, מחירים וביקורות — ובחר את ההצעה הטובה ביותר.' },
-        { title: 'ההובלה בדרך!', desc: 'עקוב אחרי סטטוס ההובלה, תקשר עם המוביל בצ׳אט, ושלם בצורה מאובטחת דרך הארנק הדיגיטלי כשההובלה הושלמה.' },
-      ],
-      vehicles: [
-        { icon: '🚛', name: 'משאית סטנדרטית' },
-        { icon: '🏗️', name: 'מנוף' },
-        { icon: '⬇️', name: 'לובי נמוך' },
-        { icon: '🛢️', name: 'מכלית' },
-        { icon: '📦', name: 'רמפה אחורית' },
-      ],
-      phoneCards: [
-        { route: 'חיפה → תל אביב', price: '₪1,200', detail1: '🚛 משטח מלא', detail2: '📅 היום', tag: 'הובלת חזור' },
-        { route: 'ב״ש → ירושלים', price: '₪950', detail1: '🏗️ מנוף', detail2: '📅 מחר', tag: 'שירות מנוף' },
-        { route: 'נתניה → אשדוד', price: '₪780', detail1: '🚛 רמפה אחורית', detail2: '📅 22/03', tag: 'רמפה אחורית' },
-      ],
-      faqItems: [
-        { category:'general', question:'מה זה WARGO?', answer:'WARGO היא פלטפורמה דיגיטלית המחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. הפלטפורמה מתמחה בהובלות חזור (Backhaul) — ניצול משאיות שחוזרות ריקות למילוי מטענים, מה שמוזיל את עלויות ההובלה לכולם.' },
-        { category:'general', question:'האם השירות זמין בכל הארץ?', answer:'כן! WARGO פועלת בכל רחבי ישראל — צפון, מרכז ודרום.' },
-        { category:'general', question:'האם האפליקציה חינמית?', answer:'כן, ההורדה וההרשמה חינמיות. החברה גובה עמלת שירות קטנה רק כאשר עסקה מושלמת בהצלחה.' },
-        { category:'general', question:'באילו שפות האפליקציה זמינה?', answer:'WARGO זמינה ב-4 שפות: עברית, אנגלית, רוסית וערבית.' },
-        { category:'shippers', question:'איך מפרסמים בקשת הובלה?', answer:'נכנסים לאפליקציה, לוחצים על "הזמנה חדשה", ממלאים פרטי מטען ומפרסמים. תוך דקות תקבלו הצעות מחיר.' },
-        { category:'shippers', question:'איך בוחרים מוביל?', answer:'לאחר קבלת הצעות, ניתן לראות דירוג, ביקורות ופרופיל של כל מוביל ולבחור את ההצעה המתאימה.' },
-        { category:'shippers', question:'כמה עולה הובלה?', answer:'המחירים נקבעים על ידי המובילים. מובילים שחוזרים ריקים מציעים מחירים נמוכים בעד 40% לעומת הובלה רגילה.' },
-        { category:'shippers', question:'האם אפשר לבטל הזמנה?', answer:'כן, ניתן לבטל בכל שלב. ביטול לפני אישור המוביל — ללא חיוב. לאחר אישור יחולו דמי ביטול.' },
-        { category:'carriers', question:'איך נרשמים כמוביל?', answer:'הורידו את האפליקציה, בחרו "מספק שירותי הובלה", מלאו פרטי עסק והעלו מסמכים. לאחר אימות תוכלו לקבל הזמנות.' },
-        { category:'carriers', question:'כמה זמן לוקח האימות?', answer:'תהליך האימות לוקח 1-3 ימי עסקים. תקבלו הודעה באפליקציה כשהחשבון מוכן.' },
-        { category:'carriers', question:'אילו סוגי רכבים נתמכים?', answer:'משאיות סטנדרטיות, מנוף, לובי נמוך, מכליות, רמפה אחורית ועוד. ניתן לרשום מספר רכבים.' },
-        { category:'carriers', question:'איך מקבלים תשלום?', answer:'התשלום מגיע לארנק הדיגיטלי באפליקציה לאחר השלמת הובלה ואישור השולח. ניתן למשוך לחשבון בנק.' },
-        { category:'carriers', question:'האם אפשר לנהל נהגים?', answer:'כן! חשבון מוביל מאפשר להוסיף נהגים ורכבים ולנהל את כל הצי ממקום אחד.' },
-        { category:'payments', question:'אילו אמצעי תשלום מקובלים?', answer:'תשלום דרך הארנק הדיגיטלי. ניתן לטעון באמצעות כרטיס אשראי או העברה בנקאית.' },
-        { category:'payments', question:'מה העמלה?', answer:'עמלת שירות קטנה מכל עסקה מוצלחת, מפורטת בשקיפות לפני אישור כל הזמנה.' },
-        { category:'payments', question:'האם התשלומים מאובטחים?', answer:'כן, כל התשלומים מוצפנים. הכסף מוחזק בנאמנות עד אישור השלמת ההובלה.' },
-        { category:'safety', question:'איך WARGO מוודאת שהמובילים אמינים?', answer:'כל מוביל עובר אימות מקיף: מסמכי התאגדות, רישיונות, ביטוח ואימות זהות. בנוסף מערכת דירוגים וביקורות.' },
-        { category:'safety', question:'מה קורה אם יש בעיה?', answer:'צוות התמיכה זמין דרך הצ׳אט באפליקציה או בדוא"ל. אנו מגשרים בין הצדדים לפתרון מהיר.' },
-      ],
-    };
+    let faqData = DEFAULT_FAQ;
+    let activeCategory = 'all';
 
-    // ===== STATE =====
-    let siteData = {};
-
-    // ===== INIT =====
-    function init() {
-      const saved = null; // No localStorage in artifacts, using in-memory
-      try {
-        const raw = window.localStorage.getItem('wargo_admin_data');
-        if (raw) siteData = JSON.parse(raw);
-      } catch(e) {}
-
-      // Load repeater defaults if not in saved data
-      if (!siteData.features) siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
-      if (!siteData.steps) siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
-      if (!siteData.vehicles) siteData.vehicles = JSON.parse(JSON.stringify(DEFAULT_DATA.vehicles));
-      if (!siteData.phoneCards) siteData.phoneCards = JSON.parse(JSON.stringify(DEFAULT_DATA.phoneCards));
-      if (!siteData.faqItems) siteData.faqItems = JSON.parse(JSON.stringify(DEFAULT_DATA.faqItems));
-
-      renderFeatures();
-      renderSteps();
-      renderVehicles();
-      renderPhoneCards();
-      renderAllFaq();
-      loadFieldValues();
-
-      // Check session
-      try {
-        if (window.sessionStorage.getItem('wargo_admin_auth') === 'true') {
-          showApp();
+    // Load from admin
+    try {
+      const raw = localStorage.getItem('wargo_admin_data');
+      if (raw) {
+        const data = JSON.parse(raw);
+        // Admin stores FAQ as faqItems with {category, question, answer}
+        if (data.faqItems && data.faqItems.length > 0) {
+          faqData = data.faqItems.map(item => ({
+            cat: item.category,
+            q: item.question,
+            a: item.answer
+          }));
         }
-      } catch(e) {}
-    }
-
-    // ===== LOGIN =====
-    function handleLogin() {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value;
-      if (user === ADMIN_USER && pass === ADMIN_PASS) {
-        try { window.sessionStorage.setItem('wargo_admin_auth', 'true'); } catch(e) {}
-        showApp();
-      } else {
-        document.getElementById('loginError').textContent = '❌ שם משתמש או סיסמה שגויים';
+        if (data['links.supportEmail']) {
+          document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
+            a.href = 'mailto:' + data['links.supportEmail'];
+          });
+        }
       }
-    }
+    } catch(e) {}
 
-    function handleLogout() {
-      try { window.sessionStorage.removeItem('wargo_admin_auth'); } catch(e) {}
-      document.getElementById('loginOverlay').classList.remove('hidden');
-      document.getElementById('app').classList.remove('active');
-      document.getElementById('loginUser').value = '';
-      document.getElementById('loginPass').value = '';
-      document.getElementById('loginError').textContent = '';
-    }
+    function renderFaq(items) {
+      const container = document.getElementById('faqContainer');
+      const empty = document.getElementById('faqEmpty');
 
-    function showApp() {
-      document.getElementById('loginOverlay').classList.add('hidden');
-      document.getElementById('app').classList.add('active');
-    }
+      if (items.length === 0) {
+        container.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
 
-    // Allow enter key on login
-    document.getElementById('loginPass').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleLogin();
-    });
-    document.getElementById('loginUser').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('loginPass').focus();
-    });
-
-    // ===== PANEL NAVIGATION =====
-    function switchPanel(el) {
-      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-      el.classList.add('active');
-      const panelId = el.dataset.panel;
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('panel-' + panelId).classList.add('active');
-
-      const titles = {
-        dashboard: 'לוח בקרה', hero: 'Hero — ראשי', features: 'יתרונות',
-        steps: 'איך זה עובד', audience: 'קהלי יעד', vehicles: 'סוגי רכבים',
-        links: 'קישורים וחנויות', branding: 'מיתוג וצבעים', footer: 'Footer', seo: 'SEO ומטא',
-        'pg-terms': 'תנאי שימוש', 'pg-privacy': 'מדיניות פרטיות', 'pg-refund': 'ביטול עסקה', 'pg-faq': 'שאלות נפוצות'
-        'pg-terms': '📋 תנאי שימוש', 'pg-privacy': '🔒 מדיניות פרטיות',
-        'pg-refund': '↩️ ביטול עסקה', 'pg-faq': '❓ שאלות נפוצות'
-      };
-      document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
-    }
-
-    // ===== LOAD/SAVE FIELD VALUES =====
-    function loadFieldValues() {
-      document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.dataset.key;
-        if (siteData[key] !== undefined) {
-          el.value = siteData[key];
-        }
+      // Group by category
+      const catNames = { general: '🌐 כללי', shippers: '📦 שולחים', carriers: '🚛 מובילים', payments: '💰 תשלומים', safety: '🛡️ בטיחות' };
+      const grouped = {};
+      items.forEach(item => {
+        if (!grouped[item.cat]) grouped[item.cat] = [];
+        grouped[item.cat].push(item);
       });
+
+      let html = '';
+      for (const cat of Object.keys(catNames)) {
+        if (!grouped[cat]) continue;
+        html += `<div class="faq-category-label">${catNames[cat] || cat}</div>`;
+        grouped[cat].forEach((item, i) => {
+          html += `
+            <div class="faq-item" data-cat="${item.cat}">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>${item.q}</span>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">${item.a}</div>
+              </div>
+            </div>`;
+        });
+      }
+      container.innerHTML = html;
     }
 
-    function collectFieldValues() {
-      document.querySelectorAll('[data-key]').forEach(el => {
-        siteData[el.dataset.key] = el.value;
-      });
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      const wasOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
     }
 
-    // ===== SAVE =====
-    function saveAll() {
-      collectFieldValues();
-      collectRepeaters();
-      try {
-        window.localStorage.setItem('wargo_admin_data', JSON.stringify(siteData));
-      } catch(e) {}
-      showToast('השינויים נשמרו בהצלחה! ✅');
-      updateStats();
+    function filterCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
     }
 
-    function resetData() {
-      if (!confirm('האם אתה בטוח? כל השינויים יימחקו ויוחזרו לברירת המחדל.')) return;
-      try { window.localStorage.removeItem('wargo_admin_data'); } catch(e) {}
-      siteData = {};
-      siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
-      siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
-      siteData.vehicles = JSON.parse(JSON.stringify(DEFAULT_DATA.vehicles));
-      siteData.phoneCards = JSON.parse(JSON.stringify(DEFAULT_DATA.phoneCards));
-      siteData.faqItems = JSON.parse(JSON.stringify(DEFAULT_DATA.faqItems));
-      renderFeatures();
-      renderSteps();
-      renderVehicles();
-      renderPhoneCards();
-      renderAllFaq();
-      // Reset all fields to default
-      document.querySelectorAll('[data-key]').forEach(el => {
-        el.value = el.defaultValue || '';
-      });
-      showToast('הנתונים אופסו לברירת מחדל 🔄');
+    function filterFaq() {
+      applyFilters();
     }
 
-    // ===== PREVIEW =====
-    function openPreview() {
-      collectFieldValues();
-      collectRepeaters();
-      try {
-        window.localStorage.setItem('wargo_admin_data', JSON.stringify(siteData));
-      } catch(e) {}
-      window.open('../index.html', '_blank');
+    function applyFilters() {
+      const search = document.getElementById('faqSearch').value.trim().toLowerCase();
+      let items = faqData;
+
+      if (activeCategory !== 'all') {
+        items = items.filter(i => i.cat === activeCategory);
+      }
+      if (search) {
+        items = items.filter(i => i.q.toLowerCase().includes(search) || i.a.toLowerCase().includes(search));
+      }
+      renderFaq(items);
     }
 
-    // ===== TOAST =====
-    function showToast(text) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastText').textContent = text;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // ===== REPEATER: FEATURES =====
-    function renderFeatures() {
-      const container = document.getElementById('featuresRepeater');
-      container.innerHTML = siteData.features.map((f, i) => `
-        <div class="repeater-item">
-          <div class="repeater-item-header">
-            <span class="repeater-item-num">#${i + 1}</span>
-            <div class="repeater-item-actions">
-              ${i > 0 ? `<button class="repeater-btn" onclick="moveFeature(${i},-1)" title="הזז למעלה">↑</button>` : ''}
-              ${i < siteData.features.length - 1 ? `<button class="repeater-btn" onclick="moveFeature(${i},1)" title="הזז למטה">↓</button>` : ''}
-              <button class="repeater-btn delete" onclick="deleteFeature(${i})" title="מחק">✕</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label"><label>אייקון</label></div>
-              <input type="text" value="${f.icon}" onchange="siteData.features[${i}].icon=this.value">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>כותרת</label></div>
-              <input type="text" value="${f.title}" onchange="siteData.features[${i}].title=this.value">
-            </div>
-          </div>
-          <div class="field">
-            <div class="field-label"><label>תיאור</label></div>
-            <textarea onchange="siteData.features[${i}].desc=this.value">${f.desc}</textarea>
-          </div>
-        </div>
-      `).join('');
-      updateStats();
-    }
-
-    function addFeature() {
-      siteData.features.push({ icon: '⭐', title: 'יתרון חדש', desc: 'תיאור היתרון...' });
-      renderFeatures();
-    }
-
-    function deleteFeature(i) {
-      if (!confirm('למחוק את היתרון?')) return;
-      siteData.features.splice(i, 1);
-      renderFeatures();
-    }
-
-    function moveFeature(i, dir) {
-      const arr = siteData.features;
-      [arr[i], arr[i + dir]] = [arr[i + dir], arr[i]];
-      renderFeatures();
-    }
-
-    // ===== REPEATER: STEPS =====
-    function renderSteps() {
-      const container = document.getElementById('stepsRepeater');
-      container.innerHTML = siteData.steps.map((s, i) => `
-        <div class="repeater-item">
-          <div class="repeater-item-header">
-            <span class="repeater-item-num">שלב ${String(i + 1).padStart(2, '0')}</span>
-            <div class="repeater-item-actions">
-              ${i > 0 ? `<button class="repeater-btn" onclick="moveStep(${i},-1)">↑</button>` : ''}
-              ${i < siteData.steps.length - 1 ? `<button class="repeater-btn" onclick="moveStep(${i},1)">↓</button>` : ''}
-              <button class="repeater-btn delete" onclick="deleteStep(${i})">✕</button>
-            </div>
-          </div>
-          <div class="field">
-            <div class="field-label"><label>כותרת</label></div>
-            <input type="text" value="${s.title}" onchange="siteData.steps[${i}].title=this.value">
-          </div>
-          <div class="field">
-            <div class="field-label"><label>תיאור</label></div>
-            <textarea onchange="siteData.steps[${i}].desc=this.value">${s.desc}</textarea>
-          </div>
-        </div>
-      `).join('');
-      updateStats();
-    }
-
-    function addStep() {
-      siteData.steps.push({ title: 'שלב חדש', desc: 'תיאור השלב...' });
-      renderSteps();
-    }
-
-    function deleteStep(i) {
-      if (!confirm('למחוק את השלב?')) return;
-      siteData.steps.splice(i, 1);
-      renderSteps();
-    }
-
-    function moveStep(i, dir) {
-      const arr = siteData.steps;
-      [arr[i], arr[i + dir]] = [arr[i + dir], arr[i]];
-      renderSteps();
-    }
-
-    // ===== REPEATER: VEHICLES =====
-    function renderVehicles() {
-      const container = document.getElementById('vehiclesRepeater');
-      container.innerHTML = siteData.vehicles.map((v, i) => `
-        <div class="repeater-item">
-          <div class="repeater-item-header">
-            <span class="repeater-item-num">#${i + 1}</span>
-            <div class="repeater-item-actions">
-              <button class="repeater-btn delete" onclick="deleteVehicle(${i})">✕</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label"><label>אייקון</label></div>
-              <input type="text" value="${v.icon}" onchange="siteData.vehicles[${i}].icon=this.value">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>שם</label></div>
-              <input type="text" value="${v.name}" onchange="siteData.vehicles[${i}].name=this.value">
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function addVehicle() {
-      siteData.vehicles.push({ icon: '🚚', name: 'סוג רכב חדש' });
-      renderVehicles();
-    }
-
-    function deleteVehicle(i) {
-      siteData.vehicles.splice(i, 1);
-      renderVehicles();
-    }
-
-    // ===== REPEATER: PHONE CARDS =====
-    function renderPhoneCards() {
-      const container = document.getElementById('phoneCardsRepeater');
-      container.innerHTML = siteData.phoneCards.map((c, i) => `
-        <div class="repeater-item">
-          <div class="repeater-item-header">
-            <span class="repeater-item-num">כרטיס ${i + 1}</span>
-            <div class="repeater-item-actions">
-              <button class="repeater-btn delete" onclick="deletePhoneCard(${i})">✕</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label"><label>מסלול</label></div>
-              <input type="text" value="${c.route}" onchange="siteData.phoneCards[${i}].route=this.value">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>מחיר</label></div>
-              <input type="text" value="${c.price}" onchange="siteData.phoneCards[${i}].price=this.value">
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label"><label>פרט 1</label></div>
-              <input type="text" value="${c.detail1}" onchange="siteData.phoneCards[${i}].detail1=this.value">
-            </div>
-            <div class="field">
-              <div class="field-label"><label>פרט 2</label></div>
-              <input type="text" value="${c.detail2}" onchange="siteData.phoneCards[${i}].detail2=this.value">
-            </div>
-          </div>
-          <div class="field">
-            <div class="field-label"><label>תגית</label></div>
-            <input type="text" value="${c.tag}" onchange="siteData.phoneCards[${i}].tag=this.value">
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function deletePhoneCard(i) {
-      siteData.phoneCards.splice(i, 1);
-      renderPhoneCards();
-    }
-
-    // ===== COLLECT REPEATER DATA =====
-    function collectRepeaters() {
-      // Features, steps, vehicles, phoneCards are updated inline via onchange
-      // Nothing extra needed
-    }
-
-    // ===== REPEATER: FAQ =====
-    const FAQ_CATEGORIES = ['general','shippers','carriers','payments','safety'];
-
-    function renderAllFaq() {
-      FAQ_CATEGORIES.forEach(cat => renderFaqCategory(cat));
-    }
-
-    function renderFaqCategory(cat) {
-      const container = document.getElementById('faqRepeater-' + cat);
-      if (!container) return;
-      const items = (siteData.faqItems || []).filter(i => i.category === cat);
-      container.innerHTML = items.map((item, idx) => {
-        const globalIdx = siteData.faqItems.indexOf(item);
-        return `
-        <div class="repeater-item">
-          <div class="repeater-item-header">
-            <span class="repeater-item-num">Q${idx + 1}</span>
-            <div class="repeater-item-actions">
-              <button class="repeater-btn delete" onclick="deleteFaqItem(${globalIdx},'${cat}')">✕</button>
-            </div>
-          </div>
-          <div class="field">
-            <div class="field-label"><label>שאלה</label></div>
-            <input type="text" value="${item.question.replace(/"/g,'&quot;')}" onchange="siteData.faqItems[${globalIdx}].question=this.value">
-          </div>
-          <div class="field">
-            <div class="field-label"><label>תשובה</label></div>
-            <textarea onchange="siteData.faqItems[${globalIdx}].answer=this.value" style="min-height:70px;">${item.answer}</textarea>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    function addFaqItem(cat) {
-      siteData.faqItems.push({ category: cat, question: 'שאלה חדשה', answer: 'תשובה...' });
-      renderFaqCategory(cat);
-    }
-
-    function deleteFaqItem(globalIdx, cat) {
-      if (!confirm('למחוק את השאלה?')) return;
-      siteData.faqItems.splice(globalIdx, 1);
-      renderAllFaq();
-    }
-
-    // ===== LOAD DEFAULT CONTENT FOR LEGAL PAGES =====
-    function loadDefaultContent(page) {
-      if (!confirm('לטעון את תוכן ברירת המחדל? זה ימחק את התוכן הנוכחי.')) return;
-      // Fetch the actual page HTML to get default content
-      fetch('../' + page + '.html')
-        .then(r => r.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const content = doc.getElementById('legalBody');
-          if (content) {
-            const editor = document.getElementById(page + 'Editor');
-            if (editor) {
-              editor.value = content.innerHTML.trim();
-              siteData[page + '.content'] = editor.value;
-              showToast('תוכן ברירת מחדל נטען ✅');
-            }
-          }
-        })
-        .catch(() => showToast('שגיאה בטעינת התוכן'));
-    }
-
-    // ===== STATS =====
-    function updateStats() {
-      const el1 = document.getElementById('statFeatures');
-      const el2 = document.getElementById('statSteps');
-      if (el1) el1.textContent = siteData.features ? siteData.features.length : 0;
-      if (el2) el2.textContent = siteData.steps ? siteData.steps.length : 0;
-    }
-
-    // ===== RUN =====
-    init();
+    // Initial render
+    renderFaq(faqData);
   </script>
 </body>
 </html>
