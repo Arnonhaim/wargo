@@ -176,17 +176,6 @@
           </label>
         </div>
 
-        <div class="pref-item">
-          <div class="pref-info">
-            <div class="pref-label">📊 סיכום שבועי</div>
-            <div class="pref-desc">סקירה שבועית של הפעילות שלך</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="pref_weekly" onchange="savePref('weekly_digest', this.checked)">
-            <span class="toggle-track"></span>
-          </label>
-        </div>
-
         <div id="saveStatus" class="status-msg"></div>
 
         <div class="unsub-all">
@@ -272,7 +261,6 @@
       document.getElementById('pref_transactional').checked = prefs.transactional_emails ?? true;
       document.getElementById('pref_booking').checked = prefs.booking_updates ?? true;
       document.getElementById('pref_marketing').checked = prefs.marketing_emails ?? false;
-      document.getElementById('pref_weekly').checked = prefs.weekly_digest ?? false;
     }
 
     async function savePref(field, value) {
@@ -284,7 +272,7 @@
         showStatus(statusEl, 'success', '✅ ההעדפה עודכנה');
         setTimeout(() => { statusEl.style.display = 'none'; statusEl.className = 'status-msg'; }, 2000);
       } catch (err) {
-        const toggleMap = { transactional_emails: 'pref_transactional', booking_updates: 'pref_booking', marketing_emails: 'pref_marketing', weekly_digest: 'pref_weekly' };
+        const toggleMap = { transactional_emails: 'pref_transactional', booking_updates: 'pref_booking', marketing_emails: 'pref_marketing' };
         const toggleEl = document.getElementById(toggleMap[field]);
         if (toggleEl) toggleEl.checked = !value;
         showStatus(statusEl, 'error', '❌ שגיאה בשמירה, נסה שוב');
@@ -298,7 +286,7 @@
       const statusEl = document.getElementById('saveStatus');
       try {
         await apiCall({ action: 'unsubscribe_all', email: currentEmail });
-        setToggles({ transactional_emails: false, booking_updates: false, marketing_emails: false, weekly_digest: false });
+        setToggles({ transactional_emails: false, booking_updates: false, marketing_emails: false });
         document.getElementById('resubPanel').style.display = 'block';
         showStatus(statusEl, 'success', '✅ הוסרת מכל הרשימות');
       } catch (err) {
@@ -311,7 +299,7 @@
       const statusEl = document.getElementById('saveStatus');
       try {
         await apiCall({ action: 'resubscribe_all', email: currentEmail });
-        setToggles({ transactional_emails: true, booking_updates: true, marketing_emails: false, weekly_digest: false });
+        setToggles({ transactional_emails: true, booking_updates: true, marketing_emails: false });
         document.getElementById('resubPanel').style.display = 'none';
         showStatus(statusEl, 'success', '✅ ההתראות הופעלו מחדש!');
       } catch (err) {
