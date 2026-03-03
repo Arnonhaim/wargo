@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>העדפות התראות — WARGO</title>
+  <meta name="description" content="ניהול העדפות התראות ועדכונים במייל — WARGO">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #060D1B; --navy-800: #0B1426; --navy-700: #12203D; --navy-600: #1B3A5C;
+      --cyan-500: #00B4D8; --cyan-400: #22D3EE; --cyan-600: #0891B2;
+      --green: #22C55E; --green-dim: rgba(34,197,94,0.1);
+      --orange: #F97316; --orange-dim: rgba(249,115,22,0.1);
+      --red: #EF4444; --red-dim: rgba(239,68,68,0.1);
+      --white: #fff; --gray-400: #9CA3AF;
+      --card-bg: rgba(255,255,255,0.025); --card-border: rgba(255,255,255,0.06);
+      --input-bg: rgba(255,255,255,0.04); --input-border: rgba(255,255,255,0.08);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Heebo',sans-serif; background:var(--navy-900); color:var(--white); line-height:1.7; min-height:100vh; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:1000; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; background:rgba(6,13,27,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.05); }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo-icon { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,var(--cyan-500),var(--cyan-600)); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,180,216,0.3); }
+    .nav-logo-icon svg { width:24px; height:24px; fill:none; stroke:white; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .nav-logo-text { font-size:22px; font-weight:800; color:var(--white); letter-spacing:2px; font-family:'Poppins',sans-serif; }
+    .nav-back { color:rgba(255,255,255,0.5); text-decoration:none; font-size:14px; font-weight:500; transition:color 0.3s; }
+    .nav-back:hover { color:var(--cyan-400); }
+
+    /* PAGE */
+    .page { max-width:560px; margin:0 auto; padding:110px 24px 60px; }
+
+    /* HERO */
+    .hero { text-align:center; margin-bottom:36px; }
+    .hero-icon { width:72px; height:72px; border-radius:20px; background:rgba(0,180,216,0.1); display:inline-flex; align-items:center; justify-content:center; font-size:36px; margin-bottom:16px; }
+    .hero h1 { font-size:clamp(26px,4vw,34px); font-weight:800; margin-bottom:8px; }
+    .hero p { font-size:15px; color:var(--gray-400); max-width:420px; margin:0 auto; }
+
+    /* CARD */
+    .card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:16px; padding:28px; margin-bottom:20px; }
+    .card-title { font-size:17px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+    .card-desc { font-size:13px; color:var(--gray-400); margin-bottom:20px; }
+
+    /* LOOKUP */
+    .lookup-row { display:flex; gap:10px; }
+    .lookup-row input { flex:1; padding:12px 14px; background:var(--input-bg); border:1px solid var(--input-border); border-radius:10px; color:var(--white); font-size:14px; font-family:'Heebo',sans-serif; outline:none; transition:border-color 0.3s,box-shadow 0.3s; }
+    .lookup-row input:focus { border-color:var(--cyan-500); box-shadow:0 0 0 3px rgba(0,180,216,0.12); }
+    .lookup-row input::placeholder { color:rgba(255,255,255,0.2); }
+    .btn { padding:12px 24px; border:none; border-radius:10px; font-size:14px; font-weight:700; font-family:'Heebo',sans-serif; cursor:pointer; transition:all 0.3s; background:linear-gradient(135deg,var(--cyan-500),var(--cyan-600)); color:white; box-shadow:0 4px 20px rgba(0,180,216,0.25); white-space:nowrap; }
+    .btn:hover { transform:translateY(-1px); box-shadow:0 6px 25px rgba(0,180,216,0.35); }
+    .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+    /* PREFS */
+    .prefs-panel { display:none; animation:fadeIn 0.4s ease; }
+    .prefs-panel.active { display:block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .user-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(0,180,216,0.08); border:1px solid rgba(0,180,216,0.12); border-radius:10px; padding:8px 16px; margin-bottom:20px; font-size:13px; color:var(--cyan-400); font-weight:600; }
+    .user-badge svg { width:16px; height:16px; }
+
+    .pref-item { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .pref-item:last-child { border-bottom:none; }
+    .pref-info { flex:1; padding-left:16px; }
+    .pref-label { font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px; }
+    .pref-desc { font-size:12px; color:var(--gray-400); margin-top:2px; }
+
+    /* TOGGLE */
+    .toggle { position:relative; width:48px; height:26px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .toggle-track { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.1); border-radius:13px; transition:0.3s; }
+    .toggle-track:before { content:''; position:absolute; height:20px; width:20px; right:3px; bottom:3px; background:white; border-radius:50%; transition:0.3s; box-shadow:0 2px 6px rgba(0,0,0,0.3); }
+    .toggle input:checked + .toggle-track { background:var(--cyan-500); }
+    .toggle input:checked + .toggle-track:before { transform:translateX(-22px); }
+    .toggle input:disabled + .toggle-track { opacity:0.4; cursor:not-allowed; }
+
+    /* STATUS */
+    .status-msg { text-align:center; padding:12px; border-radius:10px; font-size:13px; font-weight:600; margin-top:16px; display:none; animation:fadeIn 0.3s ease; }
+    .status-msg.success { display:block; background:var(--green-dim); color:var(--green); border:1px solid rgba(34,197,94,0.15); }
+    .status-msg.error { display:block; background:var(--red-dim); color:var(--red); border:1px solid rgba(239,68,68,0.15); }
+
+    /* UNSUBSCRIBE ALL */
+    .unsub-all { text-align:center; margin-top:16px; }
+    .unsub-all-btn { background:none; border:1px solid rgba(239,68,68,0.2); color:var(--red); padding:10px 20px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Heebo',sans-serif; transition:all 0.3s; }
+    .unsub-all-btn:hover { background:var(--red-dim); border-color:rgba(239,68,68,0.4); }
+
+    /* FOOTER */
+    .footer { text-align:center; margin-top:40px; padding:20px; font-size:12px; color:rgba(255,255,255,0.2); }
+    .footer a { color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.3s; }
+    .footer a:hover { color:var(--cyan-400); }
+
+    @media(max-width:600px) {
+      nav { padding:12px 16px; }
+      .page { padding:90px 16px 40px; }
+      .lookup-row { flex-direction:column; }
+      .btn { width:100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/><path d="M13 6h5l3 5v6h-2M1 14V6h12v8M1 14h12m-1 0h5"/></svg>
+      </div>
+      <span class="nav-logo-text">WARGO</span>
+    </a>
+    <a href="/" class="nav-back">→ חזרה לאתר</a>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="page">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-icon">📧</div>
+      <h1>העדפות התראות במייל</h1>
+      <p>בחר אילו עדכונים תרצה לקבל מאיתנו. השינויים נשמרים אוטומטית.</p>
+    </div>
+
+    <!-- STEP 1: LOOKUP -->
+    <div class="card" id="lookupCard">
+      <div class="card-title">🔍 זיהוי חשבון</div>
+      <div class="card-desc">הזן את כתובת המייל המשויכת לחשבון WARGO שלך</div>
+      <div class="lookup-row">
+        <input type="email" id="emailInput" placeholder="your@email.com" dir="ltr" autocomplete="email">
+        <button class="btn" id="lookupBtn" onclick="lookupUser()">🔎 חפש</button>
+      </div>
+      <div id="lookupStatus" class="status-msg"></div>
+    </div>
+
+    <!-- STEP 2: PREFERENCES -->
+    <div class="prefs-panel" id="prefsPanel">
+      <div class="card">
+        <div class="card-title">⚙️ העדפות התראות</div>
+        <div id="userBadge" class="user-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="userEmail"></span>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <div class="pref-label">📋 עדכוני מערכת</div>
+            <div class="pref-desc">שינויי סטטוס, אישורים, התראות חשובות</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pref_transactional" onchange="savePref('transactional_emails', this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <div class="pref-label">📦 עדכוני הזמנות</div>
+            <div class="pref-desc">הצעות חדשות, שינויים בהזמנות, עדכוני משלוחים</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pref_booking" onchange="savePref('booking_updates', this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <div class="pref-label">📣 דיוור שיווקי</div>
+            <div class="pref-desc">מבצעים, חדשות ועדכונים</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pref_marketing" onchange="savePref('marketing_emails', this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <div class="pref-label">📊 סיכום שבועי</div>
+            <div class="pref-desc">סקירה שבועית של הפעילות שלך</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pref_weekly" onchange="savePref('weekly_digest', this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <div id="saveStatus" class="status-msg"></div>
+
+        <div class="unsub-all">
+          <button class="unsub-all-btn" onclick="unsubscribeAll()">🚫 הסר אותי מכל הרשימות</button>
+        </div>
+      </div>
+
+      <!-- RESUBSCRIBE ALL -->
+      <div id="resubPanel" class="card" style="display:none; text-align:center;">
+        <div style="font-size:40px; margin-bottom:12px;">📭</div>
+        <h3 style="margin-bottom:8px;">הוסרת מכל הרשימות</h3>
+        <p style="font-size:13px; color:var(--gray-400); margin-bottom:16px;">לא תקבל יותר מיילים מ-WARGO. אם תשנה דעתך, תמיד אפשר להירשם מחדש.</p>
+        <button class="btn" onclick="resubscribeAll()" style="width:auto;">🔔 רוצה לחזור? הפעל מחדש</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>© 2025 WARGO — פלטפורמת הובלות חכמה</p>
+    <p style="margin-top:6px;"><a href="/">דף הבית</a> &nbsp;•&nbsp; <a href="/help.html">מרכז עזרה</a> &nbsp;•&nbsp; <a href="/privacy.html">מדיניות פרטיות</a></p>
+  </div>
+
+  <!-- API -->
+  <script>
+    const API_URL = 'https://yrtrwhiootynxkebkpme.supabase.co/functions/v1/manage-email-prefs';
+    let currentEmail = null;
+
+    // Auto-fill from URL param (?email=xxx)
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailParam = urlParams.get('email');
+    if (emailParam) {
+      document.getElementById('emailInput').value = emailParam;
+      setTimeout(() => lookupUser(), 300);
+    }
+
+    async function apiCall(body) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'שגיאה');
+      return data;
+    }
+
+    async function lookupUser() {
+      const email = document.getElementById('emailInput').value.trim().toLowerCase();
+      const statusEl = document.getElementById('lookupStatus');
+      const btn = document.getElementById('lookupBtn');
+
+      if (!email || !email.includes('@')) {
+        showStatus(statusEl, 'error', '⚠️ נא להזין כתובת מייל תקינה');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '⏳ מחפש...';
+      statusEl.className = 'status-msg';
+      statusEl.style.display = 'none';
+
+      try {
+        const data = await apiCall({ action: 'get', email });
+        currentEmail = email;
+
+        setToggles(data.prefs);
+
+        document.getElementById('userEmail').textContent = email;
+        document.getElementById('prefsPanel').classList.add('active');
+        document.getElementById('lookupCard').style.display = 'none';
+        document.getElementById('resubPanel').style.display = 'none';
+
+      } catch (err) {
+        showStatus(statusEl, 'error', '❌ ' + (err.message || 'לא נמצא חשבון'));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔎 חפש';
+      }
+    }
+
+    function setToggles(prefs) {
+      document.getElementById('pref_transactional').checked = prefs.transactional_emails ?? true;
+      document.getElementById('pref_booking').checked = prefs.booking_updates ?? true;
+      document.getElementById('pref_marketing').checked = prefs.marketing_emails ?? false;
+      document.getElementById('pref_weekly').checked = prefs.weekly_digest ?? false;
+    }
+
+    async function savePref(field, value) {
+      if (!currentEmail) return;
+      const statusEl = document.getElementById('saveStatus');
+
+      try {
+        await apiCall({ action: 'update', email: currentEmail, field, value });
+        showStatus(statusEl, 'success', '✅ ההעדפה עודכנה');
+        setTimeout(() => { statusEl.style.display = 'none'; statusEl.className = 'status-msg'; }, 2000);
+      } catch (err) {
+        const toggleMap = { transactional_emails: 'pref_transactional', booking_updates: 'pref_booking', marketing_emails: 'pref_marketing', weekly_digest: 'pref_weekly' };
+        const toggleEl = document.getElementById(toggleMap[field]);
+        if (toggleEl) toggleEl.checked = !value;
+        showStatus(statusEl, 'error', '❌ שגיאה בשמירה, נסה שוב');
+      }
+    }
+
+    async function unsubscribeAll() {
+      if (!currentEmail) return;
+      if (!confirm('האם אתה בטוח? לא תקבל יותר מיילים מ-WARGO.')) return;
+
+      const statusEl = document.getElementById('saveStatus');
+      try {
+        await apiCall({ action: 'unsubscribe_all', email: currentEmail });
+        setToggles({ transactional_emails: false, booking_updates: false, marketing_emails: false, weekly_digest: false });
+        document.getElementById('resubPanel').style.display = 'block';
+        showStatus(statusEl, 'success', '✅ הוסרת מכל הרשימות');
+      } catch (err) {
+        showStatus(statusEl, 'error', '❌ שגיאה: ' + (err.message || 'נסה שוב'));
+      }
+    }
+
+    async function resubscribeAll() {
+      if (!currentEmail) return;
+      const statusEl = document.getElementById('saveStatus');
+      try {
+        await apiCall({ action: 'resubscribe_all', email: currentEmail });
+        setToggles({ transactional_emails: true, booking_updates: true, marketing_emails: false, weekly_digest: false });
+        document.getElementById('resubPanel').style.display = 'none';
+        showStatus(statusEl, 'success', '✅ ההתראות הופעלו מחדש!');
+      } catch (err) {
+        showStatus(statusEl, 'error', '❌ שגיאה: ' + (err.message || 'נסה שוב'));
+      }
+    }
+
+    function showStatus(el, type, msg) {
+      el.textContent = msg;
+      el.className = 'status-msg ' + type;
+      el.style.display = 'block';
+    }
+
+    document.getElementById('emailInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') lookupUser();
+    });
+  </script>
+</body>
+</html>
