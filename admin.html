@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Assistant:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-primary: #0C0F1A;
@@ -948,6 +949,9 @@
         <div class="sidebar-item" data-panel="branding" onclick="switchPanel(this)">
           <span class="sidebar-item-icon">🎨</span> מיתוג וצבעים
         </div>
+        <div class="sidebar-item" data-panel="typography" onclick="switchPanel(this)">
+          <span class="sidebar-item-icon">🔤</span> טיפוגרפיה
+        </div>
         <div class="sidebar-item" data-panel="footer" onclick="switchPanel(this)">
           <span class="sidebar-item-icon">📄</span> Footer
         </div>
@@ -1070,11 +1074,11 @@
             </div>
             <div class="field">
               <div class="field-label"><label>שורה 1</label></div>
-              <input type="text" data-key="hero.title1" value="הובלות חזור">
+              <input type="text" data-key="hero.title1" value="לראשונה בישראל:">
             </div>
             <div class="field">
-              <div class="field-label"><label>שורה 2 (צבעונית)</label></div>
-              <input type="text" data-key="hero.title2" value="בלחיצת כפתור">
+              <div class="field-label"><label>שורה 2 </label></div>
+              <input type="text" data-key="hero.title2" value="שוק פתוח להובלות תעשייתיות.">
             </div>
           </div>
 
@@ -1385,6 +1389,336 @@
         </div>
 
         <!-- BRANDING -->
+                <!-- TYPOGRAPHY -->
+                <div class="panel" id="panel-typography">
+          <div class="card">
+            <div class="card-header"><div>
+              <div class="card-title"><span class="card-title-icon">🔠</span> Typography</div>
+              <div class="card-desc">H1-H6, Font, Size, Weight per block</div>
+            </div></div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">🏷️ Hero</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Hero Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.hero.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1" selected>H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.hero.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.hero.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.hero.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Hero Tag (Badge)</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.heroTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.heroTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.heroTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.heroTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Hero Description</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.heroDesc.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p" selected>P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.heroDesc.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.heroDesc.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.heroDesc.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">⭐ Features</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.features.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2" selected>H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.features.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.features.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.features.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Tag</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.featuresTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.featuresTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.featuresTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.featuresTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Description</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.featuresDesc.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p" selected>P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.featuresDesc.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.featuresDesc.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.featuresDesc.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Card Titles</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.featuresCard.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3" selected>H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.featuresCard.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.featuresCard.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.featuresCard.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">🚀 Steps</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.steps.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2" selected>H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.steps.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.steps.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.steps.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Tag</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.stepsTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.stepsTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.stepsTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.stepsTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Step Titles</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.stepsCard.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3" selected>H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.stepsCard.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.stepsCard.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.stepsCard.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">📦 Audience / Benefits</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.audience.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2" selected>H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.audience.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.audience.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.audience.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Tag</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.audienceTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.audienceTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.audienceTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.audienceTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Card Titles</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.audienceCard.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3" selected>H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.audienceCard.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.audienceCard.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.audienceCard.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">🚛 Vehicles</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.vehicles.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2" selected>H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.vehicles.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.vehicles.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.vehicles.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Tag</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.vehiclesTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.vehiclesTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.vehiclesTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.vehiclesTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">📥 Download CTA</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Title</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.download.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2" selected>H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.download.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.download.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.download.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Section Tag</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.downloadTag.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p">P</option><option value="span" selected>SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.downloadTag.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.downloadTag.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.downloadTag.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:16px;color:var(--orange);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);">📋 Footer</div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+              <div style="font-weight:600;margin-bottom:10px;color:var(--cyan);">Footer Description</div>
+              <div class="field-row">
+                <div class="field"><div class="field-label"><label>Tag</label></div>
+                  <select data-key="typo.footerDesc.tag" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option><option value="h5">H5</option><option value="h6">H6</option><option value="p" selected>P</option><option value="span">SPAN</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Font</label></div>
+                  <select data-key="typo.footerDesc.font" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="Heebo">Heebo</option><option value="Poppins">Poppins</option><option value="DM Sans">DM Sans</option><option value="Rubik">Rubik</option><option value="Assistant">Assistant</option><option value="Inter">Inter</option><option value="Arial">Arial</option><option value="Canva Sans">Canva Sans</option></select>
+                </div>
+                <div class="field"><div class="field-label"><label>Size (px)</label></div>
+                  <input type="number" data-key="typo.footerDesc.size" value="" placeholder="auto" style="width:100%;">
+                </div>
+                <div class="field"><div class="field-label"><label>Weight</label></div>
+                  <select data-key="typo.footerDesc.weight" style="width:100%;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);"><option value="">Auto</option><option value="300">Light (300)</option><option value="400">Regular (400)</option><option value="500">Medium (500)</option><option value="600">Semi-Bold (600)</option><option value="700">Bold (700)</option><option value="800">Extra-Bold (800)</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="panel" id="panel-branding">
           <div class="card">
             <div class="card-header">
@@ -1921,6 +2255,69 @@
         siteData[el.dataset.key] = el.value;
       });
     }
+
+    
+    // Auto-add inline typography bars
+    function createTypoBar(typoKey, defaultTag) {
+      var fonts = ['Heebo','Poppins','DM Sans','Rubik','Assistant','Inter','Arial','Canva Sans'];
+      var tags = ['h1','h2','h3','h4','h5','h6','p','span'];
+      var weights = [['','Auto'],['300','Light'],['400','Regular'],['500','Medium'],['600','Semi-Bold'],['700','Bold'],['800','Extra-Bold']];
+      var ss = 'padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-size:12px;flex:1;';
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;gap:6px;margin-top:6px;align-items:center;padding:8px 10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;';
+      bar.innerHTML = '<span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">Typo:</span>';
+
+      var tagSel = document.createElement('select');
+      tagSel.setAttribute('data-key', 'typo.' + typoKey + '.tag');
+      tagSel.style.cssText = ss;
+      tags.forEach(function(t) { var o = new Option(t.toUpperCase(), t); if (t === defaultTag) o.selected = true; tagSel.add(o); });
+      bar.appendChild(tagSel);
+
+      var fontSel = document.createElement('select');
+      fontSel.setAttribute('data-key', 'typo.' + typoKey + '.font');
+      fontSel.style.cssText = ss;
+      fonts.forEach(function(fn) { fontSel.add(new Option(fn, fn)); });
+      bar.appendChild(fontSel);
+
+      var sizeInp = document.createElement('input');
+      sizeInp.type = 'number';
+      sizeInp.setAttribute('data-key', 'typo.' + typoKey + '.size');
+      sizeInp.placeholder = 'px';
+      sizeInp.style.cssText = ss + 'width:60px;flex:none;';
+      bar.appendChild(sizeInp);
+
+      var weightSel = document.createElement('select');
+      weightSel.setAttribute('data-key', 'typo.' + typoKey + '.weight');
+      weightSel.style.cssText = ss;
+      weights.forEach(function(w) { weightSel.add(new Option(w[1], w[0])); });
+      bar.appendChild(weightSel);
+
+      return bar;
+    }
+
+    // Map data-key to typo key and default tag
+    var inlineTypoMap = {
+      'hero.title2':       ['hero', 'h1'],
+      'hero.description':  ['heroDesc', 'p'],
+      'hero.tag':          ['heroTag', 'span'],
+      'features.title':    ['features', 'h2'],
+      'features.subtitle': ['featuresDesc', 'p'],
+      'features.tag':      ['featuresTag', 'span'],
+      'steps.title':       ['steps', 'h2'],
+      'steps.tag':         ['stepsTag', 'span'],
+      'audience.title':    ['audience', 'h2'],
+      'audience.tag':      ['audienceTag', 'span'],
+      'audience.subtitle': ['audienceDesc', 'p']
+    };
+
+    Object.keys(inlineTypoMap).forEach(function(dataKey) {
+      var conf = inlineTypoMap[dataKey];
+      var el = document.querySelector('[data-key="' + dataKey + '"]');
+      if (el) {
+        var bar = createTypoBar(conf[0], conf[1]);
+        el.parentNode.appendChild(bar);
+      }
+    });
 
     // ===== SAVE =====
     async function saveAll() {
