@@ -52,6 +52,8 @@
       color: var(--white);
       overflow-x: hidden;
       line-height: 1.6;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .en-text {
@@ -2166,6 +2168,9 @@
 
     // ===== DYNAMIC CONTENT FROM ADMIN =====
     // ===== LOAD SITE CONTENT FROM SUPABASE =====
+    // Safety: show page after 2s even if Supabase is slow
+    setTimeout(function() { document.body.style.opacity = '1'; }, 2000);
+
     (async function loadSiteContent() {
       let data = {};
 
@@ -2186,10 +2191,13 @@
         try {
           const raw = window.localStorage.getItem('wargo_admin_data');
           if (raw) data = JSON.parse(raw);
-        } catch(e) { return; }
+        } catch(e) {}
       }
 
-      if (!data || Object.keys(data).length === 0) return;
+      if (!data || Object.keys(data).length === 0) {
+        document.body.style.opacity = '1';
+        return;
+      }
 
       // Apply content
       const setText = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.textContent = val; };
@@ -2252,6 +2260,9 @@
         document.documentElement.style.setProperty('font-family', "'" + bodyFont + "', 'Heebo', sans-serif");
         document.body.style.fontFamily = "'" + bodyFont + "', 'Heebo', sans-serif";
       }
+
+      // Reveal page after content is applied
+      document.body.style.opacity = '1';
     })();
 
     // Helper: adjust hex color brightness by amount (-100 to +100)
