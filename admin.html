@@ -898,21 +898,20 @@
       <div class="login-logo">
         <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
       </div>
-      <div class="login-title">WARGO Admin</div>
+      <div class="login-title">WAR<span style="color:#ff7620">GO</span> Admin</div>
       <div class="login-subtitle">לוח ניהול תוכן — גרסה 1.0</div>
       <div class="login-field">
-        <label>שם משתמש</label>
-        <input type="text" id="loginUser" placeholder="הזן שם משתמש" autocomplete="username">
+        <label>אימייל</label>
+        <input type="email" id="loginUser" placeholder="הזן כתובת אימייל" autocomplete="email" dir="ltr">
       </div>
       <div class="login-field">
         <label>סיסמה</label>
         <input type="password" id="loginPass" placeholder="הזן סיסמה" autocomplete="current-password">
       </div>
       <div class="login-error" id="loginError"></div>
-      <button class="login-btn" onclick="handleLogin()">כניסה למערכת</button>
-      <div class="login-creds">
-        <div class="login-creds-title">פרטי התחברות</div>
-        <code>admin / Wargo2026!</code>
+      <button class="login-btn" onclick="handleLogin()" id="loginBtn">כניסה למערכת</button>
+      <div style="text-align:center;margin-top:16px;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.25);">🔒 גישה למנהלים מורשים בלבד</span>
       </div>
     </div>
   </div>
@@ -925,7 +924,7 @@
         <div class="sidebar-logo">
           <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         </div>
-        <span class="sidebar-brand">WARGO</span>
+        <span class="sidebar-brand">WAR<span style="color:#ff7620">GO</span></span>
         <span class="sidebar-badge">Admin</span>
       </div>
 
@@ -1370,7 +1369,7 @@
             </div>
             <div class="field">
               <div class="field-label"><label>כתובת מייל</label></div>
-              <input type="email" data-key="links.supportEmail" value="support@wargo.co.il">
+              <input type="email" data-key="links.supportEmail" value="support@wargo.app">
             </div>
           </div>
 
@@ -1670,10 +1669,24 @@
     <span id="toastText">השינויים נשמרו בהצלחה!</span>
   </div>
 
+  <!-- SUPABASE CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
   <script>
-    // ===== CREDENTIALS =====
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'Wargo2026!';
+    // ===== SUPABASE AUTH — NO HARDCODED CREDENTIALS =====
+    const SB_URL = 'https://yrtrwhiootynxkebkpme.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80';
+    const sb = supabase.createClient(SB_URL, SB_KEY);
+
+    const SESSION_KEY = 'wargo_cms_session';
+    const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 hours
+    let currentAdmin = null;
+
+    // SHA-256 hash — same algorithm as admin dashboard app
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
     // ===== DEFAULT DATA =====
     const DEFAULT_DATA = {
@@ -1729,13 +1742,11 @@
 
     // ===== INIT =====
     function init() {
-      const saved = null; // No localStorage in artifacts, using in-memory
       try {
         const raw = window.localStorage.getItem('wargo_admin_data');
         if (raw) siteData = JSON.parse(raw);
       } catch(e) {}
 
-      // Load repeater defaults if not in saved data
       if (!siteData.features) siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
       if (!siteData.steps) siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
       if (!siteData.vehicles) siteData.vehicles = JSON.parse(JSON.stringify(DEFAULT_DATA.vehicles));
@@ -1749,46 +1760,88 @@
       renderAllFaq();
       loadFieldValues();
 
-      // Check session (sessionStorage -> localStorage fallback)
+      // Restore saved session
+      restoreSession();
+    }
+
+    // ===== SECURE SESSION =====
+    async function restoreSession() {
       try {
-        const auth = (window.sessionStorage && window.sessionStorage.getItem('wargo_admin_auth')) ||
-                     (window.localStorage && window.localStorage.getItem('wargo_admin_auth'));
-        if (auth === 'true') showApp();
-      } catch(e) {}}
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return;
+        const session = JSON.parse(raw);
 
-    // ===== LOGIN =====
-    function handleLogin() {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value;
+        // Check expiry
+        if (!session.ts || Date.now() - session.ts > SESSION_TTL) {
+          localStorage.removeItem(SESSION_KEY);
+          return;
+        }
 
-      // User-friendly: allow username case-insensitive
-      const okUser = (user.toLowerCase() === ADMIN_USER.toLowerCase());
-      const okPass = (pass === ADMIN_PASS);
+        // Validate via server-side RPC — no direct table access
+        const { data, error } = await sb.rpc('verify_web_admin_session', { admin_id: session.id });
 
-      if (okUser && okPass) {
-        // Persist auth when possible (sessionStorage preferred, localStorage fallback)
-        try { window.sessionStorage && window.sessionStorage.setItem('wargo_admin_auth', 'true'); } catch(e) {}
-        try {
-          if (!(window.sessionStorage && window.sessionStorage.getItem('wargo_admin_auth') === 'true')) {
-            window.localStorage && window.localStorage.setItem('wargo_admin_auth', 'true');
-          }
-        } catch(e) {}
+        if (error || !data || !data.valid) {
+          localStorage.removeItem(SESSION_KEY);
+          return;
+        }
 
-        document.getElementById('loginError').textContent = '';
+        currentAdmin = data.admin;
         showApp();
-      } else {
-        document.getElementById('loginError').textContent = '❌ שם משתמש או סיסמה שגויים';
+      } catch(e) {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    // ===== LOGIN VIA SUPABASE RPC =====
+    async function handleLogin() {
+      const email = document.getElementById('loginUser').value.trim().toLowerCase();
+      const pass = document.getElementById('loginPass').value;
+      const errEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      if (!email || !pass) {
+        errEl.textContent = '❌ נא למלא אימייל וסיסמה';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '⏳ מתחבר...';
+      errEl.textContent = '';
+
+      try {
+        // Hash password client-side, send hash to server for comparison
+        // The actual password_hash in DB never reaches the client
+        const inputHash = await sha256(pass.trim());
+
+        const { data, error } = await sb.rpc('verify_web_admin_login', {
+          input_email: email,
+          input_password_hash: inputHash
+        });
+
+        if (error) throw new Error('שגיאה בהתחברות');
+        if (!data || !data.success) throw new Error(data?.error === 'invalid' ? 'אימייל או סיסמה שגויים' : 'שגיאה');
+
+        // Save session
+        currentAdmin = data.admin;
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ ...currentAdmin, ts: Date.now() }));
+        showApp();
+
+      } catch (e) {
+        errEl.textContent = '❌ ' + (e.message || 'שגיאה בהתחברות');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'כניסה למערכת';
       }
     }
 
     function handleLogout() {
-      try { window.sessionStorage && window.sessionStorage.removeItem('wargo_admin_auth'); } catch(e) {}
-      try { window.localStorage && window.localStorage.removeItem('wargo_admin_auth'); } catch(e) {}
+      currentAdmin = null;
+      try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
       document.getElementById('loginOverlay').classList.remove('hidden');
       document.getElementById('app').classList.remove('active');
       document.getElementById('loginUser').value = '';
       document.getElementById('loginPass').value = '';
-document.getElementById('loginError').textContent = '';
+      document.getElementById('loginError').textContent = '';
     }
 
     function showApp() {
@@ -1812,11 +1865,10 @@ document.getElementById('loginError').textContent = '';
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById('panel-' + panelId).classList.add('active');
 
-      const titles = {
+ const titles = {
         dashboard: 'לוח בקרה', hero: 'Hero — ראשי', features: 'יתרונות',
         steps: 'איך זה עובד', audience: 'קהלי יעד', vehicles: 'סוגי רכבים',
         links: 'קישורים וחנויות', branding: 'מיתוג וצבעים', footer: 'Footer', seo: 'SEO ומטא',
-        'pg-terms': 'תנאי שימוש', 'pg-privacy': 'מדיניות פרטיות', 'pg-refund': 'ביטול עסקה', 'pg-faq': 'שאלות נפוצות'
         'pg-terms': '📋 תנאי שימוש', 'pg-privacy': '🔒 מדיניות פרטיות',
         'pg-refund': '↩️ ביטול עסקה', 'pg-faq': '❓ שאלות נפוצות'
       };

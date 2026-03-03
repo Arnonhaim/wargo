@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדיניות פרטיות — WARGO</title>
+  <meta name="description" content="מדיניות הפרטיות של פלטפורמת WARGO להובלות חזור בישראל.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300B4D8'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>W</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #060D1B;
+      --navy-800: #0B1426;
+      --navy-700: #12203D;
+      --navy-600: #1B3A5C;
+      --cyan-500: #00B4D8;
+      --cyan-400: #22D3EE;
+      --cyan-600: #0891B2;
+      --white: #FFFFFF;
+      --gray-100: #F3F4F6;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--navy-900);
+      color: var(--white);
+      line-height: 1.7;
+    }
 
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,13,27,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,180,216,0.3);
+    }
+    .nav-logo-icon svg { width: 24px; height: 24px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo-text { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: 2px; }
+    .nav-back {
+      color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--cyan-400); }
+
+    /* === LEGAL PAGE CONTENT === */
+    .legal-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 120px 32px 80px;
+    }
+    .legal-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .legal-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(0,180,216,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin-bottom: 20px;
+    }
+    .legal-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .legal-meta {
+      font-size: 14px;
+      color: var(--gray-400);
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .legal-meta span { display: flex; align-items: center; gap: 6px; }
+
+    .legal-body h2 {
+      font-size: 22px; font-weight: 700;
+      margin: 40px 0 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      color: var(--cyan-400);
+    }
+    .legal-body h2:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+    .legal-body h3 {
+      font-size: 17px; font-weight: 600;
+      margin: 24px 0 10px;
+    }
+    .legal-body p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 14px;
+      line-height: 1.8;
+    }
+    .legal-body ul, .legal-body ol {
+      padding-right: 24px;
+      margin-bottom: 14px;
+    }
+    .legal-body li {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+    .legal-body strong { color: rgba(255,255,255,0.85); }
+    .legal-body a { color: var(--cyan-400); text-decoration: none; }
+    .legal-body a:hover { text-decoration: underline; }
+
+    .legal-sidebar-nav {
+      position: fixed;
+      left: 40px;
+      top: 140px;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .legal-sidebar-nav a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-right: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    .legal-sidebar-nav a:hover {
+      color: var(--cyan-400);
+      border-right-color: var(--cyan-400);
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding: 40px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 13px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--cyan-400); }
+    .footer-links a.active { color: var(--cyan-400); }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.15); }
+
+    @media (max-width: 1100px) { .legal-sidebar-nav { display: none; } }
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .legal-page { padding: 100px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <span class="nav-logo-text">WAR<span style="color:#ff7620">GO</span></span>
+    </a>
+    <a href="index.html" class="nav-back">→ חזרה לאתר</a>
+  </nav>
+
+  <div class="legal-page">
+    <div class="legal-header">
+      <div class="legal-icon">🔐</div>
+      <h1 class="legal-title" id="pageTitle">מדיניות פרטיות</h1>
+      <div class="legal-meta">
+        <span>📅 עדכון אחרון: <span id="lastUpdated">מרץ 2026</span></span>
+        <span>🏢 WARGO — פלטפורמת הובלות חכמה</span>
+      </div>
+    </div>
+
+    <div class="legal-body" id="legalBody">
+      <h2>1. מבוא</h2>
+      <p>WARGO בע"מ (להלן: "החברה", "אנחנו") מכבדת את פרטיות המשתמשים בפלטפורמה שלה. מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך.</p>
+      <p>השימוש בפלטפורמה מעיד על הסכמתך לאיסוף ושימוש במידע כמתואר במדיניות זו.</p>
+
+      <h2>2. מידע שאנו אוספים</h2>
+      <h3>מידע שאתה מוסר לנו:</h3>
+      <ul>
+        <li><strong>פרטי רישום:</strong> שם מלא, כתובת דוא"ל, מספר טלפון, סיסמה</li>
+        <li><strong>פרטי עסק:</strong> שם חברה, מספר עוסק/ח.פ., כתובת עסקית</li>
+        <li><strong>מסמכים:</strong> תעודת זהות, תעודת התאגדות, אישורי מס</li>
+        <li><strong>פרטי תשלום:</strong> מידע הנדרש לביצוע ולקבלת תשלומים</li>
+        <li><strong>תוכן משתמש:</strong> הודעות צ'אט, ביקורות, דירוגים</li>
+      </ul>
+      <h3>מידע שנאסף אוטומטית:</h3>
+      <ul>
+        <li>כתובת IP, סוג מכשיר, מערכת הפעלה, גרסת דפדפן</li>
+        <li>נתוני מיקום (בהסכמתך) לצורך חישוב מסלולים</li>
+        <li>נתוני שימוש — דפים שנצפו, פעולות שבוצעו, זמני שימוש</li>
+        <li>עוגיות (Cookies) ואמצעי מעקב דומים</li>
+      </ul>
+
+      <h2>3. שימוש במידע</h2>
+      <p>אנו משתמשים במידע שנאסף למטרות הבאות:</p>
+      <ul>
+        <li>הפעלה ותחזוקה של הפלטפורמה</li>
+        <li>יצירת חשבון משתמש ואימות זהות</li>
+        <li>חיבור בין שולחים למובילים</li>
+        <li>עיבוד תשלומים ותקשורת עם משתמשים</li>
+        <li>שיפור השירות וחוויית המשתמש</li>
+        <li>מניעת הונאות ושמירה על אבטחת הפלטפורמה</li>
+        <li>עמידה בדרישות חוק ורגולציה</li>
+        <li>שליחת עדכונים ותוכן שיווקי (בהסכמתך)</li>
+      </ul>
+
+      <h2>4. שיתוף מידע עם צדדים שלישיים</h2>
+      <p>אנו <strong>לא מוכרים</strong> את המידע האישי שלך. אנו עשויים לשתף מידע במקרים הבאים:</p>
+      <ul>
+        <li><strong>בין משתמשי הפלטפורמה:</strong> פרטים הכרחיים לביצוע הובלה (שם, טלפון, מיקום)</li>
+        <li><strong>ספקי שירות:</strong> חברות תשלום, שירותי ענן, אנליטיקה — בכפוף להסכמי סודיות</li>
+        <li><strong>דרישות חוק:</strong> כאשר נדרש על פי צו שיפוטי או חקיקה</li>
+        <li><strong>הגנה על זכויות:</strong> למניעת הונאה או פגיעה בחברה ובמשתמשים</li>
+      </ul>
+
+      <h2>5. אבטחת מידע</h2>
+      <p>אנו נוקטים באמצעי אבטחה מקובלים בתעשייה להגנה על המידע שלך, לרבות:</p>
+      <ul>
+        <li>הצפנת נתונים בהעברה (SSL/TLS) ובאחסון</li>
+        <li>גישה מוגבלת למידע על בסיס "צורך לדעת"</li>
+        <li>ניטור שוטף של מערכות האבטחה</li>
+        <li>גיבויים סדירים</li>
+      </ul>
+      <p>עם זאת, אין שיטת אבטחה מושלמת ואנו לא יכולים להבטיח אבטחה מוחלטת.</p>
+
+      <h2>6. שמירת מידע</h2>
+      <p>אנו שומרים את המידע שלך כל עוד חשבונך פעיל או כנדרש לצורך מתן השירות. לאחר מחיקת חשבון, נשמור מידע מסוים כנדרש על פי חוק (למשל, מסמכי מס).</p>
+
+      <h2>7. זכויות המשתמש</h2>
+      <p>בהתאם לחוק הגנת הפרטיות הישראלי, עומדות לך הזכויות הבאות:</p>
+      <ul>
+        <li><strong>עיון:</strong> לבקש עיון במידע שנשמר עליך</li>
+        <li><strong>תיקון:</strong> לבקש תיקון מידע שגוי</li>
+        <li><strong>מחיקה:</strong> לבקש מחיקת מידע (בכפוף למגבלות חוקיות)</li>
+        <li><strong>התנגדות:</strong> להתנגד לשימוש במידע לצרכי דיוור ישיר</li>
+      </ul>
+      <p>לפנייה בנושא זכויותיך, כתוב אלינו: <a href="mailto:support@wargo.app">support@wargo.app</a></p>
+
+      <h2>8. עוגיות (Cookies)</h2>
+      <p>הפלטפורמה משתמשת בעוגיות לצורך תפעול תקין, שמירת העדפות, אנליטיקה ושיפור חוויית המשתמש. ניתן לנהל את הגדרות העוגיות בדפדפן שלך.</p>
+
+      <h2>9. שינויים במדיניות</h2>
+      <p>אנו עשויים לעדכן מדיניות זו מעת לעת. שינויים מהותיים יפורסמו בפלטפורמה ו/או ישלחו בהתראה. המשך השימוש לאחר עדכון מהווה הסכמה למדיניות המעודכנת.</p>
+
+      <h2>10. יצירת קשר</h2>
+      <p>לשאלות בנושא פרטיות: <a href="mailto:support@wargo.app">support@wargo.app</a></p>
+    </div></div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">🏠 עמוד ראשי</a>
+      <a href="terms.html">תנאי שימוש</a>
+      <a href="privacy.html" class="active">מדיניות פרטיות</a>
+      <a href="refund.html">ביטול עסקה</a>
+      <a href="faq.html">שאלות נפוצות</a>
+      <a href="help.html">מרכז עזרה</a>
+    </div>
+    <div class="footer-copy">© 2026 WARGO. כל הזכויות שמורות.</div>
+  </footer>
+
+  <script>
+    (function() {
+      try {
+        const raw = localStorage.getItem('wargo_admin_data');
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data['privacy.content']) document.getElementById('legalBody').innerHTML = data['privacy.content'];
+        if (data['privacy.lastUpdated']) document.getElementById('lastUpdated').textContent = data['privacy.lastUpdated'];
+        if (data['links.supportEmail']) {
+          document.querySelectorAll('a[href^="mailto:"]').forEach(a => { a.href = 'mailto:' + data['links.supportEmail']; a.textContent = data['links.supportEmail']; });
+        }
+      } catch(e) {}
+    })();
+  </script>
+</body>
+</html>
