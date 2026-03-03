@@ -1835,6 +1835,8 @@
   </footer>
 
   <!-- ======== SCRIPTS ======== -->
+  <!-- Supabase CDN for loading site content -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     // ===== TRANSLATIONS =====
     const TRANSLATIONS = {
@@ -2175,15 +2177,33 @@
     });
 
     // ===== DYNAMIC CONTENT FROM ADMIN =====
-    (function loadAdminData() {
+    // ===== LOAD SITE CONTENT FROM SUPABASE =====
+    (async function loadSiteContent() {
       let data = {};
+
+      // Try Supabase first (global content)
       try {
-        const raw = window.localStorage.getItem('wargo_admin_data');
-        if (raw) data = JSON.parse(raw);
-      } catch(e) { return; }
+        const sbClient = supabase.createClient(
+          'https://yrtrwhiootynxkebkpme.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80'
+        );
+        const { data: row, error } = await sbClient.from('site_content').select('data').eq('id', 1).single();
+        if (!error && row && row.data && Object.keys(row.data).length > 0) {
+          data = row.data;
+        }
+      } catch(e) {}
+
+      // Fallback to localStorage
+      if (!data || Object.keys(data).length === 0) {
+        try {
+          const raw = window.localStorage.getItem('wargo_admin_data');
+          if (raw) data = JSON.parse(raw);
+        } catch(e) { return; }
+      }
 
       if (!data || Object.keys(data).length === 0) return;
 
+      // Apply content
       const setText = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.textContent = val; };
       const setHref = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.href = val; };
 
@@ -2213,17 +2233,14 @@
       // ===== APPLY BRANDING COLORS =====
       const root = document.documentElement.style;
 
-      // Accent color (brand.primary → cyan variants)
       const accent = data['brand.primary'] || data['brand.primary_text'];
       if (accent && accent !== '#00B4D8') {
         root.setProperty('--cyan-500', accent);
-        // Generate lighter/darker variants
         root.setProperty('--cyan-400', adjustBrightness(accent, 30));
         root.setProperty('--cyan-300', adjustBrightness(accent, 60));
         root.setProperty('--cyan-600', adjustBrightness(accent, -20));
       }
 
-      // Background color (brand.bgDark → navy variants)
       const bg = data['brand.bgDark'] || data['brand.bgDark_text'];
       if (bg && bg !== '#0B1426') {
         root.setProperty('--navy-800', bg);
