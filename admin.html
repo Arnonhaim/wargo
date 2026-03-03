@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WARGO Admin — ניהול תוכן</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300B4D8'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>W</text></svg>">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -87,7 +87,7 @@
       width: 64px;
       height: 64px;
       border-radius: 16px;
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
+      object-fit: cover;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -95,11 +95,7 @@
       box-shadow: 0 8px 30px var(--cyan-glow);
     }
 
-    .login-logo svg {
-      width: 30px; height: 30px;
-      fill: none; stroke: white; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
-    }
+    
 
     .login-title {
       font-size: 24px;
@@ -231,18 +227,14 @@
     .sidebar-logo {
       width: 36px; height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, var(--cyan), #0891B2);
+      object-fit: cover;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    .sidebar-logo svg {
-      width: 18px; height: 18px;
-      fill: none; stroke: white; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round;
-    }
+    
 
     .sidebar-brand {
       font-size: 16px;
@@ -897,9 +889,7 @@
   <div class="login-overlay" id="loginOverlay">
     <div class="login-bg-pattern"></div>
     <div class="login-card">
-      <div class="login-logo">
-        <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      </div>
+      <img src="assets/logo.png" class="login-logo" alt="WARGO">
       <div class="login-title">WAR<span style="color:#ff7620">GO</span> Admin</div>
       <div class="login-subtitle">לוח ניהול תוכן — גרסה 1.0</div>
       <div class="login-field">
@@ -923,9 +913,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        </div>
+        <img src="assets/logo.png" class="sidebar-logo" alt="WARGO">
         <span class="sidebar-brand">WAR<span style="color:#ff7620">GO</span></span>
         <span class="sidebar-badge">Admin</span>
       </div>
