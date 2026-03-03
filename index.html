@@ -299,12 +299,7 @@
       font-family: 'Poppins', 'Heebo', sans-serif;
     }
 
-    .hero h1 .gradient-text {
-      background: linear-gradient(135deg, var(--cyan-400), var(--cyan-500), #5EEAD4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+    /* gradient-text removed */
 
     .hero-desc {
       font-size: 18px;
@@ -1465,7 +1460,7 @@
         </div>
         <h1>
           הובלות חזור<br>
-          <span class="gradient-text">בלחיצת כפתור</span>
+          בלחיצת כפתור
         </h1>
         <p class="hero-desc">
           WARGO מחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. 
@@ -2041,7 +2036,7 @@
       const heroTag = document.querySelector('.hero-tag');
       if (heroTag) heroTag.innerHTML = '<div class="hero-tag-dot"></div>' + t.heroTag;
       const h1 = document.querySelector('.hero h1');
-      if (h1) h1.innerHTML = t.heroTitle1 + '<br><span class="gradient-text">' + t.heroTitle2 + '</span>';
+      if (h1) h1.innerHTML = t.heroTitle1 + '<br>' + t.heroTitle2;
       const heroDesc = document.querySelector('.hero-desc');
       if (heroDesc) heroDesc.textContent = t.heroDesc;
 
@@ -2202,7 +2197,7 @@
       if (data['hero.tag']) { const tag = document.querySelector('.hero-tag'); if(tag) tag.innerHTML = '<div class="hero-tag-dot"></div>' + data['hero.tag']; }
       if (data['hero.title1'] || data['hero.title2']) {
         const h1 = document.querySelector('.hero h1');
-        if (h1) h1.innerHTML = (data['hero.title1'] || 'הובלות חזור') + '<br><span class="gradient-text">' + (data['hero.title2'] || 'בלחיצת כפתור') + '</span>';
+        if (h1) h1.innerHTML = (data['hero.title1'] || 'הובלות חזור') + '<br>' + (data['hero.title2'] || 'בלחיצת כפתור');
       }
       if (data['hero.description']) setText('.hero-desc', data['hero.description']);
       if (data['links.appStore']) setHref('#ios-download', data['links.appStore']);
@@ -2291,7 +2286,7 @@
           if (font)   el.style.fontFamily = "'" + font + "', sans-serif";
           if (size)   el.style.fontSize   = size + 'px';
           if (weight) el.style.fontWeight = weight;
-          if (color)  el.style.color      = color;
+          if (color && color !== '#ffffff' && color !== '')  el.style.color = color;
           if (tag && tag.toLowerCase() !== el.tagName.toLowerCase()) {
             var n = document.createElement(tag);
             n.innerHTML = el.innerHTML; n.className = el.className; n.style.cssText = el.style.cssText;
