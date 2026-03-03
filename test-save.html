@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>WARGO — Save Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    body { font-family: monospace; background: #0a0f1e; color: #e8ecf4; padding: 30px; direction: ltr; }
+    .box { margin: 15px 0; padding: 15px; border-radius: 8px; border: 1px solid #333; }
+    .ok { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+    .err { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+    .wait { border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+    h1 { color: #00b4d8; } h2 { color: #f59e0b; margin-top: 30px; }
+    button { background: #00b4d8; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 5px; }
+    button:hover { background: #0096b4; }
+    pre { white-space: pre-wrap; font-size: 12px; background: #111; padding: 10px; border-radius: 6px; }
+    #log { max-height: 500px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>WARGO — Write Test</h1>
+  <p>This page tests if Supabase accepts writes from your browser.</p>
+  
+  <button onclick="testAll()">🔄 Run All Write Tests</button>
+  <button onclick="checkProject()">📡 Check Supabase Project Status</button>
+  
+  <div id="log"></div>
+
+<script>
+const URL = 'https://yrtrwhiootynxkebkpme.supabase.co';
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlydHJ3aGlvb3R5bnhrZWJrcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjI0MDksImV4cCI6MjA4Njg5ODQwOX0.xItePKvEmrVWdrgQZoHy3pBC2D6bLJHN0Nz7oA-Ty80';
+const sb = supabase.createClient(URL, KEY);
+const L = document.getElementById('log');
+
+function log(msg, cls) {
+  L.innerHTML += '<div class="box ' + cls + '">' + msg + '</div>';
+  L.scrollTop = L.scrollHeight;
+}
+
+async function checkProject() {
+  L.innerHTML = '';
+  log('📡 Checking Supabase project status...', 'wait');
+  
+  // Test basic connectivity with fetch
+  try {
+    const start = Date.now();
+    const res = await fetch(URL + '/rest/v1/site_content?select=id&limit=1', {
+      headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }
+    });
+    const ms = Date.now() - start;
+    const body = await res.text();
+    
+    if (res.ok) {
+      log('✅ Project is ACTIVE. Response: ' + res.status + ' in ' + ms + 'ms<br>Body: ' + body, 'ok');
+    } else {
+      log('❌ Project responded with error: ' + res.status + ' ' + res.statusText + '<br>Body: ' + body + '<br><br><b>If status 500/503: Your Supabase project may be PAUSED. Go to supabase.com dashboard and click "Restore".</b>', 'err');
+    }
+  } catch(e) {
+    log('❌ Cannot reach Supabase: ' + e.message + '<br><br><b>This means the project is PAUSED or there is a network issue.<br>Go to <a href="https://supabase.com/dashboard" style="color:#00b4d8" target="_blank">supabase.com/dashboard</a> → your project → check if it says "Paused".</b>', 'err');
+  }
+}
+
+async function testAll() {
+  L.innerHTML = '';
+  const ts = Date.now();
+  
+  // Test 1: READ
+  log('<b>Test 1: READ (SELECT)</b>', 'wait');
+  try {
+    const { data, error } = await sb.from('site_content').select('id, data').eq('id', 1).single();
+    if (error) {
+      log('❌ Read failed: ' + JSON.stringify(error), 'err');
+    } else {
+      var keys = data.data ? Object.keys(data.data).length : 0;
+      log('✅ Read OK: ' + keys + ' keys in data', 'ok');
+    }
+  } catch(e) {
+    log('❌ Read exception: ' + e.message, 'err');
+  }
+
+  // Test 2: Direct UPDATE
+  log('<b>Test 2: Direct UPDATE</b>', 'wait');
+  try {
+    // Read current data first
+    const { data: current } = await sb.from('site_content').select('data').eq('id', 1).single();
+    var d = current && current.data ? current.data : {};
+    d['_test_write'] = 'test_' + ts;
+    
+    const { data, error } = await sb.from('site_content').update({ data: d }).eq('id', 1).select();
+    if (error) {
+      log('❌ Update failed: ' + JSON.stringify(error), 'err');
+    } else {
+      log('✅ Update OK! Response: ' + JSON.stringify(data).substring(0, 100), 'ok');
+    }
+  } catch(e) {
+    log('❌ Update exception: ' + e.message, 'err');
+  }
+
+  // Test 3: UPSERT
+  log('<b>Test 3: UPSERT</b>', 'wait');
+  try {
+    const { data: current } = await sb.from('site_content').select('data').eq('id', 1).single();
+    var d2 = current && current.data ? current.data : {};
+    d2['_test_upsert'] = 'upsert_' + ts;
+    
+    const { data, error } = await sb.from('site_content').upsert({ id: 1, data: d2 }, { onConflict: 'id' }).select();
+    if (error) {
+      log('❌ Upsert failed: ' + JSON.stringify(error), 'err');
+    } else {
+      log('✅ Upsert OK! Response: ' + JSON.stringify(data).substring(0, 100), 'ok');
+    }
+  } catch(e) {
+    log('❌ Upsert exception: ' + e.message, 'err');
+  }
+
+  // Test 4: RPC
+  log('<b>Test 4: RPC save_site_content</b>', 'wait');
+  try {
+    const { data, error } = await sb.rpc('save_site_content', {
+      admin_id: '00000000-0000-0000-0000-000000000000',
+      content: { '_test_rpc': 'rpc_' + ts }
+    });
+    if (error) {
+      log('❌ RPC failed: ' + JSON.stringify(error), 'err');
+    } else {
+      log('✅ RPC OK! Response: ' + JSON.stringify(data), 'ok');
+    }
+  } catch(e) {
+    log('❌ RPC exception: ' + e.message, 'err');
+  }
+
+  // Test 5: Raw fetch PATCH
+  log('<b>Test 5: Raw fetch PATCH</b>', 'wait');
+  try {
+    const { data: current } = await sb.from('site_content').select('data').eq('id', 1).single();
+    var d3 = current && current.data ? current.data : {};
+    d3['_test_fetch'] = 'fetch_' + ts;
+    
+    const res = await fetch(URL + '/rest/v1/site_content?id=eq.1', {
+      method: 'PATCH',
+      headers: {
+        'apikey': KEY,
+        'Authorization': 'Bearer ' + KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ data: d3 })
+    });
+    if (res.ok) {
+      log('✅ Raw PATCH OK! Status: ' + res.status, 'ok');
+    } else {
+      var body = await res.text();
+      log('❌ Raw PATCH failed: ' + res.status + ' ' + body, 'err');
+    }
+  } catch(e) {
+    log('❌ Raw PATCH exception: ' + e.message, 'err');
+  }
+
+  // Verify
+  log('<b>Verification: Read back</b>', 'wait');
+  try {
+    const { data } = await sb.from('site_content').select('data').eq('id', 1).single();
+    var d = data.data;
+    var results = [];
+    if (d['_test_write'] === 'test_' + ts) results.push('UPDATE ✅');
+    if (d['_test_upsert'] === 'upsert_' + ts) results.push('UPSERT ✅');
+    if (d['_test_fetch'] === 'fetch_' + ts) results.push('FETCH ✅');
+    
+    if (results.length > 0) {
+      log('<b>🎉 WRITES CONFIRMED: ' + results.join(', ') + '</b><br>Data was successfully written and read back.', 'ok');
+    } else {
+      log('<b>⚠️ No writes confirmed.</b> The writes may have appeared to succeed but data was not persisted.', 'err');
+    }
+  } catch(e) {
+    log('❌ Verify failed: ' + e.message, 'err');
+  }
+}
+</script>
+</body>
+</html>
