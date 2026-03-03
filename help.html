@@ -415,6 +415,34 @@
 
         if (error) throw error;
 
+        // ── Email: confirmation to customer ──
+        try {
+          await fetch(SUPABASE_URL + '/functions/v1/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'support_ticket_opened',
+              to: email,
+              user_id: data.user_id || 'website',
+              data: { full_name: name, ticket_id: data.id, subject: subject, description: desc },
+            }),
+          });
+        } catch (e) { console.error('Email to customer failed:', e); }
+
+        // ── Email: notify admin ──
+        try {
+          await fetch(SUPABASE_URL + '/functions/v1/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'admin_new_ticket',
+              to: 'support@wargo.app',
+              user_id: 'admin',
+              data: { ticket_id: data.id, user_name: name, user_email: email, user_phone: phone || '-', subject: subject, type: type, priority: priority },
+            }),
+          });
+        } catch (e) { console.error('Email to admin failed:', e); }
+
         document.getElementById('ticketForm').style.display = 'none';
         document.getElementById('ticketSuccess').style.display = 'block';
         document.getElementById('successTicketId').textContent = '#' + data.id.slice(0, 8);
