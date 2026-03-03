@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300B4D8'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>W</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-primary: #0C0F1A;
@@ -106,6 +106,7 @@
       font-weight: 800;
       margin-bottom: 4px;
       letter-spacing: 1px;
+      font-family: 'Poppins', sans-serif;
     }
 
     .login-subtitle {
@@ -247,6 +248,7 @@
       font-size: 16px;
       font-weight: 800;
       letter-spacing: 1.5px;
+      font-family: 'Poppins', sans-serif;
     }
 
     .sidebar-badge {
@@ -1449,7 +1451,35 @@
               <input type="text" data-key="brand.appName" value="WARGO">
             </div>
           </div>
-        </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><span class="card-title-icon">🔤</span> פונטים</div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label"><label>פונט כותרות / לוגו</label></div>
+              <select data-key="brand.fontHeading" style="font-size:15px; padding:10px;">
+                <option value="Poppins" style="font-family:'Poppins'">Poppins (ברירת מחדל)</option>
+                <option value="Ping" style="font-family:'Ping'">Ping</option>
+                <option value="Ping Hebrew" style="font-family:'Ping Hebrew'">Ping Hebrew</option>
+                <option value="Arial" style="font-family:'Arial'">Arial</option>
+                <option value="Canva Sans" style="font-family:'Canva Sans'">Canva Sans</option>
+                <option value="Heebo" style="font-family:'Heebo'">Heebo</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label"><label>פונט גוף טקסט</label></div>
+              <select data-key="brand.fontBody" style="font-size:15px; padding:10px;">
+                <option value="Heebo" style="font-family:'Heebo'">Heebo (ברירת מחדל)</option>
+                <option value="Poppins" style="font-family:'Poppins'">Poppins</option>
+                <option value="Ping Hebrew" style="font-family:'Ping Hebrew'">Ping Hebrew</option>
+                <option value="Arial" style="font-family:'Arial'">Arial</option>
+                <option value="Canva Sans" style="font-family:'Canva Sans'">Canva Sans</option>
+              </select>
+            </div>
+          </div>
 
         <!-- FOOTER -->
         <div class="panel" id="panel-footer">
@@ -1741,11 +1771,24 @@
     let siteData = {};
 
     // ===== INIT =====
-    function init() {
+    async function init() {
+      // Try loading from Supabase first, fallback to localStorage
       try {
-        const raw = window.localStorage.getItem('wargo_admin_data');
-        if (raw) siteData = JSON.parse(raw);
+        if (sb) {
+          const { data, error } = await sb.from('site_content').select('data').eq('id', 1).single();
+          if (!error && data && data.data && Object.keys(data.data).length > 0) {
+            siteData = data.data;
+          }
+        }
       } catch(e) {}
+
+      // Fallback: localStorage
+      if (Object.keys(siteData).length === 0) {
+        try {
+          const raw = window.localStorage.getItem('wargo_admin_data');
+          if (raw) siteData = JSON.parse(raw);
+        } catch(e) {}
+      }
 
       if (!siteData.features) siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
       if (!siteData.steps) siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
@@ -1892,19 +1935,51 @@
     }
 
     // ===== SAVE =====
-    function saveAll() {
+    async function saveAll() {
       collectFieldValues();
       collectRepeaters();
+
+      // Save to localStorage as backup
       try {
         window.localStorage.setItem('wargo_admin_data', JSON.stringify(siteData));
       } catch(e) {}
-      showToast('השינויים נשמרו בהצלחה! ✅');
+
+      // Save to Supabase (global for all visitors)
+      if (sb && currentAdmin) {
+        try {
+          const { data, error } = await sb.rpc('save_site_content', {
+            admin_id: currentAdmin.id,
+            content: siteData
+          });
+          if (error) {
+            showToast('⚠️ נשמר מקומית בלבד — שגיאת שרת: ' + error.message);
+            return;
+          }
+          if (data && data.success) {
+            showToast('השינויים נשמרו ופורסמו באתר! ✅');
+          } else {
+            showToast('⚠️ שגיאה בשמירה לשרת');
+          }
+        } catch(e) {
+          showToast('⚠️ נשמר מקומית — שגיאת חיבור');
+        }
+      } else {
+        showToast('השינויים נשמרו מקומית ✅');
+      }
       updateStats();
     }
 
-    function resetData() {
-      if (!confirm('האם אתה בטוח? כל השינויים יימחקו ויוחזרו לברירת המחדל.')) return;
+    async function resetData() {
+      if (!confirm('האם אתה בטוח? כל השינויים יימחקו ויוחזרו לברירת המחדל.\nזה ישפיע על כל המבקרים באתר.')) return;
       try { window.localStorage.removeItem('wargo_admin_data'); } catch(e) {}
+
+      // Reset in Supabase
+      if (sb && currentAdmin) {
+        try {
+          await sb.rpc('reset_site_content', { admin_id: currentAdmin.id });
+        } catch(e) {}
+      }
+
       siteData = {};
       siteData.features = JSON.parse(JSON.stringify(DEFAULT_DATA.features));
       siteData.steps = JSON.parse(JSON.stringify(DEFAULT_DATA.steps));
@@ -1916,7 +1991,6 @@
       renderVehicles();
       renderPhoneCards();
       renderAllFaq();
-      // Reset all fields to default
       document.querySelectorAll('[data-key]').forEach(el => {
         el.value = el.defaultValue || '';
       });

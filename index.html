@@ -13,7 +13,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -130,6 +130,7 @@
       font-weight: 800;
       color: var(--white);
       letter-spacing: 2px;
+      font-family: 'Poppins', sans-serif;
     }
 
     .nav-links {
@@ -305,6 +306,7 @@
       margin-bottom: 24px;
       animation: fadeSlideUp 0.8s ease 0.15s forwards;
       opacity: 0;
+      font-family: 'Poppins', 'Heebo', sans-serif;
     }
 
     .hero h1 .gradient-text {
@@ -799,6 +801,7 @@
       font-weight: 800;
       line-height: 1.2;
       margin-bottom: 18px;
+      font-family: 'Poppins', 'Heebo', sans-serif;
     }
 
     .section-subtitle {
@@ -1216,6 +1219,7 @@
       font-size: 20px;
       font-weight: 800;
       letter-spacing: 2px;
+      font-family: 'Poppins', sans-serif;
     }
 
     .footer-brand-desc {
@@ -2247,6 +2251,20 @@
         root.setProperty('--navy-900', adjustBrightness(bg, -10));
         root.setProperty('--navy-700', adjustBrightness(bg, 15));
         root.setProperty('--navy-600', adjustBrightness(bg, 30));
+      }
+
+      // ===== APPLY FONTS =====
+      const headingFont = data['brand.fontHeading'];
+      if (headingFont && headingFont !== 'Poppins') {
+        const ff = "'" + headingFont + "', 'Poppins', sans-serif";
+        document.querySelectorAll('.nav-logo-text, .section-title, .hero h1, .footer-brand-logo span').forEach(el => {
+          el.style.fontFamily = ff;
+        });
+      }
+      const bodyFont = data['brand.fontBody'];
+      if (bodyFont && bodyFont !== 'Heebo') {
+        document.documentElement.style.setProperty('font-family', "'" + bodyFont + "', 'Heebo', sans-serif");
+        document.body.style.fontFamily = "'" + bodyFont + "', 'Heebo', sans-serif";
       }
     })();
 
