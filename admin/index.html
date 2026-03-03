@@ -2297,7 +2297,7 @@
         }
         // Sync color picker → text and text → picker
         if (key.endsWith('.color') && siteData[key]) {
-          var textEl = document.querySelector('[data-key="' + key.replace('.color', '_color_text') + '"]');
+          var textEl = document.querySelector('[data-key="' + key + '_text"]');
           if (textEl) textEl.value = siteData[key];
         }
       });
@@ -2308,10 +2308,10 @@
         var key = el.dataset.key;
         var val = el.value;
         // Skip color_text helper fields (we use the color picker value)
-        if (key.endsWith('_color_text')) return;
+        if (key.endsWith('.color_text') || key.endsWith('_color_text')) return;
         // For color pickers: only save if user actually set a value via the text field
         if (key.endsWith('.color')) {
-          var textEl = document.querySelector('[data-key="' + key.replace('.color', '_color_text') + '"]');
+          var textEl = document.querySelector('[data-key="' + key + '_text"]');
           if (textEl && textEl.value && textEl.value.startsWith('#') && textEl.value.length >= 4) {
             siteData[key] = textEl.value;
           } else {
