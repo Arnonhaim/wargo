@@ -2167,8 +2167,6 @@
 
     (async function loadSiteContent() {
       let data = {};
-      console.log('[WARGO] loadSiteContent started');
-
       // Try Supabase first (global content)
       try {
         const sbClient = supabase.createClient(
@@ -2178,12 +2176,10 @@
         const { data: row, error } = await sbClient.from('site_content').select('data').eq('id', 1).single();
         if (!error && row && row.data && Object.keys(row.data).length > 0) {
           data = row.data;
-          console.log('[WARGO] Supabase loaded OK:', Object.keys(data).length, 'keys');
-        } else {
-          console.log('[WARGO] Supabase empty or error:', error);
-        }
-      } catch(e) { console.log('[WARGO] Supabase catch:', e.message); }
 
+        } else {
+
+        }
       // Fallback to localStorage
       if (!data || Object.keys(data).length === 0) {
         try {
@@ -2191,10 +2187,6 @@
           if (raw) data = JSON.parse(raw);
         } catch(e) {}
       }
-
-      if (!data || Object.keys(data).length === 0) { document.body.style.opacity = "1"; console.log('[WARGO] No data, showing page'); return; }
-
-      console.log('[WARGO] Applying data. hero.title1=', data['hero.title1'], 'features.title=', data['features.title'], 'hero.cta1=', data['hero.cta1']);
 
       // Apply content
       try {
@@ -2306,8 +2298,6 @@
         }).join('');
       }
 
-      console.log('[WARGO] All section content applied successfully');
-
       // ===== APPLY BRANDING COLORS =====
       const root = document.documentElement.style;
 
@@ -2375,7 +2365,7 @@
           if (font)   el.style.fontFamily = "'" + font + "', sans-serif";
           if (size)   el.style.fontSize   = size + 'px';
           if (weight) el.style.fontWeight = weight;
-          if (color && color !== '#ffffff' && color !== '')  el.style.color = color;
+          if (color) el.style.color = color;
           if (tag && tag.toLowerCase() !== el.tagName.toLowerCase()) {
             var n = document.createElement(tag);
             n.innerHTML = el.innerHTML; n.className = el.className; n.style.cssText = el.style.cssText;
@@ -2384,24 +2374,10 @@
           }
         });
       });
-
-      console.log('[WARGO] Typography + color applied');
       } catch(applyErr) {
-        console.error('[WARGO] ERROR applying content:', applyErr);
-        var errBadge = document.createElement('div');
-        errBadge.style.cssText = 'position:fixed;bottom:10px;left:10px;background:#400;color:#f55;padding:8px 12px;border-radius:8px;font-size:11px;z-index:99999;font-family:monospace;border:1px solid #f55;max-width:400px;';
-        errBadge.textContent = 'ERROR: ' + applyErr.message;
-        document.body.appendChild(errBadge);
+
       }
       document.body.style.opacity = "1";
-      console.log('[WARGO] Page revealed. DONE.');
-
-      // Debug badge - remove after confirming it works
-      var dbg = document.createElement('div');
-      dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;background:#111;color:#0f0;padding:8px 12px;border-radius:8px;font-size:11px;z-index:99999;font-family:monospace;border:1px solid #0f0;max-width:300px;';
-      dbg.innerHTML = 'DB: ' + Object.keys(data).length + ' keys<br>Title1: ' + (data['hero.title1']||'N/A').substring(0,25) + '<br>CTA1: ' + (data['hero.cta1']||'N/A').substring(0,25) + '<br>Feat: ' + (data['features.title']||'N/A').substring(0,25);
-      document.body.appendChild(dbg);
-      setTimeout(function(){ dbg.style.opacity = '0.3'; }, 5000);
     })();
 
     // Helper: adjust hex color brightness by amount (-100 to +100)
