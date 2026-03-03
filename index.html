@@ -411,7 +411,7 @@
       width: 290px;
       height: 590px;
       border-radius: 44px;
-      background: linear-gradient(145deg, #1a1a2e, #16213e);
+      background: #000;
       border: 2px solid rgba(255,255,255,0.1);
       box-shadow: 
         0 40px 80px rgba(0,0,0,0.5),
@@ -434,7 +434,7 @@
       transform: translateX(-50%);
       width: 120px;
       height: 28px;
-      background: #0a0a0a;
+      background: #000;
       border-radius: 0 0 18px 18px;
       z-index: 10;
     }
@@ -447,131 +447,233 @@
       bottom: 12px;
       border-radius: 34px;
       overflow: hidden;
-      background: linear-gradient(165deg, var(--navy-800), var(--navy-700));
+      background: #f2f4f7;
     }
 
     .phone-screen-content {
-      padding: 52px 20px 20px;
       height: 100%;
       display: flex;
       flex-direction: column;
     }
 
-    .phone-header {
-      text-align: center;
-      margin-bottom: 24px;
+    /* App Header - Blue gradient like real app */
+    .app-header {
+      background: linear-gradient(135deg, #1976D2, #1565C0, #0D47A1);
+      padding: 40px 16px 18px;
+      color: white;
+      direction: rtl;
     }
-
-    .phone-logo-mini {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--cyan-500), var(--cyan-600));
-      display: inline-flex;
+    .app-header-top {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
+      margin-bottom: 14px;
     }
-
-    .phone-logo-mini svg {
+    .app-greeting {
+      text-align: right;
+    }
+    .app-greeting-name {
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .app-greeting-sub {
+      font-size: 10px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+    .app-bell {
+      width: 32px;
+      height: 32px;
+      position: relative;
+    }
+    .app-bell svg {
       width: 22px;
       height: 22px;
       fill: none;
       stroke: white;
       stroke-width: 2;
     }
-
-    .phone-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 2px;
-    }
-
-    .phone-subtitle {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      margin-top: 4px;
-    }
-
-    .phone-cards {
-      flex: 1;
+    .app-bell-badge {
+      position: absolute;
+      top: -2px;
+      right: -4px;
+      background: #EF4444;
+      color: white;
+      font-size: 8px;
+      font-weight: 700;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .phone-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 14px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .phone-card-row {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
+    }
+
+    /* Stats row */
+    .app-stats {
+      display: flex;
+      gap: 6px;
+      padding: 0 2px;
+    }
+    .app-stat {
+      flex: 1;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 8px 4px;
+      text-align: center;
+    }
+    .app-stat-icon {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 4px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .app-stat-num {
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .app-stat-label {
+      font-size: 7px;
+      opacity: 0.85;
+      margin-top: 1px;
+      line-height: 1.2;
+    }
+
+    /* Body section */
+    .app-body {
+      flex: 1;
+      padding: 12px;
+      direction: rtl;
+      overflow: hidden;
+    }
+    .app-section-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1a1a2e;
       margin-bottom: 8px;
     }
 
-    .phone-card-route {
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .phone-card-price {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--cyan-400);
-      font-family: 'Space Mono', monospace;
-    }
-
-    .phone-card-details {
+    /* Quick actions */
+    .app-actions {
       display: flex;
-      gap: 12px;
-      font-size: 10px;
-      color: rgba(255,255,255,0.4);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .app-action {
+      flex: 1;
+      background: white;
+      border-radius: 14px;
+      padding: 10px 4px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .app-action-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      margin: 0 auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .app-action:nth-child(1) .app-action-icon { background: #E3F2FD; }
+    .app-action:nth-child(2) .app-action-icon { background: #F1F8E9; }
+    .app-action:nth-child(3) .app-action-icon { background: #E8F5E9; }
+    .app-action-text {
+      font-size: 8px;
+      font-weight: 700;
+      color: #333;
+      line-height: 1.3;
     }
 
-    .phone-card-tag {
+    /* Shipment card */
+    .app-shipment {
+      background: white;
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .app-ship-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .app-ship-route {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .app-ship-route-dot {
       display: inline-block;
-      background: rgba(0,180,216,0.15);
-      color: var(--cyan-400);
-      padding: 2px 8px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+    .app-ship-route-dot.origin { background: #1976D2; }
+    .app-ship-route-dot.dest { background: #4CAF50; }
+    .app-ship-route-line {
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: #ccc;
+      vertical-align: middle;
+      margin: 0 2px;
+    }
+    .app-ship-badge {
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    .app-ship-badge::before { content: '● '; font-size: 6px; }
+    .app-ship-tags {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .app-ship-tag {
+      background: #f5f5f5;
+      padding: 3px 7px;
       border-radius: 6px;
-      font-size: 9px;
-      font-weight: 600;
-      margin-top: 8px;
+      font-size: 8px;
+      color: #555;
+      font-weight: 500;
     }
 
-    .phone-nav-bar {
+    /* Bottom nav */
+    .app-nav {
       display: flex;
       justify-content: space-around;
-      padding: 12px 0 4px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      margin-top: auto;
+      padding: 8px 0 6px;
+      border-top: 1px solid #eee;
+      background: white;
     }
-
-    .phone-nav-item {
+    .app-nav-item {
       text-align: center;
-      font-size: 9px;
-      color: rgba(255,255,255,0.35);
+      font-size: 8px;
+      color: #999;
+      font-weight: 600;
     }
-
-    .phone-nav-item.active {
-      color: var(--cyan-400);
-    }
-
-    .phone-nav-icon {
+    .app-nav-item.active { color: #1976D2; }
+    .app-nav-icon {
       width: 20px;
       height: 20px;
-      margin: 0 auto 3px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.06);
-    }
-
-    .phone-nav-item.active .phone-nav-icon {
-      background: rgba(0,180,216,0.2);
+      margin: 0 auto 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
     }
 
     /* ============ FLOATING ELEMENTS ============ */
@@ -1328,7 +1430,7 @@
       <div class="nav-logo-icon">
         <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
       </div>
-      <span class="nav-logo-text">WARGO</span>
+      <span class="nav-logo-text">WAR<span style="color:#ff7620">GO</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#features" data-he="יתרונות" data-en="Benefits" data-ru="Преимущества" data-ar="المزايا">יתרונות</a></li>
@@ -1408,54 +1510,85 @@
           <div class="phone-notch"></div>
           <div class="phone-screen">
             <div class="phone-screen-content">
-              <div class="phone-header">
-                <div class="phone-logo-mini">
-                  <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <!-- Blue header like real app -->
+              <div class="app-header">
+                <div class="app-header-top">
+                  <div class="app-greeting">
+                    <div class="app-greeting-name">שלום, ארנון 👋</div>
+                    <div class="app-greeting-sub">חשבון שולח</div>
+                  </div>
+                  <div class="app-bell">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <div class="app-bell-badge">12</div>
+                  </div>
                 </div>
-                <div class="phone-title">WARGO</div>
-                <div class="phone-subtitle">הובלות זמינות עכשיו</div>
-              </div>
-              <div class="phone-cards">
-                <div class="phone-card">
-                  <div class="phone-card-row">
-                    <span class="phone-card-route">חיפה → תל אביב</span>
-                    <span class="phone-card-price">₪1,200</span>
+                <div class="app-stats">
+                  <div class="app-stat">
+                    <div class="app-stat-icon">📋</div>
+                    <div class="app-stat-num">16</div>
+                    <div class="app-stat-label">הבקשות<br>שלי</div>
                   </div>
-                  <div class="phone-card-details">
-                    <span>🚛 משטח מלא</span>
-                    <span>📅 היום</span>
+                  <div class="app-stat">
+                    <div class="app-stat-icon">📦</div>
+                    <div class="app-stat-num">0</div>
+                    <div class="app-stat-label">הזמנות<br>פעילות</div>
                   </div>
-                  <span class="phone-card-tag">הובלת חזור</span>
-                </div>
-                <div class="phone-card">
-                  <div class="phone-card-row">
-                    <span class="phone-card-route">ב״ש → ירושלים</span>
-                    <span class="phone-card-price">₪950</span>
+                  <div class="app-stat">
+                    <div class="app-stat-icon">📈</div>
+                    <div class="app-stat-num">16</div>
+                    <div class="app-stat-label">הושלמו</div>
                   </div>
-                  <div class="phone-card-details">
-                    <span>🏗️ מנוף</span>
-                    <span>📅 מחר</span>
+                  <div class="app-stat">
+                    <div class="app-stat-icon">⭐</div>
+                    <div class="app-stat-num">5.0</div>
+                    <div class="app-stat-label">דירוג</div>
                   </div>
-                  <span class="phone-card-tag">שירות מנוף</span>
-                </div>
-                <div class="phone-card">
-                  <div class="phone-card-row">
-                    <span class="phone-card-route">נתניה → אשדוד</span>
-                    <span class="phone-card-price">₪780</span>
-                  </div>
-                  <div class="phone-card-details">
-                    <span>🚛 רמפה אחורית</span>
-                    <span>📅 22/03</span>
-                  </div>
-                  <span class="phone-card-tag">רמפה אחורית</span>
                 </div>
               </div>
-              <div class="phone-nav-bar">
-                <div class="phone-nav-item active"><div class="phone-nav-icon"></div>ראשי</div>
-                <div class="phone-nav-item"><div class="phone-nav-icon"></div>הזמנות</div>
-                <div class="phone-nav-item"><div class="phone-nav-icon"></div>הודעות</div>
-                <div class="phone-nav-item"><div class="phone-nav-icon"></div>ארנק</div>
-                <div class="phone-nav-item"><div class="phone-nav-icon"></div>פרופיל</div>
+
+              <!-- Body -->
+              <div class="app-body">
+                <div class="app-section-title">פעולות מהירות</div>
+                <div class="app-actions">
+                  <div class="app-action">
+                    <div class="app-action-icon">📦</div>
+                    <div class="app-action-text">המשלוחים שלי</div>
+                  </div>
+                  <div class="app-action">
+                    <div class="app-action-icon">🔍</div>
+                    <div class="app-action-text">מצא נסיעה<br>זמינה</div>
+                  </div>
+                  <div class="app-action">
+                    <div class="app-action-icon">➕</div>
+                    <div class="app-action-text">בקשה חדשה</div>
+                  </div>
+                </div>
+
+                <div class="app-section-title">בקשות ההובלה שלי</div>
+                <div class="app-shipment">
+                  <div class="app-ship-top">
+                    <div class="app-ship-route">
+                      <span class="app-ship-route-dot origin"></span>באר שבע
+                      <span class="app-ship-route-line"></span>
+                      <span class="app-ship-route-dot dest"></span>אשדוד
+                    </div>
+                    <div class="app-ship-badge">פתוח</div>
+                  </div>
+                  <div class="app-ship-tags">
+                    <span class="app-ship-tag">📅 2026-03-04</span>
+                    <span class="app-ship-tag">🚛 משאית וילון</span>
+                    <span class="app-ship-tag">📦 2t</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom nav -->
+              <div class="app-nav">
+                <div class="app-nav-item active"><div class="app-nav-icon">🏠</div>ראשי</div>
+                <div class="app-nav-item"><div class="app-nav-icon">📋</div>הזמנות</div>
+                <div class="app-nav-item"><div class="app-nav-icon">💬</div>הודעות</div>
+                <div class="app-nav-item"><div class="app-nav-icon">💳</div>ארנק</div>
+                <div class="app-nav-item"><div class="app-nav-icon">👤</div>פרופיל</div>
               </div>
             </div>
           </div>
@@ -1661,7 +1794,7 @@
             <div class="nav-logo-icon" style="width:36px;height:36px;border-radius:10px;">
               <svg viewBox="0 0 24 24" style="width:18px;height:18px;"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
             </div>
-            <span>WARGO</span>
+            <span>WAR<span style="color:#ff7620">GO</span></span>
           </div>
           <p class="footer-brand-desc">
             פלטפורמת ההובלות החכמה של ישראל. מחברים בין שולחי מטענים למובילים מאומתים — בכל מקום בארץ.
@@ -1748,7 +1881,7 @@
         footTerms: 'תנאי שימוש', footPrivacy: 'מדיניות פרטיות', footRefund: 'ביטול עסקה',
         footHelp: 'מרכז עזרה', footFaq: 'שאלות נפוצות',
         copyright: '© 2026 WARGO. כל הזכויות שמורות.',
-        phoneSub: 'הובלות זמינות עכשיו',
+        phoneSub: 'חשבון שולח',
         phoneNav: ['ראשי','הזמנות','הודעות','ארנק','פרופיל'],
       },
       en: {
@@ -1794,7 +1927,7 @@
         footTerms: 'Terms of Service', footPrivacy: 'Privacy Policy', footRefund: 'Cancellation Policy',
         footHelp: 'Help Center', footFaq: 'FAQ',
         copyright: '© 2026 WARGO. All rights reserved.',
-        phoneSub: 'Available transports now',
+        phoneSub: 'Shipper Account',
         phoneNav: ['Home','Orders','Messages','Wallet','Profile'],
       },
       ru: {
@@ -1840,7 +1973,7 @@
         footTerms: 'Условия использования', footPrivacy: 'Политика конфиденциальности', footRefund: 'Политика отмены',
         footHelp: 'Центр помощи', footFaq: 'Частые вопросы',
         copyright: '© 2026 WARGO. Все права защищены.',
-        phoneSub: 'Доступные перевозки',
+        phoneSub: 'Аккаунт отправителя',
         phoneNav: ['Главная','Заказы','Сообщения','Кошелёк','Профиль'],
       },
       ar: {
@@ -1886,7 +2019,7 @@
         footTerms: 'شروط الاستخدام', footPrivacy: 'سياسة الخصوصية', footRefund: 'سياسة الإلغاء',
         footHelp: 'مركز المساعدة', footFaq: 'أسئلة شائعة',
         copyright: '© 2026 WARGO. جميع الحقوق محفوظة.',
-        phoneSub: 'شحنات متاحة الآن',
+        phoneSub: 'حساب الشاحن',
         phoneNav: ['الرئيسية','الطلبات','الرسائل','المحفظة','الملف'],
       }
     };
@@ -1986,9 +2119,9 @@
       if (andBtn) { andBtn.querySelector('.store-btn-label').textContent = t.dlAndLabel; andBtn.querySelector('.store-btn-name').textContent = t.dlAndName; }
 
       // Phone mockup
-      document.querySelector('.phone-subtitle').textContent = t.phoneSub;
-      document.querySelectorAll('.phone-nav-item').forEach((el,i) => {
-        const spans = el.childNodes;
+      const greetSub = document.querySelector('.app-greeting-sub');
+      if (greetSub) greetSub.textContent = t.phoneSub;
+      document.querySelectorAll('.app-nav-item').forEach((el,i) => {
         if (t.phoneNav[i]) { el.lastChild.textContent = t.phoneNav[i]; }
       });
 
@@ -2069,7 +2202,7 @@
       if (data['footer.desc']) setText('.footer-brand-desc', data['footer.desc']);
       if (data['footer.copyright']) { const el = document.querySelector('.footer-bottom span'); if(el) el.textContent = data['footer.copyright']; }
       if (data['brand.appName']) {
-        document.querySelectorAll('.nav-logo-text, .phone-title').forEach(el => el.textContent = data['brand.appName']);
+        document.querySelectorAll('.nav-logo-text').forEach(el => el.textContent = data['brand.appName']);
         const footerName = document.querySelector('.footer-brand-logo span');
         if (footerName) footerName.textContent = data['brand.appName'];
       }
