@@ -2362,24 +2362,53 @@
         window.localStorage.setItem('wargo_admin_data', JSON.stringify(siteData));
       } catch(e) {}
 
-      // Save to Supabase (global for all visitors)
+      // Save to Supabase
       if (sb && currentAdmin) {
+        var saved = false;
+
+        // Method 1: Direct upsert (fastest, most reliable)
         try {
-          const { data, error } = await sb.rpc('save_site_content', {
-            admin_id: currentAdmin.id,
-            content: siteData
-          });
-          if (error) {
-            showToast('⚠️ נשמר מקומית בלבד — שגיאת שרת: ' + error.message);
-            return;
-          }
-          if (data && data.success) {
+          const { error } = await sb.from('site_content').upsert({
+            id: 1,
+            data: siteData,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'id' });
+          if (!error) {
+            saved = true;
             showToast('השינויים נשמרו ופורסמו באתר! ✅');
-          } else {
-            showToast('⚠️ שגיאה בשמירה לשרת');
           }
-        } catch(e) {
-          showToast('⚠️ נשמר מקומית — שגיאת חיבור');
+        } catch(e) { console.log('Direct upsert failed:', e.message); }
+
+        // Method 2: RPC fallback
+        if (!saved) {
+          try {
+            const { data, error } = await sb.rpc('save_site_content', {
+              admin_id: currentAdmin.id,
+              content: siteData
+            });
+            if (!error && data && data.success) {
+              saved = true;
+              showToast('השינויים נשמרו ופורסמו באתר! ✅');
+            }
+          } catch(e) { console.log('RPC failed:', e.message); }
+        }
+
+        // Method 3: Direct update
+        if (!saved) {
+          try {
+            const { error } = await sb.from('site_content').update({
+              data: siteData,
+              updated_at: new Date().toISOString()
+            }).eq('id', 1);
+            if (!error) {
+              saved = true;
+              showToast('השינויים נשמרו ופורסמו באתר! ✅');
+            }
+          } catch(e) { console.log('Direct update failed:', e.message); }
+        }
+
+        if (!saved) {
+          showToast('⚠️ נשמר מקומית בלבד — בדוק חיבור Supabase');
         }
       } else {
         showToast('השינויים נשמרו מקומית ✅');
