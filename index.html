@@ -300,7 +300,10 @@
     }
 
     .hero h1 .gradient-text {
-      color: var(--white);
+      background: linear-gradient(135deg, var(--cyan-400), var(--cyan-500), #5EEAD4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero-desc {
@@ -1411,7 +1414,6 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
-  .whatsapp-float{position:fixed;bottom:28px;left:28px;z-index:999;width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:transform 0.3s;text-decoration:none;}.whatsapp-float:hover{transform:scale(1.1);}.whatsapp-float svg{width:32px;height:32px;fill:white;}
   </style>
 </head>
 <body>
@@ -1462,36 +1464,35 @@
           פלטפורמה פעילה בכל הארץ
         </div>
         <h1>
-          לראשונה בישראל:<br>
-          שוק פתוח להובלות תעשייתיות.
+          הובלות חזור<br>
+          <span class="gradient-text">בלחיצת כפתור</span>
         </h1>
         <p class="hero-desc">
-          <strong>מובילים?</strong> העמסתם הובלה ויש עוד מקום במשאית? קבלו בקשות הובלה לאזור שבו אתם כבר נמצאים — והרוויחו יותר על נסיעה שממילא קיימת.<br><br>
-          <strong>שולחים?</strong> במקום להזמין הובלה חדשה ולשלם מחיר מלא, בדקו מי כבר נמצא באזור שלכם — ושלמו פחות.<br><br>
-          <em>הכירו את WARGO — האפליקציה שמחברת בין מובילים לשולחים באותו אזור, בזמן אמת.</em>
+          WARGO מחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. 
+          חסוך עד 40% מעלויות ההובלה באמצעות ניצול מטענים חוזרים — מהר, פשוט ובטוח.
         </p>
         <div class="hero-buttons">
           <a href="#download" class="btn-primary">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            🚛 אני מוביל — פרסם מסלול
+            הורד עכשיו — בחינם
           </a>
           <a href="#how-it-works" class="btn-secondary">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-            📦 אני שולח — פרסם הובלה
+            איך זה עובד?
           </a>
         </div>
         <div class="hero-stats">
           <div>
             <div class="hero-stat-value">40%</div>
-            <div class="hero-stat-label">חיסכון ממוצע לשולח</div>
+            <div class="hero-stat-label">חיסכון ממוצע בהובלה</div>
           </div>
           <div>
-            <div class="hero-stat-value">₪900+</div>
-            <div class="hero-stat-label">הכנסה נוספת ממוצעת למוביל</div>
+            <div class="hero-stat-value">24/7</div>
+            <div class="hero-stat-label">זמינות מלאה</div>
           </div>
           <div>
-            <div class="hero-stat-value">תוך שבוע</div>
-            <div class="hero-stat-label">קבלת תשלום לאחר ביצוע</div>
+            <div class="hero-stat-value">🇮🇱</div>
+            <div class="hero-stat-label">כל רחבי ישראל</div>
           </div>
         </div>
       </div>
@@ -1606,7 +1607,7 @@
     <div class="features-bg"></div>
     <div class="section-header reveal">
       <div class="section-tag">למה WARGO?</div>
-      <h2 class="section-title">הכל תחת אפליקציה אחת.</h2>
+      <h2 class="section-title">הכל באפליקציה אחת</h2>
       <p class="section-subtitle">
         מהרגע שמפרסמים בקשת הובלה ועד לתשלום — הכל קורה בתוך WARGO, בצורה חכמה ומאובטחת.
       </p>
@@ -1645,105 +1646,75 @@
     </div>
   </section>
 
-    <!-- ======== HOW IT WORKS ======== -->
+  <!-- ======== HOW IT WORKS ======== -->
   <section class="how-it-works" id="how-it-works">
     <div class="section-header reveal">
       <div class="section-tag">תהליך פשוט</div>
-      <h2 class="section-title">3 שלבים. 2 דקות. הובלה בדרך.</h2>
+      <h2 class="section-title">איך זה עובד?</h2>
+      <p class="section-subtitle">שלושה שלבים פשוטים להובלה הבאה שלך</p>
     </div>
-
-    <div class="how-tabs reveal" style="display:flex;justify-content:center;gap:12px;margin-bottom:40px;">
-      <button class="how-tab active" onclick="switchHowTab('carrier')" id="howTabCarrier" style="padding:12px 32px;border-radius:12px;border:1px solid var(--cyan-500);background:var(--cyan-500);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;font-family:inherit;">🚛 אני מוביל</button>
-      <button class="how-tab" onclick="switchHowTab('shipper')" id="howTabShipper" style="padding:12px 32px;border-radius:12px;border:1px solid var(--cyan-500);background:transparent;color:var(--cyan-400);font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;font-family:inherit;">📦 אני שולח</button>
-    </div>
-
-    <div class="steps-container" id="howCarrier">
-      <div class="steps-line"></div>
-      <div class="step reveal">
-        <div class="step-number">01</div>
-        <div class="step-content">
-          <h3 class="step-title">פרסם את המסלול שלך</h3>
-          <p class="step-desc">יוצא מחר לחיפה? מוסיף תוך 30 שניות — מוצא, יעד, תאריך. זהו.</p>
-        </div>
-      </div>
-      <div class="step reveal">
-        <div class="step-number">02</div>
-        <div class="step-content">
-          <h3 class="step-title">שולחים פונים אליך</h3>
-          <p class="step-desc">עסקים שצריכים לשלוח בכיוון שלך רואים אותך ומגישים הצעות מטען. אתה בוחר מה לקחת.</p>
-        </div>
-      </div>
-      <div class="step reveal">
-        <div class="step-number">03</div>
-        <div class="step-content">
-          <h3 class="step-title">תוציא, תמסור, תקבל כסף</h3>
-          <p class="step-desc">עקוב בזמן אמת, תעד במסירה, קבל תשלום תוך שבוע עבודה — לא שוטף 90.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="steps-container" id="howShipper" style="display:none;">
+    <div class="steps-container">
       <div class="steps-line"></div>
       <div class="step reveal">
         <div class="step-number">01</div>
         <div class="step-content">
           <h3 class="step-title">פרסם בקשת הובלה</h3>
-          <p class="step-desc">מוצא, יעד, סוג מטען, תאריך. תוך שניות הבקשה שלך חיה ומובילים רואים אותה.</p>
+          <p class="step-desc">הזן את פרטי המטען — נקודת מוצא, יעד, סוג רכב נדרש, תאריך ותיאור. תוך שניות הבקשה שלך חיה במערכת.</p>
         </div>
       </div>
       <div class="step reveal">
         <div class="step-number">02</div>
         <div class="step-content">
-          <h3 class="step-title">קבל הצעות מחיר ובחר</h3>
-          <p class="step-desc">מובילים מאומתים שולחים הצעות. אתה רואה מחיר, דירוג, וביקורות — ובוחר את הכי טוב לך. אין מחיר קבוע. אין ספק שמחליט בשבילך.</p>
+          <h3 class="step-title">קבל הצעות ובחר מוביל</h3>
+          <p class="step-desc">מובילים מאומתים רואים את הבקשה ושולחים הצעות מחיר. השווה דירוגים, מחירים וביקורות — ובחר את ההצעה הטובה ביותר.</p>
         </div>
       </div>
       <div class="step reveal">
         <div class="step-number">03</div>
         <div class="step-content">
-          <h3 class="step-title">עקוב ושלם בבטחה</h3>
-          <p class="step-desc">הכסף מוחזק בנאמנות עד אישור מסירה. תיעוד מלא בכל שלב. שקט נפשי מוחלט.</p>
+          <h3 class="step-title">ההובלה בדרך!</h3>
+          <p class="step-desc">עקוב אחרי סטטוס ההובלה, תקשר עם המוביל בצ׳אט, ושלם בצורה מאובטחת דרך הארנק הדיגיטלי כשההובלה הושלמה.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======== DUAL CTA ======== -->
+  <!-- ======== DUAL CTA — FOR SHIPPERS & CARRIERS ======== -->
   <section class="dual-cta" id="for-you">
     <div class="section-header reveal">
-      <div class="section-tag">יתרונות</div>
-      <h2 class="section-title">הכל תחת אפליקציה אחת.</h2>
+      <div class="section-tag">למי זה?</div>
+      <h2 class="section-title">בין אם אתה שולח או מוביל</h2>
+      <p class="section-subtitle">WARGO נבנתה בשביל שני הצדדים של שרשרת ההובלה</p>
     </div>
     <div class="dual-cta-grid">
-      <div class="cta-card carrier reveal">
-        <div class="cta-card-emoji">🚛</div>
-        <h3 class="cta-card-title">למובילים — מה מרוויחים?</h3>
-        <ul class="cta-card-features">
-          <li><strong>יותר רווח על נסיעה קיימת</strong> — כל קיבולת ריקה היא כסף שנזרק.</li>
-          <li><strong>הכנסה מהירה תוך 3-4 ימים</strong> — לא שוטף 30. לא שוטף 90.</li>
-          <li><strong>כסף בטוח</strong> — הפלטפורמה מבטיחה את התשלום.</li>
-          <li><strong>מוניטין חזק</strong> — דירוג חיובי = יותר עבודה עתידית.</li>
-          <li><strong>30 שניות לפרסום</strong> — 3 שדות: מוצא, יעד, תאריך.</li>
-          <li><strong>ביטוח מטען</strong> — כיסוי ביטוחי לכל הובלה.</li>
-        </ul>
-        <a href="#download" class="btn-primary" style="background:linear-gradient(135deg,#F97316,#EA580C);">התחל להוביל →</a>
-      </div>
       <div class="cta-card shipper reveal">
         <div class="cta-card-emoji">📦</div>
-        <h3 class="cta-card-title">לשולחים — מה מרוויחים?</h3>
+        <h3 class="cta-card-title">אני שולח מטענים</h3>
+        <p class="cta-card-desc">צריך לשלוח סחורה? פרסם בקשה ותן למובילים להתחרות על המחיר הטוב ביותר עבורך.</p>
         <ul class="cta-card-features">
-          <li><strong>מחיר נמוך יותר</strong> — הצעות בסגנון מכרז. המחיר יורד כשיש תחרות.</li>
-          <li><strong>שקיפות במחיר</strong> — יודע בדיוק מה משלם. אין הפתעות.</li>
-          <li><strong>לא תלוי בספק אחד</strong> — מוביל ביטל? יש אחרים.</li>
-          <li><strong>שומרים על אמינות העסקה</strong> — הכסף יוצא רק אחרי אישור מסירה.</li>
-          <li><strong>תיעוד מלא ומעקב</strong> — תמונות וסטטוסים בכל שלב.</li>
-          <li><strong>ביטוח המטען שלך</strong> — הגנה על הסחורה שלך.</li>
+          <li>הצעות מחיר תחרותיות תוך דקות</li>
+          <li>מובילים מאומתים עם דירוגים</li>
+          <li>מעקב הזמנות בזמן אמת</li>
+          <li>תשלום מאובטח באפליקציה</li>
+          <li>תמיכה בלקוח פרטי וחברה</li>
         </ul>
         <a href="#download" class="btn-primary">התחל לשלוח →</a>
       </div>
+      <div class="cta-card carrier reveal">
+        <div class="cta-card-emoji">🚛</div>
+        <h3 class="cta-card-title">אני מוביל / חברת הובלות</h3>
+        <p class="cta-card-desc">יש לך משאית חוזרת ריקה? מלא אותה במטענים והגדל את ההכנסות שלך.</p>
+        <ul class="cta-card-features">
+          <li>מטענים חוזרים למילוי נסיעות חזור</li>
+          <li>ניהול ציי רכבים ונהגים</li>
+          <li>ארנק דיגיטלי עם מעקב הכנסות</li>
+          <li>פרופיל עסקי מקצועי ומדורג</li>
+          <li>תמיכה בכל סוגי הרכבים</li>
+        </ul>
+        <a href="#download" class="btn-primary">התחל להוביל →</a>
+      </div>
     </div>
   </section>
-
 
   <!-- ======== VEHICLE TYPES ======== -->
   <section class="vehicles">
@@ -1782,10 +1753,9 @@
       <div class="section-tag">הורד עכשיו</div>
       <h2 class="section-title">מוכן להתחיל?</h2>
       <p class="download-desc">
-        <strong>מובילים</strong> — פרסמו את המסלול הראשון שלכם תוך 30 שניות.<br>
-        <strong>שולחים</strong> — קבלו הצעות מחיר על ההובלה הבאה שלכם עוד היום.
+        הורד את WARGO בחינם והתחל לחסוך בהובלות כבר היום. 
+        זמין ב-iOS ו-Android.
       </p>
-      <p style="color:rgba(255,255,255,0.45);font-size:14px;margin-top:16px;">בחינם. ללא התחייבות. מובילים מאומתים.</p>
       <div class="store-buttons">
         <!-- Replace # with your actual App Store link -->
         <a href="#" class="store-btn" id="ios-download">
@@ -1865,10 +1835,10 @@
         heroTag: 'פלטפורמה פעילה בכל הארץ',
         heroTitle1: 'הובלות חזור',
         heroTitle2: 'בלחיצת כפתור',
-        heroDesc: 'WARGO מחברת בין שולחי מטענים למובילים מאומתים בקבלת תשלום לאחר ביצוע. חסוך עד 40% מעלויות ההובלה באמצעות ניצול מטענים חוזרים — מהר, פשוט ובטוח.',
-        heroCta1: '🚛 אני מוביל — פרסם מסלול',
-        heroCta2: '📦 אני שולח — פרסם הובלה',
-        stat1: 'חיסכון ממוצע לשולח', stat2: 'הכנסה נוספת ממוצעת למוביל', stat3: 'קבלת תשלום לאחר ביצוע',
+        heroDesc: 'WARGO מחברת בין שולחי מטענים למובילים מאומתים בכל רחבי ישראל. חסוך עד 40% מעלויות ההובלה באמצעות ניצול מטענים חוזרים — מהר, פשוט ובטוח.',
+        heroCta1: 'הורד עכשיו — בחינם',
+        heroCta2: 'איך זה עובד?',
+        stat1: 'חיסכון ממוצע בהובלה', stat2: 'זמינות מלאה', stat3: 'כל רחבי ישראל',
         servicesLabel: 'סוגי שירותים נתמכים',
         services: ['🚛 הובלת חזור', '🏗️ שירות מנוף', '⬇️ לובי נמוך', '🛢️ הובלת מכליות', '📦 רמפה אחורית', '📅 הובלה מתוזמנת'],
         featTag: 'למה WARGO?', featTitle: 'הכל באפליקציה אחת',
@@ -1881,7 +1851,7 @@
           { icon: '🗺️', title: 'מפת מסלולים', desc: 'צפייה במסלול ההובלה על המפה עם חישוב מרחק אוטומטי. ניווט ישיר לנקודת האיסוף והפריקה.' },
           { icon: '🌐', title: 'רב-שפתי', desc: 'ממשק בעברית, אנגלית, רוסית וערבית — כדי שכל מוביל ושולח בישראל ירגיש בבית.' },
         ],
-        stepsTag: 'תהליך פשוט', stepsTitle: '📦 אני שולח — פרסם הובלה', stepsSubtitle: 'שלושה שלבים פשוטים להובלה הבאה שלך',
+        stepsTag: 'תהליך פשוט', stepsTitle: 'איך זה עובד?', stepsSubtitle: 'שלושה שלבים פשוטים להובלה הבאה שלך',
         steps: [
           { title: 'פרסם בקשת הובלה', desc: 'הזן את פרטי המטען — נקודת מוצא, יעד, סוג רכב נדרש, תאריך ותיאור. תוך שניות הבקשה שלך חיה במערכת.' },
           { title: 'קבל הצעות ובחר מוביל', desc: 'מובילים מאומתים רואים את הבקשה ושולחים הצעות מחיר. השווה דירוגים, מחירים וביקורות — ובחר את ההצעה הטובה ביותר.' },
@@ -2196,8 +2166,6 @@
       });
     });
 
-    function switchHowTab(tab){var c=document.getElementById('howCarrier');var s=document.getElementById('howShipper');var tc=document.getElementById('howTabCarrier');var ts=document.getElementById('howTabShipper');if(!c||!s)return;if(tab==='carrier'){c.style.display='';s.style.display='none';tc.style.background='var(--cyan-500)';tc.style.color='#fff';ts.style.background='transparent';ts.style.color='var(--cyan-400)';}else{c.style.display='none';s.style.display='';ts.style.background='var(--cyan-500)';ts.style.color='#fff';tc.style.background='transparent';tc.style.color='var(--cyan-400)';}}
-
     // ===== DYNAMIC CONTENT FROM ADMIN =====
     // ===== LOAD SITE CONTENT FROM SUPABASE =====
     setTimeout(function(){ document.body.style.opacity = "1"; }, 1500);
@@ -2222,7 +2190,7 @@
         try {
           const raw = window.localStorage.getItem('wargo_admin_data');
           if (raw) data = JSON.parse(raw);
-        } catch(e) { return; }
+        } catch(e) {}
       }
 
       if (!data || Object.keys(data).length === 0) { document.body.style.opacity = "1"; return; }
@@ -2234,7 +2202,7 @@
       if (data['hero.tag']) { const tag = document.querySelector('.hero-tag'); if(tag) tag.innerHTML = '<div class="hero-tag-dot"></div>' + data['hero.tag']; }
       if (data['hero.title1'] || data['hero.title2']) {
         const h1 = document.querySelector('.hero h1');
-        if (h1) h1.innerHTML = (data['hero.title1'] || 'לראשונה בישראל:') + '<br>' + (data['hero.title2'] || 'שוק פתוח להובלות תעשייתיות.');
+        if (h1) h1.innerHTML = (data['hero.title1'] || 'הובלות חזור') + '<br><span class="gradient-text">' + (data['hero.title2'] || 'בלחיצת כפתור') + '</span>';
       }
       if (data['hero.description']) setText('.hero-desc', data['hero.description']);
       if (data['links.appStore']) setHref('#ios-download', data['links.appStore']);
@@ -2289,58 +2257,46 @@
         document.body.style.fontFamily = "'" + bodyFont + "', 'Heebo', sans-serif";
       }
     
-      // ===== APPLY TYPOGRAPHY FROM ADMIN =====
+      // ===== APPLY TYPOGRAPHY + COLOR FROM ADMIN =====
       var typoMap = {
-        'hero':         { sel: '.hero h1',                    multi: false },
-        'heroTag':      { sel: '.hero-tag',                   multi: false },
-        'heroDesc':     { sel: '.hero-desc',                  multi: false },
-        'features':     { sel: '.features .section-title',    multi: false },
-        'featuresTag':  { sel: '.features .section-tag',      multi: false },
-        'featuresDesc': { sel: '.features .section-subtitle', multi: false },
-        'featuresCard': { sel: '.feature-title',              multi: true  },
-        'steps':        { sel: '.how-it-works .section-title',multi: false },
-        'stepsTag':     { sel: '.how-it-works .section-tag',  multi: false },
-        'stepsCard':    { sel: '.step-title',                 multi: true  },
-        'audience':     { sel: '.dual-cta .section-title',    multi: false },
-        'audienceTag':  { sel: '.dual-cta .section-tag',      multi: false },
-        'audienceCard': { sel: '.cta-card-title',             multi: true  },
-        'vehicles':     { sel: '.vehicles .section-title',    multi: false },
-        'vehiclesTag':  { sel: '.vehicles .section-tag',      multi: false },
+        'hero':         { sel: '.hero h1',                         multi: false },
+        'heroTag':      { sel: '.hero-tag',                        multi: false },
+        'heroDesc':     { sel: '.hero-desc',                       multi: false },
+        'features':     { sel: '.features .section-title',         multi: false },
+        'featuresTag':  { sel: '.features .section-tag',           multi: false },
+        'featuresDesc': { sel: '.features .section-subtitle',      multi: false },
+        'featuresCard': { sel: '.feature-title',                   multi: true  },
+        'steps':        { sel: '.how-it-works .section-title',     multi: false },
+        'stepsTag':     { sel: '.how-it-works .section-tag',       multi: false },
+        'stepsCard':    { sel: '.step-title',                      multi: true  },
+        'audience':     { sel: '.dual-cta .section-title',         multi: false },
+        'audienceTag':  { sel: '.dual-cta .section-tag',           multi: false },
+        'audienceCard': { sel: '.cta-card-title',                  multi: true  },
+        'vehicles':     { sel: '.vehicles .section-title',         multi: false },
+        'vehiclesTag':  { sel: '.vehicles .section-tag',           multi: false },
         'download':     { sel: '.download-section .section-title', multi: false },
         'downloadTag':  { sel: '.download-section .section-tag',   multi: false },
-        'footerDesc':   { sel: '.footer-brand-desc',          multi: false }
+        'footerDesc':   { sel: '.footer-brand-desc',               multi: false }
       };
-
       Object.keys(typoMap).forEach(function(key) {
-        var conf = typoMap[key];
-        var tag  = data['typo.' + key + '.tag'];
-        var font = data['typo.' + key + '.font'];
-        var size = data['typo.' + key + '.size'];
+        var conf   = typoMap[key];
+        var tag    = data['typo.' + key + '.tag'];
+        var font   = data['typo.' + key + '.font'];
+        var size   = data['typo.' + key + '.size'];
         var weight = data['typo.' + key + '.weight'];
-
-        var els = conf.multi
-          ? document.querySelectorAll(conf.sel)
-          : [document.querySelector(conf.sel)];
-
+        var color  = data['typo.' + key + '.color'];
+        var els = conf.multi ? document.querySelectorAll(conf.sel) : [document.querySelector(conf.sel)];
         els.forEach(function(el) {
           if (!el) return;
-          if (font) el.style.fontFamily = "'" + font + "', sans-serif";
-          if (size) el.style.fontSize = size + 'px';
+          if (font)   el.style.fontFamily = "'" + font + "', sans-serif";
+          if (size)   el.style.fontSize   = size + 'px';
           if (weight) el.style.fontWeight = weight;
-
+          if (color)  el.style.color      = color;
           if (tag && tag.toLowerCase() !== el.tagName.toLowerCase()) {
-            var newEl = document.createElement(tag);
-            newEl.innerHTML = el.innerHTML;
-            newEl.className = el.className;
-            newEl.style.cssText = el.style.cssText;
-            if (el.id) newEl.id = el.id;
-            for (var i = 0; i < el.attributes.length; i++) {
-              var a = el.attributes[i];
-              if (a.name !== 'class' && a.name !== 'style' && a.name !== 'id') {
-                newEl.setAttribute(a.name, a.value);
-              }
-            }
-            el.parentNode.replaceChild(newEl, el);
+            var n = document.createElement(tag);
+            n.innerHTML = el.innerHTML; n.className = el.className; n.style.cssText = el.style.cssText;
+            if (el.id) n.id = el.id;
+            el.parentNode.replaceChild(n, el);
           }
         });
       });
@@ -2388,6 +2344,5 @@
       });
     });
   </script>
-  <a href="https://wa.me/972506309856?text=%D7%94%D7%99%D7%99+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D+%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D" class="whatsapp-float" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.608-1.454A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.589-5.932-1.618l-.424-.253-2.735.863.88-2.644-.278-.44A9.767 9.767 0 012.182 12c0-5.422 4.396-9.818 9.818-9.818S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/></svg></a>
 </body>
 </html>
