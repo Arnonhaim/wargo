@@ -46,6 +46,43 @@
       scroll-behavior: smooth;
     }
 
+
+    #wargo-loader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #060D1B;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.4s ease;
+    }
+    #wargo-loader.fade-out { opacity: 0; pointer-events: none; }
+    #wargo-loader .loader-logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 42px; font-weight: 800;
+      letter-spacing: 3px; color: #fff;
+    }
+    #wargo-loader .loader-logo span { color: #ff7620; }
+    #wargo-loader .loader-bar {
+      width: 120px; height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px; overflow: hidden;
+    }
+    #wargo-loader .loader-bar::after {
+      content: ''; display: block;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, #00B4D8, #ff7620);
+      border-radius: 3px;
+      animation: loaderSlide 1s ease-in-out infinite;
+    }
+    @keyframes loaderSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+
     body {
       font-family: 'Heebo', sans-serif;
       background: var(--navy-900);
@@ -1415,6 +1452,10 @@
   </style>
 </head>
 <body>
+  <div id="wargo-loader">
+    <div class="loader-logo">WAR<span>GO</span></div>
+    <div class="loader-bar"></div>
+  </div>
 
   <!-- ======== NAVIGATION ======== -->
   <nav id="navbar">
@@ -2164,6 +2205,9 @@
       });
     });
 
+    function removeLoader(){var l=document.getElementById("wargo-loader");if(l&&!l.classList.contains("fade-out")){l.classList.add("fade-out");setTimeout(function(){l.remove();},500);}}
+    setTimeout(removeLoader, 3000);
+
     // ===== DYNAMIC CONTENT FROM ADMIN =====
     // ===== LOAD SITE CONTENT FROM SUPABASE =====
     (async function loadSiteContent() {
@@ -2186,10 +2230,10 @@
         try {
           const raw = window.localStorage.getItem('wargo_admin_data');
           if (raw) data = JSON.parse(raw);
-        } catch(e) { return; }
+        } catch(e) {}
       }
 
-      if (!data || Object.keys(data).length === 0) return;
+      if (!data || Object.keys(data).length === 0) { removeLoader(); return; }
 
       // Apply content
       const setText = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.textContent = val; };
@@ -2252,6 +2296,7 @@
         document.documentElement.style.setProperty('font-family', "'" + bodyFont + "', 'Heebo', sans-serif");
         document.body.style.fontFamily = "'" + bodyFont + "', 'Heebo', sans-serif";
       }
+      removeLoader();
     })();
 
     // Helper: adjust hex color brightness by amount (-100 to +100)
