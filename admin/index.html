@@ -956,6 +956,11 @@
         </div>
 
         <div class="sidebar-section-label">דפים משפטיים</div>
+                <div class="sidebar-item" data-panel="tickets" onclick="switchPanel(this)">
+          <span class="sidebar-item-icon">🎫</span> פניות תמיכה
+        </div>
+
+        <div class="sidebar-divider"></div>
         <div class="sidebar-item" data-panel="pg-terms" onclick="switchPanel(this)">
           <span class="sidebar-item-icon">📋</span> תנאי שימוש
         </div>
@@ -1469,6 +1474,39 @@
             </div>
           </div>
 
+        
+        <!-- SUPPORT TICKETS -->
+        <div class="panel" id="panel-tickets">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><span class="card-title-icon">🎫</span> ניהול פניות תמיכה</div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <select id="ticketFilterStatus" onchange="loadTickets()" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);font-size:13px;background:var(--bg-secondary);">
+                  <option value="">כל הסטטוסים</option>
+                  <option value="open">פתוחה</option>
+                  <option value="in_progress">בטיפול</option>
+                  <option value="resolved">נפתרה</option>
+                  <option value="closed">סגורה</option>
+                </select>
+                <button class="btn btn-save" onclick="loadTickets()" style="padding:6px 14px;font-size:13px;">🔄 רענן</button>
+              </div>
+            </div>
+            <div id="ticketsContainer" style="margin-top:12px;">
+              <div style="text-align:center;padding:40px;color:var(--text-secondary);">לחץ רענן כדי לטעון פניות</div>
+            </div>
+          </div>
+
+          <!-- Ticket Detail Modal -->
+          <div id="ticketModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;">
+            <div style="background:var(--bg-card);border-radius:16px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;padding:28px;position:relative;border:1px solid var(--border);">
+              <button onclick="closeTicketModal()" style="position:absolute;top:12px;left:12px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-secondary);">✕</button>
+              <div id="ticketModalContent"></div>
+            </div>
+          </div>
+        </div>
+
         <!-- FOOTER -->
         <div class="panel" id="panel-footer">
           <div class="card">
@@ -1895,11 +1933,13 @@
       const panelId = el.dataset.panel;
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById('panel-' + panelId).classList.add('active');
+      if (panelId === 'tickets') { setTimeout(loadTickets, 100); }
 
  const titles = {
         dashboard: 'לוח בקרה', hero: 'Hero — ראשי', features: 'יתרונות',
         steps: 'איך זה עובד', audience: 'קהלי יעד', vehicles: 'סוגי רכבים',
         links: 'קישורים וחנויות', branding: 'מיתוג וצבעים', footer: 'Footer', seo: 'SEO ומטא',
+        'tickets': '\ud83c\udfab \u05e4\u05e0\u05d9\u05d5\u05ea \u05ea\u05de\u05d9\u05db\u05d4',
         'pg-terms': '📋 תנאי שימוש', 'pg-privacy': '🔒 מדיניות פרטיות',
         'pg-refund': '↩️ ביטול עסקה', 'pg-faq': '❓ שאלות נפוצות'
       };
@@ -2256,6 +2296,145 @@
 
     // ===== RUN =====
     init();
-  </script>
+  
+
+    // ===== SUPPORT TICKETS =====
+    const TSTATUS = { open:'\u23f3 \u05e4\u05ea\u05d5\u05d7\u05d4', in_progress:'\ud83d\udd04 \u05d1\u05d8\u05d9\u05e4\u05d5\u05dc', resolved:'\u2705 \u05e0\u05e4\u05ea\u05e8\u05d4', closed:'\ud83d\udcc1 \u05e1\u05d2\u05d5\u05e8\u05d4' };
+    const TTYPE = { general:'\u05db\u05dc\u05dc\u05d9', technical:'\u05d8\u05db\u05e0\u05d9', financial:'\u05db\u05e1\u05e4\u05d9', operational:'\u05ea\u05e4\u05e2\u05d5\u05dc\u05d9', complaint:'\u05ea\u05dc\u05d5\u05e0\u05d4', suggestion:'\u05d4\u05e6\u05e2\u05d4' };
+    const TPRI = { P1:'\ud83d\udd34 \u05d3\u05d7\u05d5\u05e3', P2:'\ud83d\udfe0 \u05d1\u05d9\u05e0\u05d5\u05e0\u05d9', P3:'\u26aa \u05e8\u05d2\u05d9\u05dc' };
+
+    async function loadTickets() {
+      if (!currentAdmin) { showToast('\u05e0\u05d0 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05e7\u05d5\u05d3\u05dd'); return; }
+      const container = document.getElementById('ticketsContainer');
+      container.innerHTML = '<div style="text-align:center;padding:30px;">\u23f3 \u05d8\u05d5\u05e2\u05df...</div>';
+
+      try {
+        let query = sb.from('support_tickets').select('*').order('created_at', { ascending: false });
+        const statusFilter = document.getElementById('ticketFilterStatus').value;
+        if (statusFilter) query = query.eq('status', statusFilter);
+        const { data, error } = await query.limit(50);
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary);">\ud83d\udced \u05d0\u05d9\u05df \u05e4\u05e0\u05d9\u05d5\u05ea</div>';
+          return;
+        }
+
+        container.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' + data.map(function(t) {
+          var statusClass = t.status === 'open' ? '#EF4444' : t.status === 'in_progress' ? '#F59E0B' : t.status === 'resolved' ? '#10B981' : '#6B7280';
+          var date = new Date(t.created_at).toLocaleDateString('he-IL') + ' ' + new Date(t.created_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+          return '<div style="background:var(--bg-secondary);border-radius:12px;padding:14px;border:1px solid var(--border);cursor:pointer;" onclick="openTicket(\'' + t.id + '\')">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+              '<strong style="font-size:14px;">' + escH(t.subject) + '</strong>' +
+              '<span style="background:' + statusClass + ';color:white;padding:2px 10px;border-radius:8px;font-size:11px;font-weight:600;">' + (TSTATUS[t.status]||t.status) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;gap:12px;font-size:12px;color:var(--text-secondary);">' +
+              '<span>\ud83d\udc64 ' + escH(t.user_name) + '</span>' +
+              '<span>\ud83d\udce7 ' + escH(t.user_email) + '</span>' +
+              '<span>' + (TTYPE[t.type]||t.type) + '</span>' +
+              '<span>' + (TPRI[t.priority]||t.priority) + '</span>' +
+              '<span>' + date + '</span>' +
+            '</div>' +
+            (t.admin_response ? '<div style="margin-top:6px;padding:6px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:12px;">\ud83d\udcac \u05e0\u05e2\u05e0\u05d4</div>' : '') +
+          '</div>';
+        }).join('') + '</div>';
+      } catch(err) {
+        container.innerHTML = '<div style="text-align:center;padding:30px;color:#EF4444;">\u274c ' + escH(err.message) + '</div>';
+      }
+    }
+
+    function escH(s) { if(!s) return ''; var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+    async function openTicket(id) {
+      var modal = document.getElementById('ticketModal');
+      var content = document.getElementById('ticketModalContent');
+      modal.style.display = 'flex';
+      content.innerHTML = '<div style="text-align:center;padding:30px;">\u23f3 \u05d8\u05d5\u05e2\u05df...</div>';
+
+      try {
+        var r = await sb.from('support_tickets').select('*').eq('id', id).single();
+        if (r.error) throw r.error;
+        var t = r.data;
+        var date = new Date(t.created_at).toLocaleDateString('he-IL') + ' ' + new Date(t.created_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+
+        content.innerHTML =
+          '<h3 style="margin:0 0 16px;font-size:18px;">' + escH(t.subject) + '</h3>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;font-size:13px;">' +
+            '<div><strong>\u05e9\u05dd:</strong> ' + escH(t.user_name) + '</div>' +
+            '<div><strong>\u05d0\u05d9\u05de\u05d9\u05d9\u05dc:</strong> ' + escH(t.user_email) + '</div>' +
+            '<div><strong>\u05d8\u05dc\u05e4\u05d5\u05df:</strong> ' + (escH(t.user_phone)||'-') + '</div>' +
+            '<div><strong>\u05ea\u05e4\u05e7\u05d9\u05d3:</strong> ' + (escH(t.user_role)||'-') + '</div>' +
+            '<div><strong>\u05e1\u05d5\u05d2:</strong> ' + (TTYPE[t.type]||t.type) + '</div>' +
+            '<div><strong>\u05d3\u05d7\u05d9\u05e4\u05d5\u05ea:</strong> ' + (TPRI[t.priority]||t.priority) + '</div>' +
+            '<div><strong>\u05ea\u05d0\u05e8\u05d9\u05da:</strong> ' + date + '</div>' +
+            '<div><strong>\u05d4\u05d6\u05de\u05e0\u05d4:</strong> ' + (escH(t.order_id)||'-') + '</div>' +
+          '</div>' +
+          '<div style="background:var(--bg-secondary);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;line-height:1.7;white-space:pre-wrap;">' + escH(t.description) + '</div>' +
+          (t.admin_response ? '<div style="background:rgba(16,185,129,0.1);border-radius:10px;padding:14px;margin-bottom:16px;"><strong>\ud83d\udcac \u05ea\u05e9\u05d5\u05d1\u05d4:</strong><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;">' + escH(t.admin_response) + '</div></div>' : '') +
+          '<div style="margin-bottom:12px;">' +
+            '<label style="font-size:13px;font-weight:600;margin-bottom:6px;display:block;">\u05ea\u05e9\u05d5\u05d1\u05d4 \u05dc\u05dc\u05e7\u05d5\u05d7:</label>' +
+            '<textarea id="adminReply" style="width:100%;min-height:100px;border-radius:10px;border:1px solid var(--border);padding:10px;font-size:13px;resize:vertical;background:var(--bg-secondary);color:var(--text-primary);">' + (t.admin_response||'') + '</textarea>' +
+          '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<select id="replyStatus" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;background:var(--bg-secondary);">' +
+              '<option value="resolved"' + (t.status==='resolved'?' selected':'') + '>\u2705 \u05e0\u05e4\u05ea\u05e8\u05d4</option>' +
+              '<option value="in_progress"' + (t.status==='in_progress'?' selected':'') + '>\ud83d\udd04 \u05d1\u05d8\u05d9\u05e4\u05d5\u05dc</option>' +
+              '<option value="closed"' + (t.status==='closed'?' selected':'') + '>\ud83d\udcc1 \u05e1\u05d2\u05d5\u05e8\u05d4</option>' +
+              '<option value="open"' + (t.status==='open'?' selected':'') + '>\u23f3 \u05e4\u05ea\u05d5\u05d7\u05d4</option>' +
+            '</select>' +
+            '<button onclick="replyTicket(\'' + t.id + '\')" style="padding:8px 20px;background:#10B981;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">\ud83d\udce8 \u05e9\u05dc\u05d7 \u05ea\u05e9\u05d5\u05d1\u05d4</button>' +
+            '<button onclick="deleteTicket(\'' + t.id + '\')" style="padding:8px 16px;background:#EF4444;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">\ud83d\uddd1\ufe0f \u05de\u05d7\u05e7</button>' +
+          '</div>';
+      } catch(err) {
+        content.innerHTML = '<div style="color:#EF4444;">\u274c ' + escH(err.message) + '</div>';
+      }
+    }
+
+    function closeTicketModal() {
+      document.getElementById('ticketModal').style.display = 'none';
+    }
+
+    async function replyTicket(id) {
+      var reply = document.getElementById('adminReply').value.trim();
+      var status = document.getElementById('replyStatus').value;
+      if (!reply) { alert('\u05e0\u05d0 \u05dc\u05db\u05ea\u05d5\u05d1 \u05ea\u05e9\u05d5\u05d1\u05d4'); return; }
+
+      try {
+        var r = await sb.rpc('respond_to_ticket', {
+          admin_id: currentAdmin.id,
+          ticket_id: id,
+          response: reply,
+          new_status: status
+        });
+        if (r.error) throw r.error;
+        if (r.data && r.data.success) {
+          showToast('\u05ea\u05e9\u05d5\u05d1\u05d4 \u05e0\u05e9\u05dc\u05d7\u05d4! \u2705');
+          closeTicketModal();
+          loadTickets();
+        } else {
+          alert('\u05e9\u05d2\u05d9\u05d0\u05d4: ' + (r.data.error||''));
+        }
+      } catch(err) {
+        alert('\u05e9\u05d2\u05d9\u05d0\u05d4: ' + err.message);
+      }
+    }
+
+    async function deleteTicket(id) {
+      if (!confirm('\u05d4\u05d0\u05dd \u05dc\u05de\u05d7\u05d5\u05e7 \u05e4\u05e0\u05d9\u05d9\u05d4 \u05d6\u05d5? \u05e4\u05e2\u05d5\u05dc\u05d4 \u05d1\u05dc\u05ea\u05d9 \u05d4\u05e4\u05d9\u05db\u05d4.')) return;
+
+      try {
+        var r = await sb.rpc('delete_ticket', { admin_id: currentAdmin.id, ticket_id: id });
+        if (r.error) throw r.error;
+        if (r.data && r.data.success) {
+          showToast('\u05e4\u05e0\u05d9\u05d9\u05d4 \u05e0\u05de\u05d7\u05e7\u05d4 \ud83d\uddd1\ufe0f');
+          closeTicketModal();
+          loadTickets();
+        }
+      } catch(err) {
+        alert('\u05e9\u05d2\u05d9\u05d0\u05d4: ' + err.message);
+      }
+    }
+
+    </script>
 </body>
 </html>
