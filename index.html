@@ -2226,9 +2226,11 @@
       if (data['footer.desc']) setText('.footer-brand-desc', data['footer.desc']);
       if (data['footer.copyright']) { const el = document.querySelector('.footer-bottom span'); if(el) el.textContent = data['footer.copyright']; }
       if (data['brand.appName']) {
-        document.querySelectorAll('.nav-logo-text').forEach(el => el.textContent = data['brand.appName']);
+        const brandName = data['brand.appName'];
+        const coloredName = brandName.replace(/GO/g, '<span style="color:#ff7620">GO</span>');
+        document.querySelectorAll('.nav-logo-text').forEach(el => el.innerHTML = coloredName);
         const footerName = document.querySelector('.footer-brand-logo span');
-        if (footerName) footerName.textContent = data['brand.appName'];
+        if (footerName) footerName.innerHTML = coloredName;
       }
       if (data['seo.title']) document.title = data['seo.title'];
       if (data['seo.description']) { const m = document.querySelector('meta[name="description"]'); if(m) m.content = data['seo.description']; }
