@@ -2199,7 +2199,7 @@
         const h1 = document.querySelector('.hero h1');
         if (h1) h1.innerHTML = (data['hero.title1'] || 'הובלות חזור') + '<br>' + (data['hero.title2'] || 'בלחיצת כפתור');
       }
-      if (data['hero.description']) setText('.hero-desc', data['hero.description']);
+      if (data['hero.description']) { var hd = document.querySelector('.hero-desc'); if(hd) hd.innerHTML = data['hero.description'].replace(/\n/g, '<br>'); }
       if (data['links.appStore']) setHref('#ios-download', data['links.appStore']);
       if (data['links.googlePlay']) setHref('#android-download', data['links.googlePlay']);
       if (data['links.supportEmail']) {
@@ -2218,6 +2218,86 @@
       if (data['seo.title']) document.title = data['seo.title'];
       if (data['seo.description']) { const m = document.querySelector('meta[name="description"]'); if(m) m.content = data['seo.description']; }
       if (data['seo.keywords']) { const m = document.querySelector('meta[name="keywords"]'); if(m) m.content = data['seo.keywords']; }
+
+      // ===== APPLY ALL SECTION CONTENT =====
+      // Hero buttons
+      if (data['hero.cta1']) {
+        const btn1 = document.querySelector('.hero-buttons .btn-primary');
+        if (btn1) { const svg = btn1.querySelector('svg'); btn1.textContent = ''; if(svg) btn1.prepend(svg); btn1.append(' ' + data['hero.cta1']); }
+      }
+      if (data['hero.cta2']) {
+        const btn2 = document.querySelector('.hero-buttons .btn-secondary');
+        if (btn2) { const svg = btn2.querySelector('svg'); btn2.textContent = ''; if(svg) btn2.prepend(svg); btn2.append(' ' + data['hero.cta2']); }
+      }
+
+      // Hero stats
+      var stats = document.querySelectorAll('.hero-stats > div');
+      if (data['hero.stat1_value'] && stats[0]) { var sv = stats[0].querySelector('.hero-stat-value'); if(sv) sv.textContent = data['hero.stat1_value']; }
+      if (data['hero.stat1_label'] && stats[0]) { var sl = stats[0].querySelector('.hero-stat-label'); if(sl) sl.textContent = data['hero.stat1_label']; }
+      if (data['hero.stat2_value'] && stats[1]) { var sv = stats[1].querySelector('.hero-stat-value'); if(sv) sv.textContent = data['hero.stat2_value']; }
+      if (data['hero.stat2_label'] && stats[1]) { var sl = stats[1].querySelector('.hero-stat-label'); if(sl) sl.textContent = data['hero.stat2_label']; }
+      if (data['hero.stat3_value'] && stats[2]) { var sv = stats[2].querySelector('.hero-stat-value'); if(sv) sv.textContent = data['hero.stat3_value']; }
+      if (data['hero.stat3_label'] && stats[2]) { var sl = stats[2].querySelector('.hero-stat-label'); if(sl) sl.textContent = data['hero.stat3_label']; }
+
+      // Features section
+      if (data['features.tag']) setText('.features .section-tag', data['features.tag']);
+      if (data['features.title']) setText('.features .section-title', data['features.title']);
+      if (data['features.subtitle']) setText('.features .section-subtitle', data['features.subtitle']);
+
+      // Features cards (array)
+      if (data.features && Array.isArray(data.features) && data.features.length > 0) {
+        var cc = ['cyan','green','orange','purple','yellow','pink'];
+        var fg = document.querySelector('.features-grid');
+        if (fg) fg.innerHTML = data.features.map(function(f,i) {
+          return '<div class="feature-card reveal visible"><div class="feature-icon '+cc[i%6]+'">'+(f.icon||'')+'</div><h3 class="feature-title">'+(f.title||'')+'</h3><p class="feature-desc">'+(f.desc||'')+'</p></div>';
+        }).join('');
+      }
+
+      // Steps section
+      if (data['steps.tag']) setText('.how-it-works .section-tag', data['steps.tag']);
+      if (data['steps.title']) setText('.how-it-works .section-title', data['steps.title']);
+      if (data['steps.subtitle']) setText('.how-it-works .section-subtitle', data['steps.subtitle']);
+
+      // Steps cards (array)
+      if (data.steps && Array.isArray(data.steps) && data.steps.length > 0) {
+        var sc = document.querySelector('.steps-container');
+        if (sc) sc.innerHTML = '<div class="steps-line"></div>' + data.steps.map(function(s,i) {
+          return '<div class="step reveal visible"><div class="step-number">'+String(i+1).padStart(2,'0')+'</div><div class="step-content"><h3 class="step-title">'+(s.title||'')+'</h3><p class="step-desc">'+(s.desc||'')+'</p></div></div>';
+        }).join('');
+      }
+
+      // Audience section
+      if (data['audience.tag']) setText('.dual-cta .section-tag', data['audience.tag']);
+      if (data['audience.title']) setText('.dual-cta .section-title', data['audience.title']);
+      if (data['audience.subtitle']) setText('.dual-cta .section-subtitle', data['audience.subtitle']);
+
+      // Shipper card
+      if (data['shipper.emoji']) setText('.cta-card.shipper .cta-card-emoji', data['shipper.emoji']);
+      if (data['shipper.title']) setText('.cta-card.shipper .cta-card-title', data['shipper.title']);
+      if (data['shipper.desc']) setText('.cta-card.shipper .cta-card-desc', data['shipper.desc']);
+      if (data['shipper.cta']) setText('.cta-card.shipper .btn-primary', data['shipper.cta']);
+      if (data['shipper.features']) {
+        var sf = document.querySelector('.cta-card.shipper .cta-card-features');
+        if (sf) sf.innerHTML = data['shipper.features'].split('\n').filter(Boolean).map(function(f){return '<li>'+f+'</li>';}).join('');
+      }
+
+      // Carrier card
+      if (data['carrier.emoji']) setText('.cta-card.carrier .cta-card-emoji', data['carrier.emoji']);
+      if (data['carrier.title']) setText('.cta-card.carrier .cta-card-title', data['carrier.title']);
+      if (data['carrier.desc']) setText('.cta-card.carrier .cta-card-desc', data['carrier.desc']);
+      if (data['carrier.cta']) setText('.cta-card.carrier .btn-primary', data['carrier.cta']);
+      if (data['carrier.features']) {
+        var cf = document.querySelector('.cta-card.carrier .cta-card-features');
+        if (cf) cf.innerHTML = data['carrier.features'].split('\n').filter(Boolean).map(function(f){return '<li>'+f+'</li>';}).join('');
+      }
+
+      // Vehicles
+      if (data.vehicles && Array.isArray(data.vehicles) && data.vehicles.length > 0) {
+        var vg = document.querySelector('.vehicles-grid');
+        if (vg) vg.innerHTML = data.vehicles.map(function(v) {
+          return '<div class="vehicle-chip"><div class="vehicle-chip-icon">'+(v.icon||'✔️')+'</div><div class="vehicle-chip-name">'+(v.name||'')+'</div></div>';
+        }).join('');
+      }
 
       // ===== APPLY BRANDING COLORS =====
       const root = document.documentElement.style;
